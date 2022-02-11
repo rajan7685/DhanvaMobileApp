@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:dhanva_mobile_app/home_page/home_page_widget.dart';
+import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/internationalization.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async {
   runApp(MyApp());
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
       locale: _locale,
       supportedLocales: const [Locale('en', '')],
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: HomePageWidget(),
+      home: SplashScreenWidget(),
     );
   }
 }
