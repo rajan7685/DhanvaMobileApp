@@ -22,18 +22,18 @@ class _TestingPageWidgetState extends State<TestingPageWidget> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(22),
         child: AppBar(
-          backgroundColor: FlutterFlowTheme.secondaryColor,
+          backgroundColor: FlutterFlowTheme.of(context).secondaryColor,
           automaticallyImplyLeading: false,
           flexibleSpace: Align(
             alignment: AlignmentDirectional(0, 0),
             child: Text(
               'Testing Page',
-              style: FlutterFlowTheme.bodyText1.override(
-                fontFamily: 'Poppins',
-                color: Colors.white,
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
+              style: FlutterFlowTheme.of(context).bodyText1.override(
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ),
           actions: [],
@@ -65,7 +65,8 @@ class _TestingPageWidgetState extends State<TestingPageWidget> {
                                   width: 50,
                                   height: 50,
                                   child: SpinKitRing(
-                                    color: FlutterFlowTheme.primaryColor,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryColor,
                                     size: 50,
                                   ),
                                 ),
@@ -98,7 +99,8 @@ class _TestingPageWidgetState extends State<TestingPageWidget> {
                                         ).toString(),
                                         'userName',
                                       ),
-                                      style: FlutterFlowTheme.bodyText1,
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1,
                                     );
                                   },
                                 );

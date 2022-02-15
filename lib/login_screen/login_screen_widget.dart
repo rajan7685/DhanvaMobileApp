@@ -26,7 +26,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.tertiaryColor,
+      backgroundColor: FlutterFlowTheme.of(context).tertiaryColor,
       body: Stack(
         children: [
           Image.asset(
@@ -50,39 +50,39 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                     children: [
                       Text(
                         'Your',
-                        style: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Open Sans',
-                          color: Colors.white,
-                          fontSize: 35,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Open Sans',
+                              color: Colors.white,
+                              fontSize: 35,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                       Text(
                         'Health',
-                        style: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Poppins',
-                          color: Color(0xFF4EDFFF),
-                          fontSize: 35,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Poppins',
+                              color: Color(0xFF4EDFFF),
+                              fontSize: 35,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                       Text(
                         'is our',
-                        style: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Poppins',
-                          color: Colors.white,
-                          fontSize: 35,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Poppins',
+                              color: Colors.white,
+                              fontSize: 35,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                       Text(
                         'Priority',
-                        style: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Poppins',
-                          color: Color(0xFF4EDFFF),
-                          fontSize: 35,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Poppins',
+                              color: Color(0xFF4EDFFF),
+                              fontSize: 35,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ],
                   ),
@@ -130,12 +130,13 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(38, 20, 38, 0),
                         child: Text(
                           'Get Your Online Consultation FREE',
-                          style: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Color(0xFF282828),
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF282828),
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                         ),
                       ),
                     ],
@@ -149,17 +150,19 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'Mobile Number',
-                          labelStyle: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Color(0xFF9A9A9A),
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          hintStyle: FlutterFlowTheme.bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Color(0xFF606E87),
-                            fontWeight: FontWeight.normal,
-                          ),
+                          labelStyle:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF9A9A9A),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                          hintStyle:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF606E87),
+                                    fontWeight: FontWeight.normal,
+                                  ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0xFFC1C1C1),
@@ -177,12 +180,12 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                           filled: true,
                           fillColor: Colors.white,
                         ),
-                        style: FlutterFlowTheme.bodyText1.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFF606E87),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Open Sans',
+                              color: Color(0xFF606E87),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
                         textAlign: TextAlign.start,
                         keyboardType: TextInputType.phone,
                       ),
@@ -199,12 +202,13 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                         width: 280,
                         height: 45,
                         color: Color(0xFF00A8A3),
-                        textStyle: FlutterFlowTheme.subtitle2.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFFF3F4F4),
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        textStyle:
+                            FlutterFlowTheme.of(context).subtitle2.override(
+                                  fontFamily: 'Open Sans',
+                                  color: Color(0xFFF3F4F4),
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
                         elevation: 2,
                         borderSide: BorderSide(
                           color: Colors.transparent,
