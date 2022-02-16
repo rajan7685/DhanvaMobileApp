@@ -125,6 +125,7 @@ class _OTPWidgetState extends State<OTPWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: _generateTextEditors(),
     );

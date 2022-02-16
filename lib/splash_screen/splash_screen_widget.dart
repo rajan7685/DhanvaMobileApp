@@ -1,6 +1,8 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../login_screen/login_screen_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,6 +15,25 @@ class SplashScreenWidget extends StatefulWidget {
 
 class _SplashScreenWidgetState extends State<SplashScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 3000));
+      await Navigator.pushAndRemoveUntil(
+        context,
+        PageTransition(
+          type: PageTransitionType.leftToRight,
+          duration: Duration(milliseconds: 300),
+          reverseDuration: Duration(milliseconds: 300),
+          child: LoginScreenWidget(),
+        ),
+        (r) => false,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

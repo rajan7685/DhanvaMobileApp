@@ -1,6 +1,7 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../main.dart';
 import '../custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -24,10 +25,15 @@ class _VerificationScreenWidgetState extends State<VerificationScreenWidget> {
       appBar: AppBar(
         backgroundColor: Color(0xFFF3F4F4),
         automaticallyImplyLeading: false,
-        leading: Icon(
-          Icons.arrow_back_rounded,
-          color: Color(0xFF00A8A3),
-          size: 36,
+        leading: InkWell(
+          onTap: () async {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_rounded,
+            color: Color(0xFF00A8A3),
+            size: 36,
+          ),
         ),
         actions: [],
         centerTitle: true,
@@ -115,8 +121,15 @@ class _VerificationScreenWidgetState extends State<VerificationScreenWidget> {
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 80, 0, 0),
                   child: FFButtonWidget(
-                    onPressed: () {
-                      print('Button pressed ...');
+                    onPressed: () async {
+                      await Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              NavBarPage(initialPage: 'HomeScreen'),
+                        ),
+                        (r) => false,
+                      );
                     },
                     text: 'Verify',
                     options: FFButtonOptions(
