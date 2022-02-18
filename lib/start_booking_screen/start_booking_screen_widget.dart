@@ -220,7 +220,7 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                                       fontFamily: 'Poppins',
                                       color: Color(0xFF606E87),
                                     ),
-                            maxLines: 8,
+                            maxLines: 5,
                           ),
                         ),
                         Padding(
@@ -301,6 +301,40 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                                 ],
                               ),
                             ),
+                          ),
+                        ),
+                        Spacer(),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: Color(0xFF00A8A3),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Next',
+                                style: FlutterFlowTheme.of(context)
+                                    .title1
+                                    .override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFFF3F4F4),
+                                    ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
+                                child: Image.asset(
+                                  'assets/images/Layer_2.png',
+                                  width: 30,
+                                  height: 30,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
