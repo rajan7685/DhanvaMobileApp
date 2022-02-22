@@ -1,3 +1,4 @@
+import '../components/next_icon_button_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -311,31 +312,7 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                             color: Color(0xFF00A8A3),
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Next',
-                                style: FlutterFlowTheme.of(context)
-                                    .title1
-                                    .override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFFF3F4F4),
-                                    ),
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
-                                child: Image.asset(
-                                  'assets/images/Layer_2.png',
-                                  width: 30,
-                                  height: 30,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                            ],
-                          ),
+                          child: NextIconButtonWidget(),
                         ),
                       ],
                     ),

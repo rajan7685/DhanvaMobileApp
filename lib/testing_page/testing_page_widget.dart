@@ -62,12 +62,12 @@ class _TestingPageWidgetState extends State<TestingPageWidget> {
                             if (!snapshot.hasData) {
                               return Center(
                                 child: SizedBox(
-                                  width: 50,
-                                  height: 50,
+                                  width: 40,
+                                  height: 40,
                                   child: SpinKitRing(
                                     color: FlutterFlowTheme.of(context)
                                         .primaryColor,
-                                    size: 50,
+                                    size: 40,
                                   ),
                                 ),
                               );
