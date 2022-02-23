@@ -1,20 +1,22 @@
-import '../appointment_booked_screen/appointment_booked_screen_widget.dart';
 import '../components/next_icon_button_widget.dart';
+import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class StartBookingScreenWidget extends StatefulWidget {
-  const StartBookingScreenWidget({Key key}) : super(key: key);
+class StartBookingScreen2Widget extends StatefulWidget {
+  const StartBookingScreen2Widget({Key key}) : super(key: key);
 
   @override
-  _StartBookingScreenWidgetState createState() =>
-      _StartBookingScreenWidgetState();
+  _StartBookingScreen2WidgetState createState() =>
+      _StartBookingScreen2WidgetState();
 }
 
-class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
+class _StartBookingScreen2WidgetState extends State<StartBookingScreen2Widget> {
+  String radioButtonValue1;
+  String radioButtonValue2;
   TextEditingController textController1;
   TextEditingController textController2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -55,15 +57,10 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () async {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back_rounded,
-                        color: Colors.white,
-                        size: 34,
-                      ),
+                    Icon(
+                      Icons.arrow_back_rounded,
+                      color: Colors.white,
+                      size: 34,
                     ),
                     Expanded(
                       child: Row(
@@ -230,84 +227,86 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                             maxLines: 5,
                           ),
                         ),
+                        Align(
+                          alignment: AlignmentDirectional(-1, 0),
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                            child: Text(
+                              'Do you want to your doctor?',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF606E87),
+                                    fontSize: 20,
+                                  ),
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFEEEEEE),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: Color(0xFF00A8A3),
-                              ),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: Image.network(
-                                      'https://picsum.photos/seed/904/600',
-                                      width: 80,
-                                      height: 100,
-                                      fit: BoxFit.cover,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              FlutterFlowRadioButton(
+                                options: ['Yes'],
+                                onChanged: (value) {
+                                  setState(() => radioButtonValue1 = value);
+                                },
+                                optionHeight: 25,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black,
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          12, 0, 0, 0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 8, 0, 0),
-                                            child: Text(
-                                              'Rajan Ravichandran',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily: 'Open Sans',
-                                                        color:
-                                                            Color(0xFF606E87),
-                                                        fontSize: 18,
-                                                      ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 6, 0, 0),
-                                            child: Text(
-                                              'Cardiologist',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily: 'Open Sans',
-                                                        color:
-                                                            Color(0xFF606E87),
-                                                        fontSize: 16,
-                                                      ),
-                                            ),
-                                          ),
-                                        ],
+                                selectedTextStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF606E87),
+                                    ),
+                                buttonPosition: RadioButtonPosition.left,
+                                direction: Axis.vertical,
+                                radioButtonColor: Color(0xFF00A8A3),
+                                inactiveRadioButtonColor: Colors.white,
+                                toggleable: false,
+                                horizontalAlignment: WrapAlignment.start,
+                                verticalAlignment: WrapCrossAlignment.start,
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                child: FlutterFlowRadioButton(
+                                  options: ['Help me with available doctor'],
+                                  initialValue: 'null',
+                                  onChanged: (value) {
+                                    setState(() => radioButtonValue2 = value);
+                                  },
+                                  optionHeight: 25,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black,
                                       ),
-                                    ),
-                                  ),
-                                ],
+                                  selectedTextStyle:
+                                      FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFF606E87),
+                                          ),
+                                  buttonPosition: RadioButtonPosition.left,
+                                  direction: Axis.vertical,
+                                  radioButtonColor: Color(0xFF00A8A3),
+                                  inactiveRadioButtonColor: Color(0xFF606E87),
+                                  toggleable: false,
+                                  horizontalAlignment: WrapAlignment.start,
+                                  verticalAlignment: WrapCrossAlignment.start,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                         Spacer(),
@@ -318,18 +317,7 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                             color: Color(0xFF00A8A3),
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      AppointmentBookedScreenWidget(),
-                                ),
-                              );
-                            },
-                            child: NextIconButtonWidget(),
-                          ),
+                          child: NextIconButtonWidget(),
                         ),
                       ],
                     ),

@@ -1,3 +1,4 @@
+import '../booking_success_screen/booking_success_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -197,6 +198,54 @@ class _AppointmentBookedScreenWidgetState
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BookingSuccessScreenWidget(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF00A8A3),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: Color(0xFF00A8A3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Pay 0 U+20B9',
+                          style:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Open Sans',
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                          child: Image.asset(
+                            'assets/images/Layer_2.png',
+                            width: 35,
+                            height: 35,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

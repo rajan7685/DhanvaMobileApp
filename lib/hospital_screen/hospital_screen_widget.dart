@@ -1,7 +1,9 @@
+import '../doctors_by_hospital_screen/doctors_by_hospital_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HospitalScreenWidget extends StatefulWidget {
@@ -91,7 +93,7 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
                 alignment: AlignmentDirectional(0, 1),
                 child: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.65,
                   decoration: BoxDecoration(
                     color: Color(0xFFEEEEEE),
                     borderRadius: BorderRadius.only(
@@ -112,37 +114,59 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
                           decoration: BoxDecoration(
                             color: Color(0xFFEEEEEE),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'K. P. Hospitals',
-                                      style: FlutterFlowTheme.of(context)
-                                          .title1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Colors.black,
-                                          ),
-                                    ),
-                                    Text(
-                                      '2km away',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 14,
-                                          ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 12, 0, 0),
-                                      child: Text(
-                                        '5, 105, Defence Colony 1st',
+                          child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DoctorsByHospitalScreenWidget(),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'K. P. Hospitals',
+                                        style: FlutterFlowTheme.of(context)
+                                            .title1
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Colors.black,
+                                            ),
+                                      ),
+                                      Text(
+                                        '2km away',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                            ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0, 12, 0, 0),
+                                        child: Text(
+                                          '5, 105, Defence Colony 1st',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Open Sans',
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                              ),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Ave, Seven Wells, St.Thomas',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyText1
                                             .override(
@@ -151,47 +175,37 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
                                               fontSize: 16,
                                             ),
                                       ),
-                                    ),
-                                    Text(
-                                      'Ave, Seven Wells, St.Thomas',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                          ),
-                                    ),
-                                    Text(
-                                      'Tamil Nadu 600016',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                          ),
-                                    ),
-                                    Text(
-                                      'Open 24 hrs',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xFF00A8A3),
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                    ),
-                                  ],
+                                      Text(
+                                        'Tamil Nadu 600016',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            ),
+                                      ),
+                                      Text(
+                                        'Open 24 hrs',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              color: Color(0xFF00A8A3),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios_sharp,
-                                color: Color(0xFF606E87),
-                                size: 30,
-                              ),
-                            ],
+                                Icon(
+                                  Icons.arrow_forward_ios_sharp,
+                                  color: Color(0xFF606E87),
+                                  size: 30,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Container(

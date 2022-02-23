@@ -1,6 +1,8 @@
+import '../app_guide_screen1/app_guide_screen1_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../start_booking_screen/start_booking_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -242,18 +244,29 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 0, 12, 0),
-                                        child: Container(
-                                          width: 100,
-                                          height: 100,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFFEEEEEE),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: Image.asset(
-                                                'assets/images/Group_270.png',
-                                              ).image,
+                                        child: InkWell(
+                                          onTap: () async {
+                                            await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    StartBookingScreenWidget(),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 100,
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xFFEEEEEE),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: Image.asset(
+                                                  'assets/images/Group_270.png',
+                                                ).image,
+                                              ),
+                                              shape: BoxShape.rectangle,
                                             ),
-                                            shape: BoxShape.rectangle,
                                           ),
                                         ),
                                       ),
@@ -416,16 +429,26 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                               ),
                             ),
                           ),
-                          Container(
-                            width: double.infinity,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFEEEEEE),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: Image.asset(
-                                  'assets/images/Group_558.png',
-                                ).image,
+                          InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AppGuideScreen1Widget(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFEEEEEE),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: Image.asset(
+                                    'assets/images/Group_558.png',
+                                  ).image,
+                                ),
                               ),
                             ),
                           ),

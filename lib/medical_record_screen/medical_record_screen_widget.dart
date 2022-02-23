@@ -1,4 +1,3 @@
-import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,7 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
         automaticallyImplyLeading: true,
         actions: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
             child: Container(
               width: 45,
               height: 25,
@@ -91,20 +90,12 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
                     ),
                     Expanded(
                       child: Align(
-                        alignment: AlignmentDirectional(1, 0),
-                        child: FlutterFlowIconButton(
-                          borderColor: Colors.transparent,
-                          borderRadius: 30,
-                          borderWidth: 1,
-                          buttonSize: 50,
-                          icon: Icon(
-                            Icons.filter_list,
-                            color: Color(0xFF00A8A3),
-                            size: 30,
-                          ),
-                          onPressed: () {
-                            print('IconButton pressed ...');
-                          },
+                        alignment: AlignmentDirectional(0.65, 0),
+                        child: Image.asset(
+                          'assets/images/Group_608.png',
+                          width: 35,
+                          height: 35,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -131,9 +122,9 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Image.asset(
-                                  'assets/images/6602580_file_healthcare_medical_records_icon.png',
-                                  width: 55,
-                                  height: 55,
+                                  'assets/images/Group_607.png',
+                                  width: 65,
+                                  height: 65,
                                   fit: BoxFit.contain,
                                 ),
                                 Expanded(
@@ -205,9 +196,9 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Image.asset(
-                                  'assets/images/6602580_file_healthcare_medical_records_icon.png',
-                                  width: 55,
-                                  height: 55,
+                                  'assets/images/Group_610.png',
+                                  width: 65,
+                                  height: 65,
                                   fit: BoxFit.contain,
                                 ),
                                 Expanded(
@@ -220,7 +211,7 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'C.T. scan',
+                                          'MRI scan',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyText1
                                               .override(
@@ -279,157 +270,9 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Image.asset(
-                                  'assets/images/6602580_file_healthcare_medical_records_icon.png',
-                                  width: 55,
-                                  height: 55,
-                                  fit: BoxFit.contain,
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12, 0, 0, 0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'C.T. scan',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Open Sans',
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          'Srinavasa (Father)',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1,
-                                        ),
-                                        Text(
-                                          'Fr A R Rajesh',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1,
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 8, 0, 0),
-                                          child: Text(
-                                            'Dec 20, 2021 1:02PM',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyText1
-                                                .override(
-                                                  fontFamily: 'Open Sans',
-                                                  fontSize: 12,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                        child: Card(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          color: Colors.white,
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Image.asset(
-                                  'assets/images/6602580_file_healthcare_medical_records_icon.png',
-                                  width: 55,
-                                  height: 55,
-                                  fit: BoxFit.contain,
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        12, 0, 0, 0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'C.T. scan',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Open Sans',
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                        ),
-                                        Text(
-                                          'Srinavasa (Father)',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1,
-                                        ),
-                                        Text(
-                                          'Fr A R Rajesh',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1,
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0, 8, 0, 0),
-                                          child: Text(
-                                            'Dec 20, 2021 1:02PM',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyText1
-                                                .override(
-                                                  fontFamily: 'Open Sans',
-                                                  fontSize: 12,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                        child: Card(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          color: Colors.white,
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 8, 12, 8),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Image.asset(
-                                  'assets/images/6602580_file_healthcare_medical_records_icon.png',
-                                  width: 55,
-                                  height: 55,
+                                  'assets/images/Group_607.png',
+                                  width: 65,
+                                  height: 65,
                                   fit: BoxFit.contain,
                                 ),
                                 Expanded(

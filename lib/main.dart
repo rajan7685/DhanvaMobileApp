@@ -2,10 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/internationalization.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_screen/home_screen_widget.dart';
+import 'hospital_screen/hospital_screen_widget.dart';
 import 'profile_screen/profile_screen_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -73,6 +75,7 @@ class _NavBarPageState extends State<NavBarPage> {
   Widget build(BuildContext context) {
     final tabs = {
       'HomeScreen': HomeScreenWidget(),
+      'HospitalScreen': HospitalScreenWidget(),
       'ProfileScreen': ProfileScreenWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPage);
@@ -83,7 +86,7 @@ class _NavBarPageState extends State<NavBarPage> {
         onTap: (i) => setState(() => _currentPage = tabs.keys.toList()[i]),
         backgroundColor: Colors.white,
         selectedItemColor: Color(0xFF00A8A3),
-        unselectedItemColor: Color(0x8A000000),
+        unselectedItemColor: Color(0x8A8D8D8D),
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
@@ -98,6 +101,14 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24,
             ),
             label: 'Home',
+            tooltip: '',
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(
+              FontAwesomeIcons.building,
+              size: 24,
+            ),
+            label: 'Online',
             tooltip: '',
           ),
           BottomNavigationBarItem(

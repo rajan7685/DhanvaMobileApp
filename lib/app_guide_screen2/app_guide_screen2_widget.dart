@@ -162,10 +162,15 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 12, 0, 0),
-                child: Icon(
-                  Icons.arrow_back_rounded,
-                  color: Colors.white,
-                  size: 32,
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back_rounded,
+                    color: Colors.white,
+                    size: 32,
+                  ),
                 ),
               ),
               Align(
@@ -184,7 +189,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                           ),
                     ),
                     Text(
-                      'We will Guide you Stpe by Step',
+                      'We will Guide you Step by Step',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Colors.white,

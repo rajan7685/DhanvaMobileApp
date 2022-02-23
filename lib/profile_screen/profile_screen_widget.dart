@@ -1,5 +1,9 @@
+import '../appointments_screen/appointments_screen_widget.dart';
+import '../family_members_screen/family_members_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../medical_record_screen/medical_record_screen_widget.dart';
+import '../newses_screen/newses_screen_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -184,59 +188,31 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                       padding: EdgeInsets.zero,
                       scrollDirection: Axis.vertical,
                       children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/6637774_calendar_calender_date_event_icon.png',
-                              width: 18,
-                              height: 18,
-                              fit: BoxFit.cover,
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                              child: Text(
-                                'Appointments',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Color(0xFF434343),
-                                      fontSize: 20,
-                                    ),
+                        InkWell(
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AppointmentsScreenWidget(),
                               ),
-                            ),
-                            Expanded(
-                              child: Align(
-                                alignment: AlignmentDirectional(1, 0),
-                                child: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: Color(0xFF5A5A5A),
-                                  size: 34,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                            );
+                          },
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Image.asset(
-                                'assets/images/6602580_file_healthcare_medical_records_icon.png',
+                                'assets/images/6637774_calendar_calender_date_event_icon.png',
                                 width: 18,
                                 height: 18,
-                                fit: BoxFit.contain,
+                                fit: BoxFit.cover,
                               ),
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                                 child: Text(
-                                  'Medical Records',
+                                  'Appointments',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
@@ -261,41 +237,102 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/2867907_group_icon.png',
-                                width: 18,
-                                height: 18,
-                                fit: BoxFit.contain,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                                child: Text(
-                                  'Manage Family Members',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF434343),
-                                        fontSize: 20,
-                                      ),
+                          child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MedicalRecordScreenWidget(),
                                 ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(1, 0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: Color(0xFF5A5A5A),
-                                    size: 34,
+                              );
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/6602580_file_healthcare_medical_records_icon.png',
+                                  width: 18,
+                                  height: 18,
+                                  fit: BoxFit.contain,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 0, 0),
+                                  child: Text(
+                                    'Medical Records',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF434343),
+                                          fontSize: 20,
+                                        ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional(1, 0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Color(0xFF5A5A5A),
+                                      size: 34,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                          child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      FamilyMembersScreenWidget(),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/2867907_group_icon.png',
+                                  width: 18,
+                                  height: 18,
+                                  fit: BoxFit.contain,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      10, 0, 0, 0),
+                                  child: Text(
+                                    'Manage Family Members',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF434343),
+                                          fontSize: 20,
+                                        ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional(1, 0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Color(0xFF5A5A5A),
+                                      size: 34,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Padding(
@@ -339,80 +376,100 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/8675130_ic_fluent_news_regular_icon.png',
-                                width: 18,
-                                height: 18,
-                                fit: BoxFit.contain,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                child: Text(
-                                  'News',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF434343),
-                                        fontSize: 20,
-                                      ),
+                          child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NewsesScreenWidget(),
                                 ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(1, 0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: Color(0xFF5A5A5A),
-                                    size: 34,
+                              );
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/8675130_ic_fluent_news_regular_icon.png',
+                                  width: 18,
+                                  height: 18,
+                                  fit: BoxFit.contain,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 0, 0),
+                                  child: Text(
+                                    'News',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF434343),
+                                          fontSize: 20,
+                                        ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional(1, 0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Color(0xFF5A5A5A),
+                                      size: 34,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/Layer_54.png',
-                                width: 18,
-                                height: 18,
-                                fit: BoxFit.contain,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                child: Text(
-                                  'Favorites',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF434343),
-                                        fontSize: 20,
-                                      ),
+                          child: InkWell(
+                            onTap: () async {
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NewsesScreenWidget(),
                                 ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(1, 0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: Color(0xFF5A5A5A),
-                                    size: 34,
+                              );
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/Layer_54.png',
+                                  width: 18,
+                                  height: 18,
+                                  fit: BoxFit.contain,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 0, 0),
+                                  child: Text(
+                                    'Favorites',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF434343),
+                                          fontSize: 20,
+                                        ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional(1, 0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Color(0xFF5A5A5A),
+                                      size: 34,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Padding(
