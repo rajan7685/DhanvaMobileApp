@@ -37,7 +37,7 @@ class _NewsViewScreenWidgetState extends State<NewsViewScreenWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 28, 0, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
                     child: Image.network(
                       'https://picsum.photos/seed/813/600',
                       width: MediaQuery.of(context).size.width,

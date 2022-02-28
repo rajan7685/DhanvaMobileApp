@@ -15,8 +15,7 @@ class StartBookingScreen2Widget extends StatefulWidget {
 }
 
 class _StartBookingScreen2WidgetState extends State<StartBookingScreen2Widget> {
-  String radioButtonValue1;
-  String radioButtonValue2;
+  String radioButtonValue;
   TextEditingController textController1;
   TextEditingController textController2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -248,40 +247,14 @@ class _StartBookingScreen2WidgetState extends State<StartBookingScreen2Widget> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              FlutterFlowRadioButton(
-                                options: ['Yes'],
-                                onChanged: (value) {
-                                  setState(() => radioButtonValue1 = value);
-                                },
-                                optionHeight: 25,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.black,
-                                    ),
-                                selectedTextStyle: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFF606E87),
-                                    ),
-                                buttonPosition: RadioButtonPosition.left,
-                                direction: Axis.vertical,
-                                radioButtonColor: Color(0xFF00A8A3),
-                                inactiveRadioButtonColor: Colors.white,
-                                toggleable: false,
-                                horizontalAlignment: WrapAlignment.start,
-                                verticalAlignment: WrapCrossAlignment.start,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              Expanded(
                                 child: FlutterFlowRadioButton(
-                                  options: ['Help me with available doctor'],
-                                  initialValue: 'null',
+                                  options: [
+                                    'Yes',
+                                    'Help me with available doctor'
+                                  ],
                                   onChanged: (value) {
-                                    setState(() => radioButtonValue2 = value);
+                                    setState(() => radioButtonValue = value);
                                   },
                                   optionHeight: 25,
                                   textStyle: FlutterFlowTheme.of(context)
@@ -300,7 +273,7 @@ class _StartBookingScreen2WidgetState extends State<StartBookingScreen2Widget> {
                                   buttonPosition: RadioButtonPosition.left,
                                   direction: Axis.vertical,
                                   radioButtonColor: Color(0xFF00A8A3),
-                                  inactiveRadioButtonColor: Color(0xFF606E87),
+                                  inactiveRadioButtonColor: Colors.white,
                                   toggleable: false,
                                   horizontalAlignment: WrapAlignment.start,
                                   verticalAlignment: WrapCrossAlignment.start,

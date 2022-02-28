@@ -223,7 +223,8 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(12, 18, 12, 0),
                           child: Container(
                             height: 55,
                             decoration: BoxDecoration(

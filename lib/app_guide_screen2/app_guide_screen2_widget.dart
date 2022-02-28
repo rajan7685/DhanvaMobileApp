@@ -96,7 +96,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       16, 0, 0, 0),
                                   child: Text(
-                                    'Pre assesment quitionare',
+                                    'Pre assesment questionnarie',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -140,7 +140,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       16, 0, 0, 0),
                                   child: Text(
-                                    'Pre assesment quitionare',
+                                    'Pre assesment questionnarie',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(

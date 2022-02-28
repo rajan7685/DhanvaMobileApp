@@ -147,7 +147,7 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                 alignment: AlignmentDirectional(0, 1),
                 child: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.8,
                   decoration: BoxDecoration(
                     color: Color(0xFFEDF3F3),
                     borderRadius: BorderRadius.only(
@@ -311,24 +311,27 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                           ),
                         ),
                         Spacer(),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          height: 55,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF00A8A3),
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      AppointmentBookedScreenWidget(),
-                                ),
-                              );
-                            },
-                            child: NextIconButtonWidget(),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 34),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF00A8A3),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AppointmentBookedScreenWidget(),
+                                  ),
+                                );
+                              },
+                              child: NextIconButtonWidget(),
+                            ),
                           ),
                         ),
                       ],

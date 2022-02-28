@@ -172,48 +172,52 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                           ),
                         ),
                         Spacer(),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.65,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF00A8A3),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AppGuideScreen2Widget(),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Next',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Open Sans',
-                                        color: Colors.white,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Image.asset(
-                                    'assets/images/Layer_2.png',
-                                    width: 35,
-                                    height: 35,
-                                    fit: BoxFit.cover,
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.65,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF00A8A3),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AppGuideScreen2Widget(),
                                   ),
-                                ),
-                              ],
+                                );
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Next',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Open Sans',
+                                          color: Colors.white,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        8, 0, 0, 0),
+                                    child: Image.asset(
+                                      'assets/images/Layer_2.png',
+                                      width: 35,
+                                      height: 35,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
