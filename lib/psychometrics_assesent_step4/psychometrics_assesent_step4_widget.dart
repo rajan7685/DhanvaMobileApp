@@ -1,6 +1,7 @@
 import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../psychometric_assesent_result_screen/psychometric_assesent_result_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -215,7 +216,6 @@ class _PsychometricsAssesentStep4WidgetState
                     padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                     child: Container(
                       width: double.infinity,
-                      height: 100,
                       decoration: BoxDecoration(
                         color: Color(0xFFEEEEEE),
                       ),
@@ -400,6 +400,58 @@ class _PsychometricsAssesentStep4WidgetState
                               toggleable: false,
                               horizontalAlignment: WrapAlignment.start,
                               verticalAlignment: WrapCrossAlignment.start,
+                            ),
+                          ),
+                          Align(
+                            alignment: AlignmentDirectional(0, 0),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+                              child: InkWell(
+                                onTap: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          PsychometricAssesentResultScreenWidget(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                  height: 55,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF00A8A3),
+                                    borderRadius: BorderRadius.circular(22),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Next',
+                                        style: FlutterFlowTheme.of(context)
+                                            .title1
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Colors.white,
+                                            ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            12, 0, 0, 0),
+                                        child: Image.asset(
+                                          'assets/images/Layer_2.png',
+                                          width: 35,
+                                          height: 35,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],

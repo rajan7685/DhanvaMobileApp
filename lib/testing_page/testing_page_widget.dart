@@ -19,26 +19,24 @@ class _TestingPageWidgetState extends State<TestingPageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(22),
-        child: AppBar(
-          backgroundColor: FlutterFlowTheme.of(context).secondaryColor,
-          automaticallyImplyLeading: false,
-          flexibleSpace: Align(
-            alignment: AlignmentDirectional(0, 0),
-            child: Text(
-              'Testing Page',
-              style: FlutterFlowTheme.of(context).bodyText1.override(
-                    fontFamily: 'Poppins',
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
+      appBar: AppBar(
+        backgroundColor: FlutterFlowTheme.of(context).secondaryColor,
+        automaticallyImplyLeading: false,
+        title: Align(
+          alignment: AlignmentDirectional(0, 0),
+          child: Text(
+            'Testing Page',
+            style: FlutterFlowTheme.of(context).bodyText1.override(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          actions: [],
-          elevation: 4,
         ),
+        actions: [],
+        centerTitle: true,
+        elevation: 4,
       ),
       backgroundColor: Color(0xFFF5F5F5),
       body: SafeArea(

@@ -317,39 +317,45 @@ class _AppointmentsBottomSheetWidgetState
             Spacer(),
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 28),
-              child: Container(
-                width: 340,
-                height: 45,
-                decoration: BoxDecoration(
-                  color: Color(0xFF00A8A3),
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Align(
-                      alignment: AlignmentDirectional(0, 0),
-                      child: Text(
-                        'Download Prescription',
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Open Sans',
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
+              child: InkWell(
+                onTap: () async {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: 340,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF00A8A3),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional(0, 0),
+                        child: Text(
+                          'Download Prescription',
+                          style:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Open Sans',
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
-                      child: Image.asset(
-                        'assets/images/Layer_2.png',
-                        width: 35,
-                        height: 35,
-                        fit: BoxFit.cover,
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
+                        child: Image.asset(
+                          'assets/images/Layer_2.png',
+                          width: 35,
+                          height: 35,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

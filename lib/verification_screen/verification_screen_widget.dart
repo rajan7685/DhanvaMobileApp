@@ -76,6 +76,7 @@ class _VerificationScreenWidgetState extends State<VerificationScreenWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       custom_widgets.OTPWidget(
                         width: 340,

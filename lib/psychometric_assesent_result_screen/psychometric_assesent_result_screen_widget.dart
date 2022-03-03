@@ -1,6 +1,7 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -598,8 +599,14 @@ class _PsychometricAssesentResultScreenWidgetState
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 18),
                   child: FFButtonWidget(
-                    onPressed: () {
-                      print('Button pressed ...');
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              NavBarPage(initialPage: 'HomeScreen'),
+                        ),
+                      );
                     },
                     text: 'Got it',
                     options: FFButtonOptions(

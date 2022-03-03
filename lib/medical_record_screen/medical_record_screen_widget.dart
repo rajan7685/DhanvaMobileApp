@@ -47,8 +47,21 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
       ),
       backgroundColor: Color(0xFFF3F4F4),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('FloatingActionButton pressed ...');
+        onPressed: () async {
+          await showModalBottomSheet(
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            context: context,
+            builder: (context) {
+              return Padding(
+                padding: MediaQuery.of(context).viewInsets,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: MedicalRecordBottomSheetWidget(),
+                ),
+              );
+            },
+          );
         },
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         elevation: 8,
@@ -120,7 +133,7 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
                                   padding: MediaQuery.of(context).viewInsets,
                                   child: Container(
                                     height: MediaQuery.of(context).size.height *
-                                        0.65,
+                                        0.7,
                                     child: MedicalRecordBottomSheetWidget(),
                                   ),
                                 );

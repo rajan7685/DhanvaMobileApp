@@ -1,5 +1,6 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../h_v_t_assestment_screen/h_v_t_assestment_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -152,6 +153,56 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   ),
                                 ),
                               ],
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        HVTAssestmentScreenWidget(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.78,
+                                height: 55,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF00A8A3),
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Start Booking',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFFFBFAFA),
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          16, 0, 0, 0),
+                                      child: Image.asset(
+                                        'assets/images/Layer_2.png',
+                                        width: 35,
+                                        height: 35,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ],

@@ -2,6 +2,7 @@ import '../app_guide_screen1/app_guide_screen1_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../psychometrics_assesent_step1/psychometrics_assesent_step1_widget.dart';
 import '../start_booking_screen/start_booking_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -119,7 +120,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                 alignment: AlignmentDirectional(0, 1),
                 child: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.62,
                   decoration: BoxDecoration(
                     color: Color(0xFFEEEEEE),
                     borderRadius: BorderRadius.only(
@@ -155,14 +156,25 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                           PageController(initialPage: 0),
                                       scrollDirection: Axis.horizontal,
                                       children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          child: Image.asset(
-                                            'assets/images/Group_555.png',
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                            fit: BoxFit.cover,
+                                        InkWell(
+                                          onTap: () async {
+                                            await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PsychometricsAssesentStep1Widget(),
+                                              ),
+                                            );
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                            child: Image.asset(
+                                              'assets/images/Group_555.png',
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                         Image.network(

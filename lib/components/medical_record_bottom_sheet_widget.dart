@@ -298,6 +298,97 @@ class _MedicalRecordBottomSheetWidgetState
                 ],
               ),
             ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 42, 0, 0),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.78,
+                height: 55,
+                decoration: BoxDecoration(
+                  color: Color(0xFF00A8A3),
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Update Record',
+                        style: FlutterFlowTheme.of(context).title1.override(
+                              fontFamily: 'Poppins',
+                              color: Colors.white,
+                            ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                        child: Image.asset(
+                          'assets/images/Layer_2.png',
+                          width: 35,
+                          height: 35,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
+              child: InkWell(
+                onTap: () async {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.78,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: Color(0xFF00A8A3),
+                      width: 2,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Delete Record',
+                        style: FlutterFlowTheme.of(context).title1.override(
+                              fontFamily: 'Poppins',
+                              color: Color(0xFF00A8A3),
+                            ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: Color(0xFFEEEEEE),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Color(0xFF00A8A3),
+                              width: 2,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.close,
+                            color: Color(0xFF00A8A3),
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

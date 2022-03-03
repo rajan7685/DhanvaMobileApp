@@ -1,5 +1,6 @@
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../news_view_screen/news_view_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,8 +36,18 @@ class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    InkWell(
+                      onTap: () async {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back_sharp,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                    ),
                     Container(
                       width: 45,
                       height: 45,
@@ -101,123 +112,133 @@ class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
                       padding: EdgeInsets.zero,
                       scrollDirection: Axis.vertical,
                       children: [
-                        Card(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          color: Colors.white,
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 12, 0, 0),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.network(
-                                      'https://picsum.photos/seed/853/600',
-                                      width: double.infinity,
-                                      height: 120,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 12, 0, 0),
-                                  child: Text(
-                                    '‘Science is flawed’: COVID-19, ivermectin, and beyond',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Open Sans',
-                                          color: Colors.black,
-                                          fontSize: 19,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 4, 0, 0),
-                                      child: Text(
-                                        'Author: Ravichandran',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                        InkWell(
+                          onTap: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewsViewScreenWidget(),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            color: Colors.white,
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 12, 0, 0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        'https://picsum.photos/seed/853/600',
+                                        width: double.infinity,
+                                        height: 120,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 8, 0, 0),
-                                  child: Text(
-                                    'His work covers chronic disease, the pandemic response, and more recently, error detection in science.',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Open Sans',
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 12, 0, 12),
-                                  child: Row(
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 12, 0, 0),
+                                    child: Text(
+                                      '‘Science is flawed’: COVID-19, ivermectin, and beyond',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Colors.black,
+                                            fontSize: 19,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                                  ),
+                                  Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      Text(
-                                        '1hr ago',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Colors.black,
-                                              fontSize: 10,
-                                            ),
-                                      ),
-                                      Expanded(
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 0, 8, 0),
-                                              child: Icon(
-                                                Icons.favorite_border,
-                                                color: Colors.black,
-                                                size: 20,
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0, 4, 0, 0),
+                                        child: Text(
+                                          'Author: Ravichandran',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.normal,
                                               ),
-                                            ),
-                                            Icon(
-                                              Icons.share_sharp,
-                                              color: Colors.black,
-                                              size: 24,
-                                            ),
-                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 8, 0, 0),
+                                    child: Text(
+                                      'His work covers chronic disease, the pandemic response, and more recently, error detection in science.',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 12, 0, 12),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Text(
+                                          '1hr ago',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color: Colors.black,
+                                                fontSize: 10,
+                                              ),
+                                        ),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(0, 0, 8, 0),
+                                                child: Icon(
+                                                  Icons.favorite_border,
+                                                  color: Colors.black,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                              Icon(
+                                                Icons.share_sharp,
+                                                color: Colors.black,
+                                                size: 24,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

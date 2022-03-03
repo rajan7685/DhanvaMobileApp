@@ -237,10 +237,15 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 12, 0, 0),
-                child: Icon(
-                  Icons.arrow_back_rounded,
-                  color: Colors.white,
-                  size: 32,
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back_rounded,
+                    color: Colors.white,
+                    size: 32,
+                  ),
                 ),
               ),
               Align(

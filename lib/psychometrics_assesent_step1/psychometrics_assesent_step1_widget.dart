@@ -217,7 +217,6 @@ class _PsychometricsAssesentStep1WidgetState
                     padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                     child: Container(
                       width: double.infinity,
-                      height: 100,
                       decoration: BoxDecoration(
                         color: Color(0xFFEEEEEE),
                       ),

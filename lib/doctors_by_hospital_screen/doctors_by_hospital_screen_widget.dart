@@ -44,8 +44,18 @@ class _DoctorsByHospitalScreenWidgetState
                 padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    InkWell(
+                      onTap: () async {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back_sharp,
+                        color: Color(0xFFFDFDFD),
+                        size: 32,
+                      ),
+                    ),
                     Container(
                       width: 45,
                       height: 45,
