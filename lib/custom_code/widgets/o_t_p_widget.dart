@@ -74,7 +74,8 @@ class _OTPWidgetState extends State<OTPWidget> {
 
     for (int i = 0; i < widget.otpLength; i++) {
       fields.add(
-        SizedBox(
+        Container(
+          margin: const EdgeInsets.only(right: 14),
           height: widget.fieldHeight,
           width: widget.fieldWidth,
           child: TextField(

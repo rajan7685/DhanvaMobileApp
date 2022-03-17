@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+
 import '../appointments_screen/appointments_screen_widget.dart';
 import '../family_members_screen/family_members_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -58,24 +60,25 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF00827F),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      10, 10, 10, 10),
-                                  child: Image.asset(
-                                    'assets/images/Group_261.png',
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   width: 50,
+                              //   height: 50,
+                              //   decoration: BoxDecoration(
+                              //     color: Color(0xFF00827F),
+                              //     borderRadius: BorderRadius.circular(12),
+                              //   ),
+                              //   child: Padding(
+                              //     padding: EdgeInsetsDirectional.fromSTEB(
+                              //         10, 10, 10, 10),
+                              //     child: Image.asset(
+                              //       'assets/images/Group_261.png',
+                              //       width: double.infinity,
+                              //       height: double.infinity,
+                              //       fit: BoxFit.cover,
+                              //     ),
+                              //   ),
+                              // ),
+                              NotificationIconButton()
                             ],
                           ),
                         ),
@@ -172,7 +175,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                 alignment: AlignmentDirectional(0, 1),
                 child: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.6,
+                  height: MediaQuery.of(context).size.height * 0.65,
                   decoration: BoxDecoration(
                     color: Color(0xFFEEEEEE),
                     borderRadius: BorderRadius.only(

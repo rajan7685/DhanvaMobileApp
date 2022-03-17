@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+
 import '../doctors_by_hospital_screen/doctors_by_hospital_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -45,19 +47,20 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
-                      width: 45,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF00827F),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        Icons.notifications_outlined,
-                        color: Color(0xFFF3F4F4),
-                        size: 24,
-                      ),
-                    ),
+                    // Container(
+                    //   width: 45,
+                    //   height: 45,
+                    //   decoration: BoxDecoration(
+                    //     color: Color(0xFF00827F),
+                    //     borderRadius: BorderRadius.circular(12),
+                    //   ),
+                    //   child: Icon(
+                    //     Icons.notifications_outlined,
+                    //     color: Color(0xFFF3F4F4),
+                    //     size: 24,
+                    //   ),
+                    // ),
+                    NotificationIconButton()
                   ],
                 ),
               ),

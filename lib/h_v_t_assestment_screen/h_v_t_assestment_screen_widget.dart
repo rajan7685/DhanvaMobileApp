@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+
 import '../booking_success_screen/booking_success_screen_widget.dart';
 import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -70,22 +74,8 @@ class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF00827F),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional(0, 0),
-                              child: Icon(
-                                Icons.notifications_outlined,
-                                color: Color(0xFFF3F4F4),
-                                size: 24,
-                              ),
-                            ),
-                          ),
+                          //
+                          NotificationIconButton()
                         ],
                       ),
                     ),
@@ -125,7 +115,7 @@ class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
                 alignment: AlignmentDirectional(0, 1),
                 child: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.77,
                   decoration: BoxDecoration(
                     color: Color(0xFFEDF3F3),
                     borderRadius: BorderRadius.only(
@@ -223,18 +213,21 @@ class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       14, 0, 0, 0),
-                                  child: Image.network(
-                                    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAM1BMVEX///8AAAB6enpTU1Pt7e3q6urV1dXX19dPT0+VlZV3d3fw8PDFxcXCwsKwsLBLS0upqalt39wOAAABRUlEQVR4nO3UyXGDAAAEQVnCAiFf+UfrBChKD10D3RHsfPZwAAD25DidNmO6LBVOHxsyLxWeXr3qno77LRyHvuvXWuFw6y29s3Gt8PPZax7hrDBPYZ/CPoV9CvsU9insU9insE9hn8I+hX0K+xT2KexT2KewT2Gfwj6FfQr7FPYp7FPYp7BPYZ/CPoV9CvsU9insU9insE9hn8I+hX0K+xT2KexT2KewT2Gfwj6FfQr7FPYp7FPYp7BPYZ/CPoV9CvsU9insU9insE9hn8I+hX0K+xT2KexT2KewT2Gfwj6FfQr7FPYp7FPYp7BPYZ/CPoV9CvsU9insU9insE9hn8I+hX0K+xT2KexT2KewT2Gfwj6FfQr7FPYp7FPYt/PC4dlrHmFcK/wez3njz1rhZuy08PfVq+5pXiq8zBvyd+stAQA0/APCdChfMYDn+QAAAABJRU5ErkJggg==',
-                                    width: 65,
-                                    height: 65,
-                                    fit: BoxFit.cover,
+                                  child: Transform.rotate(
+                                    angle: pi,
+                                    child: Image.network(
+                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjVx1KDBtRTQ16NU4goJdtagyFvviKxmAfmA&usqp=CAU',
+                                      width: 65,
+                                      height: 65,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       14, 0, 0, 0),
                                   child: Image.network(
-                                    'data:image/png;base64,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',
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy94zzfDFC_EgfIo-OwzaLGxiGTRpkOPXicw&usqp=CAU',
                                     width: 65,
                                     height: 65,
                                     fit: BoxFit.contain,

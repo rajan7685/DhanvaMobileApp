@@ -228,7 +228,7 @@ class _AppointmentBookedScreenWidgetState
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Pay 0 U+20B9',
+                            'Pay \u20B90',
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',

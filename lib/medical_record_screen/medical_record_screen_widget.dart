@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+
 import '../components/medical_record_bottom_sheet_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -26,21 +28,8 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
         automaticallyImplyLeading: true,
         actions: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
-            child: Container(
-              width: 45,
-              height: 25,
-              decoration: BoxDecoration(
-                color: Color(0xFF00827F),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                Icons.notifications_none,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-          ),
+              padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
+              child: NotificationIconButton()),
         ],
         centerTitle: true,
         elevation: 0,
@@ -56,7 +45,7 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
               return Padding(
                 padding: MediaQuery.of(context).viewInsets,
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.7,
+                  height: MediaQuery.of(context).size.height * 0.8,
                   child: MedicalRecordBottomSheetWidget(),
                 ),
               );
@@ -133,7 +122,7 @@ class _MedicalRecordScreenWidgetState extends State<MedicalRecordScreenWidget> {
                                   padding: MediaQuery.of(context).viewInsets,
                                   child: Container(
                                     height: MediaQuery.of(context).size.height *
-                                        0.7,
+                                        0.8,
                                     child: MedicalRecordBottomSheetWidget(),
                                   ),
                                 );

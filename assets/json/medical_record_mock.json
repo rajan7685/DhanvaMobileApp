@@ -1,0 +1,31 @@
+{
+    "medical_records" : [
+        {
+            "record_title" : "C.T. scan",
+            "record_id": "6872h2",
+            "patient_name": "Srinivasan",
+            "doctor_name": "DR A R Rahman",
+            "pdf_links": [],
+            "time": "2022-03-15 21:29:39.283",
+            "relation_type": "Father"
+        },
+        {
+            "record_title" : "M.R.I. scan",
+            "record_id": "6872h2",
+            "patient_name": "Srinivasan",
+            "doctor_name": "DR A R Rahman",
+            "pdf_links": [],
+            "time": "2022-03-15 21:29:39.283",
+            "relation_type": "Father"
+        },
+        {
+            "record_title" : "C.T. scan",
+            "record_id": "6872h2",
+            "patient_name": "Srinivasan",
+            "doctor_name": "DR A R Rahman",
+            "pdf_links": [],
+            "time": "2022-03-15 21:29:39.283",
+            "relation_type": "Uncle"
+        }
+    ]
+}

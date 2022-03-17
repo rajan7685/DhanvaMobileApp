@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -25,21 +27,8 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
         automaticallyImplyLeading: true,
         actions: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
-            child: Container(
-              width: 45,
-              height: 25,
-              decoration: BoxDecoration(
-                color: Color(0xFF00827F),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                Icons.notifications_none,
-                color: Colors.white,
-                size: 24,
-              ),
-            ),
-          ),
+              padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
+              child: NotificationIconButton()),
         ],
         centerTitle: true,
         elevation: 0,

@@ -1,3 +1,8 @@
+import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+import 'package:dhanva_mobile_app/psychometric_assesent_result_screen/psychometric_assesent_result_screen_widget.dart';
+import 'package:dhanva_mobile_app/psychometrics_assesment_screen/models/psychometrics_assesment_question.dart';
+import 'package:dhanva_mobile_app/psychometrics_assesment_screen/psychometrics_assesment_screen.dart';
+
 import '../app_guide_screen1/app_guide_screen1_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -8,6 +13,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+// mock data
+final List<PsychometricsAssesmentQuestion> _questions = [
+  PsychometricsAssesmentQuestion(
+      question: 'I am task oriented to achieve certain goals.',
+      options: ['YEP! THAT IS ME', 'I HAVE NO IDEA', 'NOPE THAT CAN\'T BE ME']),
+  PsychometricsAssesmentQuestion(
+      question: 'I get bored easily when discussing abstract things.',
+      options: ['YEP! THAT IS ME', 'I HAVE NO IDEA', 'NOPE THAT CAN\'T BE ME']),
+  PsychometricsAssesmentQuestion(
+      question: 'I like to try things out myself.',
+      options: ['YEP! THAT IS ME', 'I HAVE NO IDEA', 'NOPE THAT CAN\'T BE ME']),
+  PsychometricsAssesmentQuestion(
+      question: 'I like to know where I\'m going before leaving my house.',
+      options: ['YEP! THAT IS ME', 'I HAVE NO IDEA', 'NOPE THAT CAN\'T BE ME']),
+];
 
 class HomeScreenWidget extends StatefulWidget {
   const HomeScreenWidget({Key key}) : super(key: key);
@@ -59,19 +80,20 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Container(
-                                width: 55,
-                                height: 55,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFF00827F),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Icon(
-                                  Icons.notifications_outlined,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
+                              NotificationIconButton(),
+                              // Container(
+                              //   width: 55,
+                              //   height: 55,
+                              //   decoration: BoxDecoration(
+                              //     color: Color(0xFF00827F),
+                              //     borderRadius: BorderRadius.circular(16),
+                              //   ),
+                              //   child: Icon(
+                              //     Icons.notifications_outlined,
+                              //     color: Colors.white,
+                              //     size: 24,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -120,7 +142,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                 alignment: AlignmentDirectional(0, 1),
                 child: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.62,
+                  height: MediaQuery.of(context).size.height * 0.66,
                   decoration: BoxDecoration(
                     color: Color(0xFFEEEEEE),
                     borderRadius: BorderRadius.only(
@@ -162,7 +184,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    PsychometricsAssesentStep1Widget(),
+                                                    PsychometricsAssesmentScreen(
+                                                  questions: _questions,
+                                                ),
                                               ),
                                             );
                                           },
@@ -426,7 +450,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                               options: FFButtonOptions(
                                 width: double.infinity,
                                 height: 50,
-                                color: Color(0x003474E0),
+                                color: Colors.transparent,
                                 textStyle: FlutterFlowTheme.of(context)
                                     .subtitle2
                                     .override(

@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/components/bottom_navigation_bar.dart';
+import 'package:dhanva_mobile_app/services/mock_json_data_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,6 +14,8 @@ import 'profile_screen/profile_screen_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  MockJsonDataService.readAppointmentJsonData();
   runApp(MyApp());
 }
 
@@ -44,10 +48,11 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       locale: _locale,
+      debugShowCheckedModeBanner: false,
       supportedLocales: const [Locale('en', '')],
       theme: ThemeData(brightness: Brightness.light),
       themeMode: _themeMode,
-      home: NavBarPage(),
+      home: SplashScreenWidget(),
     );
   }
 }
@@ -63,68 +68,76 @@ class NavBarPage extends StatefulWidget {
 
 /// This is the private State class that goes with NavBarPage.
 class _NavBarPageState extends State<NavBarPage> {
-  String _currentPage = 'HomeScreen';
+  // page image icons
+  final Image _homeActiveImage = Image.asset('assets/images/home_active.png');
+  final Image _homeInactiveImage =
+      Image.asset('assets/images/home_inactive.png');
+  final Image _onlineActiveImage =
+      Image.asset('assets/images/online_active_icon.png');
+  final Image _onlineInactiveImage =
+      Image.asset('assets/images/online_inactive_icon.png');
+  final Image _offlineActiveImage =
+      Image.asset('assets/images/offline_active.png');
+  final Image _offlineInactiveImage =
+      Image.asset('assets/images/offline_inactive.png');
+  final Image _profileActiveImage = Image.asset(
+      'assets/images/4781820_avatar_male_man_people_person_icon_active.png');
+  final Image _profileInactiveImage =
+      Image.asset('assets/images/profile_inactive.png');
+
+  int _currentPageIndex;
 
   @override
   void initState() {
     super.initState();
-    _currentPage = widget.initialPage ?? _currentPage;
+    // _currentPage = widget.initialPage ?? _currentPage;
+    _currentPageIndex = 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    final tabs = {
-      'HomeScreen': HomeScreenWidget(),
-      'HospitalScreen': HospitalScreenWidget(),
-      'ProfileScreen': ProfileScreenWidget(),
-    };
-    final currentIndex = tabs.keys.toList().indexOf(_currentPage);
+    // final tabs = {
+    //   'HomeScreen': HomeScreenWidget(),
+    //   'HospitalScreen': HospitalScreenWidget(),
+    //   'ProfileScreen': ProfileScreenWidget(),
+    // };
+
+    List<Widget> _navigationPages = [
+      HomeScreenWidget(),
+      HospitalScreenWidget(),
+      HospitalScreenWidget(),
+      ProfileScreenWidget(),
+    ];
+
+    // final currentIndex = tabs.keys.toList().indexOf(_currentPage);
     return Scaffold(
-      body: tabs[_currentPage],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (i) => setState(() => _currentPage = tabs.keys.toList()[i]),
-        backgroundColor: Colors.white,
-        selectedItemColor: Color(0xFF00A8A3),
-        unselectedItemColor: Color(0x8A8D8D8D),
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_outlined,
-              size: 24,
-            ),
-            activeIcon: Icon(
-              Icons.home,
-              size: 24,
-            ),
-            label: 'Home',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: FaIcon(
-              FontAwesomeIcons.building,
-              size: 24,
-            ),
-            label: 'Online',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline,
-              size: 24,
-            ),
-            activeIcon: Icon(
-              Icons.person,
-              size: 24,
-            ),
-            label: 'Profile',
-            tooltip: '',
-          )
-        ],
-      ),
-    );
+        body: IndexedStack(
+          children: _navigationPages,
+          index: _currentPageIndex,
+        ),
+        bottomNavigationBar: CurvedBottomNavBar(
+          currentIndex: _currentPageIndex,
+          ontap: (int index) {
+            setState(() => {_currentPageIndex = index});
+          },
+          items: [
+            CurvedBottomNavBarItem(
+                title: "Home",
+                activeImage: _homeActiveImage,
+                inactiveImage: _homeInactiveImage),
+            CurvedBottomNavBarItem(
+                title: "Online",
+                activeImage: _onlineActiveImage,
+                inactiveImage: _onlineInactiveImage),
+            CurvedBottomNavBarItem(
+                title: 'Offline',
+                activeImage: _offlineActiveImage,
+                inactiveImage: _offlineInactiveImage),
+            CurvedBottomNavBarItem(
+                title: "Profile",
+                activeImage: _profileActiveImage,
+                inactiveImage: _profileInactiveImage)
+          ],
+        ));
   }
 }

@@ -1,0 +1,36 @@
+{
+    "appointments" : [
+        {
+            "uid" : "hauu234hq23jn",
+            "username" : "Srinavasan",
+            "relation_type": "Father",
+            "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvDVXm8awuyibcdpoTSPoePE6-OKncWYyNK9QF-YO66FyUIWHrlF8hbvBU7Gml5eoeeGw&usqp=CAU",
+            "status" : "Cancelled",
+            "time" : "2022-03-15 21:29:39.283"
+        },
+        {
+            "uid" : "hauu23sade3n",
+            "username" : "Srinavasan",
+            "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvDVXm8awuyibcdpoTSPoePE6-OKncWYyNK9QF-YO66FyUIWHrlF8hbvBU7Gml5eoeeGw&usqp=CAU",
+            "relation_type": "Father",
+            "status" : "Completed",
+            "time" : "2022-03-15 21:29:39.283"
+        },
+        {
+            "uid" : "ha3efahq23jn",
+            "username" : "Srinavasan",
+            "relation_type": "Father",
+            "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvDVXm8awuyibcdpoTSPoePE6-OKncWYyNK9QF-YO66FyUIWHrlF8hbvBU7Gml5eoeeGw&usqp=CAU",
+            "status" : "Cancelled",
+            "time" : "2022-03-15 21:29:39.283"
+        },
+        {
+            "uid" : "hasd343234q23jn",
+            "username" : "Srinavasan",
+            "relation_type": "Father",
+            "imageLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvDVXm8awuyibcdpoTSPoePE6-OKncWYyNK9QF-YO66FyUIWHrlF8hbvBU7Gml5eoeeGw&usqp=CAU",
+            "status" : "Booked",
+            "time" : "2022-03-15 21:29:39.283"
+        }
+    ]
+}

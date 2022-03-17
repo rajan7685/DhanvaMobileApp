@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+
 import '../appointment_booked_screen/appointment_booked_screen_widget.dart';
 import '../components/next_icon_button_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -92,22 +94,7 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                               ),
                             ),
                           ),
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF00827F),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional(0, 0),
-                              child: Icon(
-                                Icons.notifications_outlined,
-                                color: Color(0xFFF3F4F4),
-                                size: 24,
-                              ),
-                            ),
-                          ),
+                          NotificationIconButton()
                         ],
                       ),
                     ),
@@ -147,7 +134,7 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                 alignment: AlignmentDirectional(0, 1),
                 child: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.75,
                   decoration: BoxDecoration(
                     color: Color(0xFFEDF3F3),
                     borderRadius: BorderRadius.only(
