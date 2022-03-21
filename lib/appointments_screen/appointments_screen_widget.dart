@@ -1,6 +1,6 @@
 import 'package:dhanva_mobile_app/appointments_screen/appointment_model.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
-import 'package:dhanva_mobile_app/services/mock_json_data_service.dart';
+import 'package:dhanva_mobile_app/global/services/mock_json_data_service.dart';
 
 import '../components/appointments_bottom_sheet_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';

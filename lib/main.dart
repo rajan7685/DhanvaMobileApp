@@ -1,5 +1,4 @@
 import 'package:dhanva_mobile_app/components/bottom_navigation_bar.dart';
-import 'package:dhanva_mobile_app/services/mock_json_data_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -15,7 +14,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  MockJsonDataService.readAppointmentJsonData();
   runApp(MyApp());
 }
 
