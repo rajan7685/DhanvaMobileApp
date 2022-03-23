@@ -38,18 +38,18 @@ class Patient {
       @required this.relations});
 
   factory Patient.fromJson(Map<String, dynamic> json) => Patient(
-        name: json['name'],
-        v: json['__v'],
-        dob: json['dob'],
-        createdDateTime: json['created_datetime'],
+        name: json['name'] ?? 'Aniket',
+        v: json['__v'] ?? 0,
+        dob: json['dob'] ?? DateTime(2000),
+        createdDateTime: DateTime.parse(json['created_datetime']),
         id: json['_id'],
         enabled: json['enabled'],
-        location: json['latlong'],
-        email: json['email'],
-        gender: json['gender'],
-        maritalStatus: json['marital_status'],
+        location: json['latlong'] ?? 'what',
+        email: json['email'] ?? 'aniket@regami.solutions',
+        gender: json['gender'] ?? 'male',
+        maritalStatus: json['marital_status'] ?? 'Single',
         bloodGroup: json['bloodGroup'],
-        phone: json['phone'],
+        phone: json['phone'].toString() ?? '8016291431',
         emergencyContact: json['emergency_contact'],
         height: json['height'],
         weight: json['weight'],
@@ -60,4 +60,24 @@ class Patient {
           ),
         ),
       );
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        '__v': v,
+        'dob': dob,
+        'created_datetime': createdDateTime.toString(),
+        '_id': id,
+        'enabled': enabled,
+        'latlong': location,
+        'email': email,
+        'gender': gender,
+        'marital_status': maritalStatus,
+        'bloodGroup': bloodGroup,
+        'phone': phone,
+        'emergency_contact': emergencyContact,
+        'height': height,
+        'weight': weight,
+        'relation_id': List.generate(
+            relations.length, (index) => relations[index].toJson()),
+      };
 }

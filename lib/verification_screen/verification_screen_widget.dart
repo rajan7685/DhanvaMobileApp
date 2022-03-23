@@ -1,22 +1,27 @@
+import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
+import 'package:dhanva_mobile_app/main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
 import '../custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class VerificationScreenWidget extends StatefulWidget {
+ChangeNotifierProvider<AuthenticationProvider> _authProvider =
+    ChangeNotifierProvider((ref) => AuthenticationProvider.instance);
+
+class VerificationScreenWidget extends ConsumerStatefulWidget {
   const VerificationScreenWidget({Key key}) : super(key: key);
 
   @override
-  _VerificationScreenWidgetState createState() =>
+  ConsumerState<VerificationScreenWidget> createState() =>
       _VerificationScreenWidgetState();
 }
 
-class _VerificationScreenWidgetState extends State<VerificationScreenWidget> {
+class _VerificationScreenWidgetState
+    extends ConsumerState<VerificationScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String _otp = '';
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +92,9 @@ class _VerificationScreenWidgetState extends State<VerificationScreenWidget> {
                         borderRadius: 12.0,
                         fieldWidth: 55.0,
                         fieldHeight: 55.0,
+                        onComplete: (String otp) {
+                          _otp = otp;
+                        },
                       ),
                     ],
                   ),
@@ -123,14 +131,28 @@ class _VerificationScreenWidgetState extends State<VerificationScreenWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 80, 0, 0),
                   child: FFButtonWidget(
                     onPressed: () async {
-                      await Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              NavBarPage(initialPage: 'HomeScreen'),
-                        ),
-                        (r) => false,
-                      );
+                      if (_otp.isNotEmpty) {
+                        String res = await ref
+                            .read(_authProvider)
+                            .verifyLoginOtp(mobile: '8016291431', otp: _otp);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(res)));
+                        if (res == 'success') {
+                          await Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  NavBarPage(initialPage: 'HomeScreen'),
+                            ),
+                            (r) => false,
+                          );
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Please enter the OTP')));
+                      }
+
+                      print(_otp);
                     },
                     text: 'Verify',
                     options: FFButtonOptions(

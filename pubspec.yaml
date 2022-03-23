@@ -39,6 +39,8 @@ dependencies:
   smooth_page_indicator: 1.0.0+2
   timeago: 3.1.0
   url_launcher: 6.0.15
+  dio: ^4.0.4 # for handling API requests
+  flutter_riverpod: ^1.0.3 # State Management
 
 
   # The following adds the Cupertino Icons font to your application.

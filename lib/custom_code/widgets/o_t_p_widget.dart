@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 
 // Begin custom widget code
 class OTPWidget extends StatefulWidget {
-  const OTPWidget({
-    Key key,
-    this.width,
-    this.height,
-    this.otpLength,
-    this.fieldFillColor,
-    this.textColor,
-    this.borderRadius,
-    this.fieldWidth,
-    this.fieldHeight,
-    //this.onComplete;
-  }) : super(key: key);
+  const OTPWidget(
+      {Key key,
+      this.width,
+      this.height,
+      this.otpLength,
+      this.fieldFillColor,
+      this.textColor,
+      this.borderRadius,
+      this.fieldWidth,
+      this.fieldHeight,
+      @required this.onComplete})
+      : super(key: key);
 
   final double width;
   final double height;
@@ -26,7 +26,7 @@ class OTPWidget extends StatefulWidget {
   final double borderRadius;
   final double fieldWidth;
   final double fieldHeight;
-  //final Function(String)? onComplete;
+  final Function(String) onComplete;
 
   @override
   _OTPWidgetState createState() => _OTPWidgetState();
@@ -61,7 +61,7 @@ class _OTPWidgetState extends State<OTPWidget> {
     String _otp = '';
     if (result) {
       otp.forEach((e) => _otp += e.toString());
-      //if (widget.onComplete != null) widget.onComplete!(_otp);
+      widget.onComplete(_otp);
     }
   }
 
@@ -100,7 +100,6 @@ class _OTPWidgetState extends State<OTPWidget> {
                 FocusScope.of(context).unfocus();
               }
               checkValidity();
-              // print(otp);
             },
             decoration: InputDecoration(
               hintText: _hollowCirleUnicode,

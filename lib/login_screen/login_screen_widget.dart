@@ -1,26 +1,30 @@
+import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../verification_screen/verification_screen_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class LoginScreenWidget extends StatefulWidget {
+ChangeNotifierProvider<AuthenticationProvider> _authProvider =
+    ChangeNotifierProvider((ref) => AuthenticationProvider.instance);
+
+class LoginScreenWidget extends ConsumerStatefulWidget {
   const LoginScreenWidget({Key key}) : super(key: key);
 
   @override
-  _LoginScreenWidgetState createState() => _LoginScreenWidgetState();
+  ConsumerState<LoginScreenWidget> createState() => _LoginScreenWidgetState();
 }
 
-class _LoginScreenWidgetState extends State<LoginScreenWidget> {
+class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
   TextEditingController mobileNumberController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    mobileNumberController = TextEditingController(text: '+91 5637263234');
+    mobileNumberController = TextEditingController();
   }
 
   @override
@@ -146,49 +150,62 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                     alignment: AlignmentDirectional(0, 0),
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(12, 12, 12, 0),
-                      child: TextFormField(
-                        controller: mobileNumberController,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          labelText: 'Mobile Number',
-                          labelStyle:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF9A9A9A),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                          hintStyle:
+                      child: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          controller: mobileNumberController,
+                          validator: (String number) {
+                            if (number.isEmpty) {
+                              return 'Please enter your mobile number';
+                            }
+                            if (number.length != 10) {
+                              return 'Please enter a valid mobile number';
+                            }
+                            return null;
+                          },
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            labelText: 'Mobile Number',
+                            labelStyle:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF9A9A9A),
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                            hintStyle:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF606E87),
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFFC1C1C1),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFFC1C1C1),
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          style:
                               FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Open Sans',
                                     color: Color(0xFF606E87),
-                                    fontWeight: FontWeight.normal,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0xFFC1C1C1),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0xFFC1C1C1),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
+                          textAlign: TextAlign.start,
+                          keyboardType: TextInputType.phone,
                         ),
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Open Sans',
-                              color: Color(0xFF606E87),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                        textAlign: TextAlign.start,
-                        keyboardType: TextInputType.phone,
                       ),
                     ),
                   ),
@@ -196,12 +213,16 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VerificationScreenWidget(),
-                          ),
-                        );
+                        if (_formKey.currentState.validate()) {
+                          await ref.read(_authProvider).attemptLogin(
+                              mobile: mobileNumberController.text);
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VerificationScreenWidget(),
+                            ),
+                          );
+                        }
                       },
                       text: 'Login',
                       options: FFButtonOptions(

@@ -1,8 +1,10 @@
 import 'package:dhanva_mobile_app/components/bottom_navigation_bar.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/log_in_out_api.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/internationalization.dart';
@@ -14,6 +16,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // LoginApiService.verifyLogin();
   runApp(MyApp());
 }
 
@@ -37,20 +40,22 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DhanvaMobileApp',
-      localizationsDelegates: [
-        FFLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: _locale,
-      debugShowCheckedModeBanner: false,
-      supportedLocales: const [Locale('en', '')],
-      theme: ThemeData(brightness: Brightness.light),
-      themeMode: _themeMode,
-      home: SplashScreenWidget(),
+    return ProviderScope(
+      child: MaterialApp(
+        title: 'DhanvaMobileApp',
+        localizationsDelegates: [
+          FFLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: _locale,
+        debugShowCheckedModeBanner: false,
+        supportedLocales: const [Locale('en', '')],
+        theme: ThemeData(brightness: Brightness.light),
+        themeMode: _themeMode,
+        home: SplashScreenWidget(),
+      ),
     );
   }
 }

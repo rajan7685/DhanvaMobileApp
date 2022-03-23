@@ -24,4 +24,12 @@ class PatientRelation {
           patientName: json['user']['name'],
           createdDateTime: DateTime.parse(json['created_datetime']),
           v: json['__v']);
+
+  Map<String, dynamic> toJson() => {
+        'type': type,
+        '_id': id,
+        'user': {'_id': patientId, '_name': patientName},
+        'created_datetime': createdDateTime.toString(),
+        '__v': v,
+      };
 }

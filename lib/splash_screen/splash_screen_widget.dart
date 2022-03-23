@@ -1,25 +1,31 @@
-import '../flutter_flow/flutter_flow_theme.dart';
+import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
+import 'package:dhanva_mobile_app/home_screen/home_screen_widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../login_screen/login_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class SplashScreenWidget extends StatefulWidget {
+ChangeNotifierProvider<AuthenticationProvider> _authProvider =
+    ChangeNotifierProvider((ref) => AuthenticationProvider.instance);
+
+class SplashScreenWidget extends ConsumerStatefulWidget {
   const SplashScreenWidget({Key key}) : super(key: key);
 
   @override
-  _SplashScreenWidgetState createState() => _SplashScreenWidgetState();
+  ConsumerState<SplashScreenWidget> createState() => _SplashScreenWidgetState();
 }
 
-class _SplashScreenWidgetState extends State<SplashScreenWidget> {
+class _SplashScreenWidgetState extends ConsumerState<SplashScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  String _token;
 
   @override
   void initState() {
     super.initState();
     // On page load action.
+    print('AuthToken : ${ref.read(_authProvider).authToken}');
+    _token = ref.read(_authProvider).authToken;
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(milliseconds: 3000));
       await Navigator.pushAndRemoveUntil(
@@ -28,7 +34,9 @@ class _SplashScreenWidgetState extends State<SplashScreenWidget> {
           type: PageTransitionType.leftToRight,
           duration: Duration(milliseconds: 300),
           reverseDuration: Duration(milliseconds: 300),
-          child: LoginScreenWidget(),
+          child: _token != null && _token.isNotEmpty
+              ? HomeScreenWidget()
+              : LoginScreenWidget(),
         ),
         (r) => false,
       );
