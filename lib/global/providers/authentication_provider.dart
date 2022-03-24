@@ -4,6 +4,7 @@ import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/log_in_out_api.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 // import these two lines to use this provider
 // ChangeNotifierProvider<AuthenticationProvider> authProvider =
@@ -22,10 +23,12 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<void> _initiateDataStorage() async {
     await SharedPreferenceService.init();
-    _authToken = SharedPreferenceService.loadString(key: AuthTokenKey);
+    print(SharedPreferenceService.loadString(key: AuthTokenKey));
+    _setAuthTokenKey(SharedPreferenceService.loadString(key: AuthTokenKey));
     String patientJson = SharedPreferenceService.loadString(key: PatientKey);
     if (patientJson != null)
-      _patient = Patient.fromJson(jsonDecode(patientJson));
+      _setPatient(Patient.fromJson(jsonDecode(patientJson)));
+    notifyListeners();
   }
 
   AuthenticationProvider._create() {
@@ -36,6 +39,7 @@ class AuthenticationProvider extends ChangeNotifier {
     if (_instance == null) {
       _instance = AuthenticationProvider._create();
     }
+    // await _instance._initiateDataStorage();
     return _instance;
   }
 
@@ -43,8 +47,18 @@ class AuthenticationProvider extends ChangeNotifier {
   Patient get patient => _patient;
   bool get hasError => _errorString != null;
   String get error => _errorString;
-  String get authToken => _authToken;
+  String get authToken => SharedPreferenceService.loadString(key: AuthTokenKey);
   bool get isReady => _state == AuthenticationProviderState.done;
+
+  void _setAuthTokenKey(String token) {
+    _authToken = token;
+    // notifyListeners();
+  }
+
+  void _setPatient(Patient p) {
+    _patient = p;
+    // notifyListeners();
+  }
 
   // change lading status
   void changeLoadingState(AuthenticationProviderState state) {

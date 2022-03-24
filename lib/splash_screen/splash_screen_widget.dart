@@ -1,5 +1,6 @@
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
 import 'package:dhanva_mobile_app/home_screen/home_screen_widget.dart';
+import 'package:dhanva_mobile_app/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../login_screen/login_screen_widget.dart';
@@ -24,10 +25,11 @@ class _SplashScreenWidgetState extends ConsumerState<SplashScreenWidget> {
   void initState() {
     super.initState();
     // On page load action.
-    print('AuthToken : ${ref.read(_authProvider).authToken}');
-    _token = ref.read(_authProvider).authToken;
+
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(milliseconds: 3000));
+      print('AuthToken : ${ref.read(_authProvider).authToken}');
+      _token = ref.read(_authProvider).authToken;
       await Navigator.pushAndRemoveUntil(
         context,
         PageTransition(
@@ -35,7 +37,7 @@ class _SplashScreenWidgetState extends ConsumerState<SplashScreenWidget> {
           duration: Duration(milliseconds: 300),
           reverseDuration: Duration(milliseconds: 300),
           child: _token != null && _token.isNotEmpty
-              ? HomeScreenWidget()
+              ? NavBarPage()
               : LoginScreenWidget(),
         ),
         (r) => false,

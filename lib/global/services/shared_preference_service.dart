@@ -11,10 +11,7 @@ class SharedPreferenceService {
   static SharedPreferences _prefs;
 
   static Future<void> init() async {
-    if (_prefs == null) {
-      _prefs = await SharedPreferences.getInstance();
-    }
-    // return _prefs;
+    _prefs = await SharedPreferences.getInstance();
   }
 
   static Future<bool> saveString(

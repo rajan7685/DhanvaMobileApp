@@ -1,11 +1,14 @@
 import 'package:dhanva_mobile_app/components/bottom_navigation_bar.dart';
+import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/log_in_out_api.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/internationalization.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +19,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // LoginApiService.verifyLogin();
+  AuthenticationProvider.instance; // initiallize AuthProvider
+  // SharedPreferences _pr = await SharedPreferences.getInstance();
+  // print(_pr.getString(PatientKey));
   runApp(MyApp());
 }
 
