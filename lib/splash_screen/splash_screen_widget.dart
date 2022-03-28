@@ -1,5 +1,4 @@
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
-import 'package:dhanva_mobile_app/home_screen/home_screen_widget.dart';
 import 'package:dhanva_mobile_app/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../flutter_flow/flutter_flow_util.dart';

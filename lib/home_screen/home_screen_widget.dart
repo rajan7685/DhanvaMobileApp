@@ -1,18 +1,19 @@
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
-import 'package:dhanva_mobile_app/psychometric_assesent_result_screen/psychometric_assesent_result_screen_widget.dart';
+import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
+import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/models/psychometrics_assesment_question.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/psychometrics_assesment_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_guide_screen1/app_guide_screen1_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../psychometrics_assesent_step1/psychometrics_assesent_step1_widget.dart';
-import '../start_booking_screen/start_booking_screen_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+ChangeNotifierProvider<HomeServicesProvider> _servicesProvider =
+    ChangeNotifierProvider((ref) => HomeServicesProvider());
 
 // mock data
 final List<PsychometricsAssesmentQuestion> _questions = [
@@ -30,16 +31,22 @@ final List<PsychometricsAssesmentQuestion> _questions = [
       options: ['YEP! THAT IS ME', 'I HAVE NO IDEA', 'NOPE THAT CAN\'T BE ME']),
 ];
 
-class HomeScreenWidget extends StatefulWidget {
+class HomeScreenWidget extends ConsumerStatefulWidget {
   const HomeScreenWidget({Key key}) : super(key: key);
 
   @override
-  _HomeScreenWidgetState createState() => _HomeScreenWidgetState();
+  ConsumerState<HomeScreenWidget> createState() => _HomeScreenWidgetState();
 }
 
-class _HomeScreenWidgetState extends State<HomeScreenWidget> {
+class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
   PageController pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    ref.read(_servicesProvider).fetchServicesList(init: true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,180 +271,19 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                             decoration: BoxDecoration(
                               color: Color(0xFFEEEEEE),
                             ),
-                            child: ListView(
-                              padding: EdgeInsets.zero,
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFEEEEEE),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 12, 0),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    StartBookingScreenWidget(),
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            width: 100,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                              color: Color(0xFFEEEEEE),
-                                              image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image: Image.asset(
-                                                  'assets/images/Group_270.png',
-                                                ).image,
-                                              ),
-                                              shape: BoxShape.rectangle,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Dental Specialist',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF282828),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFEEEEEE),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 12, 0),
-                                        child: Container(
-                                          width: 100,
-                                          height: 100,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFFEEEEEE),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: Image.asset(
-                                                'assets/images/Group_274.png',
-                                              ).image,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Heart Specialist',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF282828),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFEEEEEE),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 12, 0),
-                                        child: Container(
-                                          width: 100,
-                                          height: 100,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFFEEEEEE),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: Image.asset(
-                                                'assets/images/Group_277.png',
-                                              ).image,
-                                            ),
-                                            shape: BoxShape.rectangle,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Bone Specialist',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF282828),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFFEEEEEE),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        height: 100,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xFFEEEEEE),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: Image.asset(
-                                              'assets/images/Group_281.png',
-                                            ).image,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Eye Specialist',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF282828),
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                            child: Consumer(
+                              builder: (context, ref, child) {
+                                HomeServicesProvider _prov =
+                                    ref.watch(_servicesProvider);
+                                if (_prov.isLoading) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                } else {
+                                  return QuickServicesListView(
+                                    services: _prov.quickServices,
+                                  );
+                                }
+                              },
                             ),
                           ),
                           Padding(
@@ -498,6 +344,70 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class QuickServicesListView extends StatelessWidget {
+  final List<QuickServiceUiModel> services;
+
+  const QuickServicesListView({
+    @required this.services,
+    Key key,
+  }) : super(key: key);
+
+  Widget _buildServiceCard(BuildContext context, int index) {
+    return Container(
+      width: 100,
+      decoration: BoxDecoration(
+        color: Color(0xFFEEEEEE),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+            child: InkWell(
+              onTap: () async {
+                //
+              },
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Color(0xFFEEEEEE),
+                  shape: BoxShape.rectangle,
+                ),
+                child: SvgPicture.network(
+                  services[index].iconLink,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+          ),
+          Text(
+            services[index].name,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: FlutterFlowTheme.of(context).bodyText1.override(
+                  fontFamily: 'Open Sans',
+                  color: Color(0xFF282828),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      scrollDirection: Axis.horizontal,
+      itemCount: services.length,
+      itemBuilder: (context, index) => _buildServiceCard(context, index),
     );
   }
 }
