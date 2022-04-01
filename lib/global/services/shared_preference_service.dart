@@ -22,4 +22,8 @@ class SharedPreferenceService {
   static String loadString({@required String key}) {
     return _prefs.getString(key);
   }
+
+  static Future<bool> clearAuthenticationData() async {
+    return await _prefs.clear();
+  }
 }

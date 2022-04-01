@@ -40,7 +40,7 @@ class Patient {
   factory Patient.fromJson(Map<String, dynamic> json) => Patient(
         name: json['name'] ?? 'Aniket',
         v: json['__v'] ?? 0,
-        dob: json['dob'] ?? DateTime(2000),
+        dob: DateTime.parse(json['dob'] ?? '2000-03-22T05:25:58.55'),
         createdDateTime: DateTime.parse(json['created_datetime']),
         id: json['_id'],
         enabled: json['enabled'],
@@ -51,8 +51,8 @@ class Patient {
         bloodGroup: json['bloodGroup'],
         phone: json['phone'].toString() ?? '8016291431',
         emergencyContact: json['emergency_contact'],
-        height: json['height'],
-        weight: json['weight'],
+        height: double.parse(json['height'] ?? '0'),
+        weight: double.parse(json['weight'] ?? '0'),
         relations: List.generate(
           (json['relation_id'].length),
           (int index) => PatientRelation.fromJson(
@@ -64,7 +64,7 @@ class Patient {
   Map<String, dynamic> toJson() => {
         'name': name,
         '__v': v,
-        'dob': dob,
+        'dob': dob.toString(),
         'created_datetime': createdDateTime.toString(),
         '_id': id,
         'enabled': enabled,
@@ -75,8 +75,8 @@ class Patient {
         'bloodGroup': bloodGroup,
         'phone': phone,
         'emergency_contact': emergencyContact,
-        'height': height,
-        'weight': weight,
+        'height': height.toString(),
+        'weight': weight.toString(),
         'relation_id': List.generate(
             relations.length, (index) => relations[index].toJson()),
       };

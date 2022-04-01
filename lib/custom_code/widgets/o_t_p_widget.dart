@@ -92,6 +92,10 @@ class _OTPWidgetState extends State<OTPWidget> {
                 _controllers[i].text = _filledCirleUnicode;
               }
 
+              if (val.isEmpty && i != 0) {
+                FocusScope.of(context).previousFocus();
+              }
+
               if (i != widget.otpLength - 1 &&
                   _controllers[i].text.isNotEmpty) {
                 FocusScope.of(context).nextFocus();

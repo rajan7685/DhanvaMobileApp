@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/log_in_out_api.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
@@ -23,7 +23,7 @@ class AuthenticationProvider extends ChangeNotifier {
 
   Future<void> _initiateDataStorage() async {
     await SharedPreferenceService.init();
-    print(SharedPreferenceService.loadString(key: AuthTokenKey));
+    // print(SharedPreferenceService.loadString(key: AuthTokenKey));
     _setAuthTokenKey(SharedPreferenceService.loadString(key: AuthTokenKey));
     String patientJson = SharedPreferenceService.loadString(key: PatientKey);
     if (patientJson != null)
@@ -73,8 +73,10 @@ class AuthenticationProvider extends ChangeNotifier {
   Future<String> verifyLoginOtp(
       {@required String mobile, @required String otp}) async {
     try {
+      // print('$mobile $otp');
       Map<String, dynamic> jsonData =
           await LoginApiService.verifyLogin(mobile: mobile, otp: otp);
+      print(jsonData);
       SharedPreferenceService.saveString(
           key: AuthTokenKey, value: jsonData['token']);
       _authToken = jsonData['token'];
@@ -82,8 +84,11 @@ class AuthenticationProvider extends ChangeNotifier {
           key: PatientKey, value: jsonEncode(jsonData['patient']));
       _patient = Patient.fromJson(jsonData['patient']);
       return 'success';
-    } catch (e) {
-      print('error authprov : ${e.toString()}');
+    } on DioError catch (error) {
+      print('error authprov : ${error.toString()}');
+      return 'incorrect otp';
+    } catch (e, s) {
+      print('error authprov : ${e.toString()} $s');
       return 'incorrect otp';
     }
   }

@@ -219,7 +219,9 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => VerificationScreenWidget(),
+                              builder: (context) => VerificationScreenWidget(
+                                mobile: mobileNumberController.text,
+                              ),
                             ),
                           );
                         }

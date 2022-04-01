@@ -11,7 +11,9 @@ ChangeNotifierProvider<AuthenticationProvider> _authProvider =
     ChangeNotifierProvider((ref) => AuthenticationProvider.instance);
 
 class VerificationScreenWidget extends ConsumerStatefulWidget {
-  const VerificationScreenWidget({Key key}) : super(key: key);
+  final String mobile;
+  const VerificationScreenWidget({Key key, @required this.mobile})
+      : super(key: key);
 
   @override
   ConsumerState<VerificationScreenWidget> createState() =>
@@ -68,7 +70,7 @@ class _VerificationScreenWidgetState
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 38, 0),
                   child: Text(
-                    'Please Check your Message for a  six-digit security code and enter below',
+                    'Please Check your Message for a  four-digit security code and enter below',
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
                           color: Color(0xFF606E87),
@@ -112,16 +114,26 @@ class _VerificationScreenWidgetState
                               fontSize: 14,
                             ),
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
-                        child: Text(
-                          'Resend code',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                      InkWell(
+                        onTap: () async {
+                          await ref
+                              .read(_authProvider)
+                              .attemptLogin(mobile: widget.mobile);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'A new otp has been sent to ${widget.mobile}')));
+                        },
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
+                          child: Text(
+                            ' Resend code',
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                          ),
                         ),
                       ),
                     ],
@@ -134,7 +146,7 @@ class _VerificationScreenWidgetState
                       if (_otp.isNotEmpty) {
                         String res = await ref
                             .read(_authProvider)
-                            .verifyLoginOtp(mobile: '8016291431', otp: _otp);
+                            .verifyLoginOtp(mobile: widget.mobile, otp: _otp);
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text(res)));
                         if (res == 'success') {

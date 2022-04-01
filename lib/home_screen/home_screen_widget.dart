@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/models/psychometrics_assesment_question.dart';
@@ -46,10 +50,14 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
   void initState() {
     super.initState();
     ref.read(_servicesProvider).fetchServicesList(init: true);
+    SharedPreferenceService.init();
   }
 
   @override
   Widget build(BuildContext context) {
+    Patient patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    String _patientFirstName = patient.name.split(' ')[0];
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFFF3F4F4),
@@ -108,7 +116,7 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(16, 2, 0, 0),
                         child: Text(
-                          'Hello User',
+                          "Hello $_patientFirstName",
                           style: FlutterFlowTheme.of(context).title2.override(
                                 fontFamily: 'Open Sans',
                                 color: Color(0xFFF3F4F4),
@@ -286,31 +294,31 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
                               },
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                            child: FFButtonWidget(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              text: 'More',
-                              options: FFButtonOptions(
-                                width: double.infinity,
-                                height: 50,
-                                color: Colors.transparent,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Color(0xFF00A8A3),
-                                    ),
-                                borderSide: BorderSide(
-                                  color: Color(0xFF00A8A3),
-                                  width: 2,
-                                ),
-                                borderRadius: 12,
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                          //   child: FFButtonWidget(
+                          //     onPressed: () {
+                          //       print('Button pressed ...');
+                          //     },
+                          //     text: 'More',
+                          //     options: FFButtonOptions(
+                          //       width: double.infinity,
+                          //       height: 50,
+                          //       color: Colors.transparent,
+                          //       textStyle: FlutterFlowTheme.of(context)
+                          //           .subtitle2
+                          //           .override(
+                          //             fontFamily: 'Poppins',
+                          //             color: Color(0xFF00A8A3),
+                          //           ),
+                          //       borderSide: BorderSide(
+                          //         color: Color(0xFF00A8A3),
+                          //         width: 2,
+                          //       ),
+                          //       borderRadius: 12,
+                          //     ),
+                          //   ),
+                          // ),
                           InkWell(
                             onTap: () async {
                               await Navigator.push(

@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/login_screen/login_screen_widget.dart';
+import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
 
 import '../appointments_screen/appointments_screen_widget.dart';
 import '../family_members_screen/family_members_screen_widget.dart';
@@ -22,8 +28,21 @@ class ProfileScreenWidget extends StatefulWidget {
 class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  Future<void> initSharedService() async {
+    await SharedPreferenceService.init();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initSharedService();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Patient patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    String _patientFirstName = patient.name.split(' ')[0];
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFFF5F5F5),
@@ -96,9 +115,8 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                 color: Color(0xFFEEEEEE),
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: CachedNetworkImageProvider(
-                                    'https://i.pinimg.com/736x/a8/32/60/a83260ededd887b78794f1569e2ba8da.jpg',
-                                  ),
+                                  image:
+                                      AssetImage('assets/images/Group_524.png'),
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
@@ -127,7 +145,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                         ),
                                   ),
                                   Text(
-                                    'user how are you today',
+                                    'Hey $_patientFirstName, how are you today?',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -477,41 +495,52 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/icons.png',
-                                width: 18,
-                                height: 18,
-                                fit: BoxFit.contain,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                child: Text(
-                                  'Log out',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF434343),
-                                        fontSize: 20,
-                                      ),
+                          child: InkWell(
+                            onTap: () async {
+                              await SharedPreferenceService
+                                  .clearAuthenticationData();
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => LoginScreenWidget()),
+                                  (p) => false);
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/icons.png',
+                                  width: 18,
+                                  height: 18,
+                                  fit: BoxFit.contain,
                                 ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(1, 0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: Color(0xFF5A5A5A),
-                                    size: 34,
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 0, 0),
+                                  child: Text(
+                                    'Log out',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF434343),
+                                          fontSize: 20,
+                                        ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional(1, 0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Color(0xFF5A5A5A),
+                                      size: 34,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

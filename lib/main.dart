@@ -22,8 +22,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AuthenticationProvider.instance; // initiallize AuthProvider
-  // HomeServicesApi.fetchQuickServies();
-  HomeServicesProvider().fetchServicesList();
   runApp(MyApp());
 }
 
