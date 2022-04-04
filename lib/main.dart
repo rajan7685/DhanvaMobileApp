@@ -1,7 +1,9 @@
 import 'package:dhanva_mobile_app/components/bottom_navigation_bar.dart';
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
+import 'package:dhanva_mobile_app/global/providers/medical_records_provider.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/home_services_api.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/log_in_out_api.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/medical_records_service.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
 import 'package:flutter/gestures.dart';

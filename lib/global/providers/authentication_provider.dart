@@ -76,7 +76,6 @@ class AuthenticationProvider extends ChangeNotifier {
       // print('$mobile $otp');
       Map<String, dynamic> jsonData =
           await LoginApiService.verifyLogin(mobile: mobile, otp: otp);
-      print(jsonData);
       SharedPreferenceService.saveString(
           key: AuthTokenKey, value: jsonData['token']);
       _authToken = jsonData['token'];
