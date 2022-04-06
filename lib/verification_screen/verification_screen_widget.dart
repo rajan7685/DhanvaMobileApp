@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
 import 'package:dhanva_mobile_app/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,6 +26,23 @@ class _VerificationScreenWidgetState
     extends ConsumerState<VerificationScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   String _otp = '';
+  int resendTimeoutTime = 1 * 60; // 1.0 is seconds modifier
+
+  void handleResendTimer({int minutes = 1}) {
+    resendTimeoutTime = minutes * 60;
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        resendTimeoutTime = resendTimeoutTime - 1;
+      });
+      if (resendTimeoutTime == 0) timer.cancel();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    handleResendTimer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,44 +120,57 @@ class _VerificationScreenWidgetState
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Didn\'t receive a code?',
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Poppins',
-                              color: Color(0xFF606E87),
-                              fontSize: 14,
+                if (resendTimeoutTime != 0)
+                  Text(
+                    'Please wait for $resendTimeoutTime seconds',
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Poppins',
+                          color: Color(0xFF606E87),
+                          fontSize: 14,
+                        ),
+                  ),
+                if (resendTimeoutTime == 0)
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Didn\'t receive a code?',
+                          style:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF606E87),
+                                    fontSize: 14,
+                                  ),
+                        ),
+                        InkWell(
+                          onTap: () async {
+                            await ref
+                                .read(_authProvider)
+                                .attemptLogin(mobile: widget.mobile);
+                            handleResendTimer();
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    'A new otp has been sent to ${widget.mobile}')));
+                          },
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
+                            child: Text(
+                              ' Resend code',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                             ),
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          await ref
-                              .read(_authProvider)
-                              .attemptLogin(mobile: widget.mobile);
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                  'A new otp has been sent to ${widget.mobile}')));
-                        },
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
-                          child: Text(
-                            ' Resend code',
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                    ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 80, 0, 0),
                   child: FFButtonWidget(

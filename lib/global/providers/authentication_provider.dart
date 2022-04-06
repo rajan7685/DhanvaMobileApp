@@ -88,7 +88,7 @@ class AuthenticationProvider extends ChangeNotifier {
       return 'incorrect otp';
     } catch (e, s) {
       print('error authprov : ${e.toString()} $s');
-      return 'incorrect otp';
+      return 'An unexpected error occured';
     }
   }
 }
