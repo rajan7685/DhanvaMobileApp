@@ -148,7 +148,10 @@ class _MedicalRecordScreenWidgetState
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.8,
-                                        child: MedicalRecordBottomSheetWidget(),
+                                        child: MedicalRecordBottomSheetWidget(
+                                          medicalRecord:
+                                              _prov.medicalRecords[index],
+                                        ),
                                       ),
                                     );
                                   },

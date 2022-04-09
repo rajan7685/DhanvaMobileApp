@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/global/models/medical_record.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MedicalRecordBottomSheetWidget extends StatefulWidget {
-  const MedicalRecordBottomSheetWidget({Key key}) : super(key: key);
+  final MedicalRecord medicalRecord;
+
+  const MedicalRecordBottomSheetWidget({Key key, @required this.medicalRecord})
+      : super(key: key);
 
   @override
   _MedicalRecordBottomSheetWidgetState createState() =>
@@ -23,10 +28,12 @@ class _MedicalRecordBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
-    textController1 = TextEditingController(text: 'SomeOne');
+    textController1 =
+        TextEditingController(text: widget.medicalRecord.patientId);
     textController2 = TextEditingController(text: 'Xray');
     textController3 = TextEditingController(text: 'DR A R Rajesh');
-    textController4 = TextEditingController(text: 'Dec 30, 2022');
+    textController4 =
+        TextEditingController(text: widget.medicalRecord.createdAt.toString());
     textController5 = TextEditingController(text: '06:30 PM');
   }
 
