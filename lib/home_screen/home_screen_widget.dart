@@ -7,6 +7,7 @@ import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart
 import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/models/psychometrics_assesment_question.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/psychometrics_assesment_screen.dart';
+import 'package:dhanva_mobile_app/start_booking_screen/start_booking_screen_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_guide_screen1/app_guide_screen1_widget.dart';
@@ -377,7 +378,10 @@ class QuickServicesListView extends StatelessWidget {
             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
             child: InkWell(
               onTap: () async {
-                //
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => StartBookingScreenWidget()));
               },
               child: Container(
                 width: 100,

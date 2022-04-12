@@ -9,5 +9,6 @@ class ApiService {
   static const String otpVerificationApi = 'otp/otpVerify/';
   static const String servicesApi = 'services/get/';
   static const String medicalRecordsApi = 'files/docs/'; // +id
+  static const String upcomingMedicalAppointmentsApi = 'appointment/upcoming/';
   static Dio dio = Dio();
 }
