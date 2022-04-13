@@ -8,8 +8,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MedicalRecordBottomSheetWidget extends StatefulWidget {
   final MedicalRecord medicalRecord;
+  final bool newRecord;
 
-  const MedicalRecordBottomSheetWidget({Key key, @required this.medicalRecord})
+  const MedicalRecordBottomSheetWidget(
+      {Key key, this.newRecord = false, this.medicalRecord})
       : super(key: key);
 
   @override
@@ -28,12 +30,13 @@ class _MedicalRecordBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
-    textController1 =
-        TextEditingController(text: widget.medicalRecord.patientId);
+    textController1 = TextEditingController(
+        text: widget.newRecord ? '' : widget.medicalRecord.patientId);
     textController2 = TextEditingController(text: 'Xray');
     textController3 = TextEditingController(text: 'DR A R Rajesh');
-    textController4 =
-        TextEditingController(text: widget.medicalRecord.createdAt.toString());
+    textController4 = TextEditingController(
+        text:
+            widget.newRecord ? '' : widget.medicalRecord.createdAt.toString());
     textController5 = TextEditingController(text: '06:30 PM');
   }
 
