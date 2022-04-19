@@ -53,24 +53,24 @@ class Doctor {
     v = json['__v'];
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['enabled'] = this.enabled;
-  //   data['_id'] = this.sId;
-  //   data['name'] = this.name;
-  //   data['email'] = this.email;
-  //   data['department'] = this.department;
-  //   data['phone'] = this.phone;
-  //   data['password'] = this.password;
-  //   data['type'] = this.type;
-  //   data['designation'] = this.designation;
-  //   data['doj'] = this.doj;
-  //   data['education'] = this.education;
-  //   data['about_me'] = this.aboutMe;
-  //   data['registration_no'] = this.registrationNo;
-  //   data['gender'] = this.gender;
-  //   data['profile_pic'] = this.profilePic;
-  //   data['__v'] = this.iV;
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['enabled'] = this.enabled;
+    data['_id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['department'] = this.department;
+    data['phone'] = this.phone;
+    data['password'] = this.password;
+    data['type'] = this.type;
+    data['designation'] = this.designation;
+    data['doj'] = this.doj;
+    data['education'] = this.education;
+    data['about_me'] = this.aboutMe;
+    data['registration_no'] = this.registrationNo;
+    data['gender'] = this.gender;
+    data['profile_pic'] = this.profilePic;
+    data['__v'] = this.v;
+    return data;
+  }
 }
