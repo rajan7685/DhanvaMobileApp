@@ -62,7 +62,9 @@ class _MedicalRecordScreenWidgetState
                 padding: MediaQuery.of(context).viewInsets,
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.8,
-                  child: MedicalRecordBottomSheetWidget(),
+                  child: MedicalRecordBottomSheetWidget(
+                    newRecord: true,
+                  ),
                 ),
               );
             },

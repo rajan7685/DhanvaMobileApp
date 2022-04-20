@@ -120,6 +120,9 @@ class _VerificationScreenWidgetState
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 28,
+                ),
                 if (resendTimeoutTime != 0)
                   Text(
                     'Please wait for $resendTimeoutTime seconds',

@@ -404,7 +404,7 @@ class QuickServicesListView extends StatelessWidget {
             style: FlutterFlowTheme.of(context).bodyText1.override(
                   fontFamily: 'Open Sans',
                   color: Color(0xFF282828),
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
           ),
