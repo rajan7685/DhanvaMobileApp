@@ -4,11 +4,11 @@ class Doctor {
   String name;
   String email;
   String department;
-  String phone;
+  int phone;
   String password;
   int type;
   String designation;
-  String doj;
+  DateTime doj;
   String education;
   String aboutMe;
   String registrationNo;
@@ -44,7 +44,7 @@ class Doctor {
     password = json['password'];
     type = json['type'];
     designation = json['designation'];
-    doj = json['doj'];
+    doj = DateTime.parse(json['doj']);
     education = json['education'];
     aboutMe = json['about_me'];
     registrationNo = json['registration_no'];
@@ -64,7 +64,7 @@ class Doctor {
     data['password'] = this.password;
     data['type'] = this.type;
     data['designation'] = this.designation;
-    data['doj'] = this.doj;
+    data['doj'] = this.doj.toString();
     data['education'] = this.education;
     data['about_me'] = this.aboutMe;
     data['registration_no'] = this.registrationNo;

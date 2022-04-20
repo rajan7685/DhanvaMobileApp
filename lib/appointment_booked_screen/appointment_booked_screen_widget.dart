@@ -1,3 +1,6 @@
+import 'package:dhanva_mobile_app/global/models/doctor.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
+
 import '../booking_success_screen/booking_success_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -6,7 +9,16 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppointmentBookedScreenWidget extends StatefulWidget {
-  const AppointmentBookedScreenWidget({Key key}) : super(key: key);
+  // final Doctor doctor;
+  final double price;
+  final Patient patient;
+
+  const AppointmentBookedScreenWidget(
+      {Key key,
+      // @required this.doctor,
+      @required this.patient,
+      @required this.price})
+      : super(key: key);
 
   @override
   _AppointmentBookedScreenWidgetState createState() =>

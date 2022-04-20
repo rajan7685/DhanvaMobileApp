@@ -10,5 +10,6 @@ class ApiService {
   static const String servicesApi = 'services/get/';
   static const String medicalRecordsApi = 'files/docs/'; // +id
   static const String upcomingMedicalAppointmentsApi = 'appointment/upcoming/';
+  static const String allDoctorsApi = 'employee/doctor/all/'; //+docID
   static Dio dio = Dio();
 }

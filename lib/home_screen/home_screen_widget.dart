@@ -379,9 +379,15 @@ class QuickServicesListView extends StatelessWidget {
             child: InkWell(
               onTap: () async {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => StartBookingScreenWidget()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => StartBookingScreenWidget(
+                      serviceName: services[index].name,
+                      departments: services[index].departments,
+                      price: services[index].amount,
+                    ),
+                  ),
+                );
               },
               child: Container(
                 width: 100,
