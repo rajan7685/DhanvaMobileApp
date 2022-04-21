@@ -17,11 +17,6 @@ class TimeSlotApiService {
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-    // List<DateTimeSlot> slots = [];
-    (res.data as Map<String, dynamic>).entries.forEach((timeSlotData) {
-      print('${timeSlotData.key} : ${timeSlotData.value}');
-    });
-    print(res.data);
     return res.data;
   }
 
@@ -31,11 +26,6 @@ class TimeSlotApiService {
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-    // List<DateTimeSlot> slots = [];
-    // (res.data as Map<String, dynamic>).entries.forEach((timeSlotData) {
-    //   slots.add(DateTimeSlot.fromSlotDataByDoctor(timeSlotData));
-    // });
-
     return res.data;
   }
 }
