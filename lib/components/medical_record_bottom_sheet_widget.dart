@@ -32,12 +32,15 @@ class _MedicalRecordBottomSheetWidgetState
     super.initState();
     textController1 = TextEditingController(
         text: widget.newRecord ? '' : widget.medicalRecord.patientId);
-    textController2 = TextEditingController(text: 'Xray');
-    textController3 = TextEditingController(text: 'DR A R Rajesh');
+    textController2 =
+        TextEditingController(text: widget.newRecord ? '' : 'Xray');
+    textController3 =
+        TextEditingController(text: widget.newRecord ? '' : 'Dr Monish');
     textController4 = TextEditingController(
         text:
             widget.newRecord ? '' : widget.medicalRecord.createdAt.toString());
-    textController5 = TextEditingController(text: '06:30 PM');
+    textController5 =
+        TextEditingController(text: widget.newRecord ? '' : '6: 30 PM');
   }
 
   @override

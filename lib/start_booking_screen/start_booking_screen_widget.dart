@@ -17,6 +17,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 ChangeNotifierProvider<DoctorRecordProvider> _doctorsProvider =
     ChangeNotifierProvider((ref) => DoctorRecordProvider());
+Doctor selectedDoctor;
+void updateSelectedDoctor(Doctor doctor) {
+  selectedDoctor = doctor;
+}
 
 class StartBookingScreenWidget extends StatefulWidget {
   final String serviceName;
@@ -41,7 +45,6 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Patient p = Patient.fromJson(
       jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-  int _selectedDoctorIndex = 0;
 
   @override
   void initState() {
@@ -263,7 +266,7 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                                         AppointmentBookedScreenWidget(
                                       price: widget.price,
                                       patient: p,
-                                      // doctor: ,
+                                      doctor: selectedDoctor,
                                     ),
                                   ),
                                 );
@@ -323,7 +326,10 @@ class _DoctorCardListViewState extends ConsumerState<DoctorCardListView> {
             physics: BouncingScrollPhysics(),
             itemCount: _docRecords.doctors.length,
             itemBuilder: (_, int index) => GestureDetector(
-                  onTap: () => setState(() => _selectedIndex = index),
+                  onTap: () {
+                    setState(() => _selectedIndex = index);
+                    updateSelectedDoctor(_docRecords.doctors[index]);
+                  },
                   child: DoctorCard(
                     isSelected: _selectedIndex == index,
                     doctor: _docRecords.doctors[index],

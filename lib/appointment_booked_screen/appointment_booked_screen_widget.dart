@@ -9,13 +9,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppointmentBookedScreenWidget extends StatefulWidget {
-  // final Doctor doctor;
+  final Doctor doctor;
   final double price;
   final Patient patient;
 
   const AppointmentBookedScreenWidget(
       {Key key,
-      // @required this.doctor,
+      @required this.doctor,
       @required this.patient,
       @required this.price})
       : super(key: key);
@@ -97,7 +97,9 @@ class _AppointmentBookedScreenWidgetState
                             ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Image.network(
-                                'https://picsum.photos/seed/639/600',
+                                widget.doctor.profilePic.isEmpty
+                                    ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kigo369AKCLUVSYPBs4K54t0WQbsfL9Lmw&usqp=CAU'
+                                    : widget.doctor.profilePic,
                                 width: 80,
                                 height: 80,
                                 fit: BoxFit.cover,
@@ -112,7 +114,7 @@ class _AppointmentBookedScreenWidgetState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Suresh Kumar',
+                                      widget.doctor.name,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -123,7 +125,7 @@ class _AppointmentBookedScreenWidgetState
                                           ),
                                     ),
                                     Text(
-                                      'Cardiologist',
+                                      widget.doctor.designation,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -240,7 +242,7 @@ class _AppointmentBookedScreenWidgetState
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Pay \u20B90',
+                            'Pay \u20B9${widget.price.toInt()}',
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',
