@@ -21,9 +21,10 @@ class DoctorRecordProvider extends ChangeNotifier {
     _doctors = doctors;
   }
 
-  Future<dynamic> fetchAllDoctors({bool init = false}) async {
+  Future<dynamic> fetchAllDoctors({String serviceId, bool init = false}) async {
     if (!init) _setLoadingState(true);
-    List<dynamic> jsonData = await DoctorDetailsService.fetchAllDoctors();
+    List<dynamic> jsonData =
+        await DoctorDetailsService.fetchAllDoctors(serviceId: serviceId);
     List<Doctor> doctors = List.generate(
         jsonData.length, (int index) => Doctor.fromJson(jsonData[index]));
     _setDoctorsList(doctors);

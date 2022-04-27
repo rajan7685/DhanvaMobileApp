@@ -11,15 +11,14 @@ class MedicalAppointmentsService {
   static final String _medicalAppointmentsUri =
       '${ApiService.protocol}${ApiService.baseUrl}${ApiService.upcomingMedicalAppointmentsApi}';
 
-  static Future<void> fetchMedicalAppointments() async {
+  static Future<dynamic> fetchMedicalAppointments(String patientId) async {
     await SharedPreferenceService.init();
-    Patient p = Patient.fromJson(
-        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    Response res = await ApiService.dio.get('$_medicalAppointmentsUri${p.id}',
+    Response res = await ApiService.dio.get(
+        '$_medicalAppointmentsUri$patientId',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-    print(res.data[0]['patient_id'].runtimeType);
+    print(res.data[0]);
     // MedicalAppointment app = MedicalAppointment.fromJson(res.data[0]);
     // print(app.doctor.name);
     return res.data;

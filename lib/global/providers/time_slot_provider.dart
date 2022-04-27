@@ -35,6 +35,7 @@ class TimeSlotProvider extends ChangeNotifier {
       slots.add(DateTimeSlot.fromSlotDataByDoctor(timeSlotData));
     });
     _setTimeSlots(slots);
+    print(slots);
     _setSlotLoadingState(false);
   }
 
@@ -45,6 +46,7 @@ class TimeSlotProvider extends ChangeNotifier {
     data.entries.forEach((timeSlotData) {
       slots.add(UniversalDateTimeSlot.fromAllTimeSlotData(timeSlotData));
     });
+    print(slots);
     _setUniversalTimeSlots(slots);
     _setSlotLoadingState(false);
   }

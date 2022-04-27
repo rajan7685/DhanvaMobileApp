@@ -8,6 +8,7 @@ import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.d
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/models/psychometrics_assesment_question.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/psychometrics_assesment_screen.dart';
 import 'package:dhanva_mobile_app/start_booking_screen/start_booking_screen_widget.dart';
+import 'package:dhanva_mobile_app/start_booking_screen2/start_booking_screen2_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_guide_screen1/app_guide_screen1_widget.dart';
@@ -271,7 +272,7 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
                             style: FlutterFlowTheme.of(context).title1.override(
                                   fontFamily: 'Poppins',
                                   color: Color(0xFF282828),
-                                  fontSize: 22,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),
@@ -381,24 +382,22 @@ class QuickServicesListView extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => StartBookingScreenWidget(
-                      serviceName: services[index].name,
-                      departments: services[index].departments,
-                      price: services[index].amount,
+                    builder: (_) => StartBookingScreen2Widget(
+                      service: services[index],
                     ),
                   ),
                 );
               },
               child: Container(
-                width: 100,
-                height: 100,
+                width: 85,
+                height: 85,
                 decoration: BoxDecoration(
                   color: Color(0xFFEEEEEE),
                   shape: BoxShape.rectangle,
                 ),
                 child: SvgPicture.network(
                   services[index].iconLink,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.fitHeight,
                 ),
               ),
             ),
@@ -406,11 +405,11 @@ class QuickServicesListView extends StatelessWidget {
           Text(
             services[index].name,
             maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+            overflow: TextOverflow.fade,
             style: FlutterFlowTheme.of(context).bodyText1.override(
                   fontFamily: 'Open Sans',
                   color: Color(0xFF282828),
-                  fontSize: 15,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
           ),

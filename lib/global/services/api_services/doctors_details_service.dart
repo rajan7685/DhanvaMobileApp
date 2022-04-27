@@ -11,11 +11,11 @@ class DoctorDetailsService {
   static final String _allDoctorsUri =
       '${ApiService.protocol}${ApiService.baseUrl}${ApiService.allDoctorsApi}';
 
-  static Future<List<dynamic>> fetchAllDoctors() async {
+  static Future<List<dynamic>> fetchAllDoctors({String serviceId}) async {
     await SharedPreferenceService.init();
     Patient p = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    Response res = await ApiService.dio.get('$_allDoctorsUri',
+    Response res = await ApiService.dio.get('$_allDoctorsUri$serviceId',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));

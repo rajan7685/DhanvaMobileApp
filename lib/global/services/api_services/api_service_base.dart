@@ -19,5 +19,9 @@ class ApiService {
   /// +@docId required
   /// appointment/get_time_slots/{docId}
   static const String timeSlotsByDoctorApi = 'appointment/get_time_slots/';
+
+  /// +@PatientId required
+  /// patient/getPatientRelations/{PatientId}
+  static const String patientRelationsApi = 'patient/getPatientRelations/';
   static Dio dio = Dio();
 }

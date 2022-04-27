@@ -259,17 +259,17 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                             ),
                             child: InkWell(
                               onTap: () async {
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        AppointmentBookedScreenWidget(
-                                      price: widget.price,
-                                      patient: p,
-                                      doctor: selectedDoctor,
-                                    ),
-                                  ),
-                                );
+                                // await Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) =>
+                                //         AppointmentBookedScreenWidget(
+                                //       price: widget.price,
+                                //       patient: p,
+                                //       doctor: selectedDoctor,
+                                //     ),
+                                //   ),
+                                // );
                               },
                               child: NextIconButtonWidget(
                                   //

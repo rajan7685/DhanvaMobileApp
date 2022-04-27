@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:dhanva_mobile_app/appointments_screen/appointment_model.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/medical_appoinment_service.dart';
 import 'package:dhanva_mobile_app/global/services/mock_json_data_service.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dio/dio.dart';
 
 import '../components/appointments_bottom_sheet_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -20,13 +26,17 @@ class AppointmentsScreenWidget extends StatefulWidget {
 
 class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  List<AppointmentModel> _appointments = [];
+
+  bool isDataLoading = true;
+  List<dynamic> resData;
 
   void _loadAppointmentsData() async {
-    List<AppointmentModel> appointments =
-        await MockJsonDataService.readAppointmentJsonData();
+    Patient patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    resData =
+        await MedicalAppointmentsService.fetchMedicalAppointments(patient.id);
     setState(() {
-      _appointments = appointments;
+      isDataLoading = false;
     });
   }
 
@@ -102,13 +112,13 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
                   ],
                 ),
                 Expanded(
-                  child: _appointments.isEmpty
-                      ? CircularProgressIndicator()
+                  child: isDataLoading
+                      ? Center(child: CircularProgressIndicator())
                       : ListView.builder(
-                          itemCount: _appointments.length,
+                          itemCount: resData.length,
                           itemBuilder: (_, int index) => GestureDetector(
                             child: AppointmentCard(
-                              appointmentModel: _appointments[index],
+                              appointmentModel: resData[index],
                             ),
                             onTap: () async {
                               await showModalBottomSheet(
@@ -141,7 +151,7 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
 }
 
 class AppointmentCard extends StatelessWidget {
-  final AppointmentModel appointmentModel;
+  final Map<String, dynamic> appointmentModel;
 
   const AppointmentCard({Key key, @required this.appointmentModel})
       : super(key: key);
@@ -164,7 +174,7 @@ class AppointmentCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                appointmentModel.imageAvatar,
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvDVXm8awuyibcdpoTSPoePE6-OKncWYyNK9QF-YO66FyUIWHrlF8hbvBU7Gml5eoeeGw&usqp=CAU',
                 width: 70,
                 height: 85,
                 fit: BoxFit.contain,
@@ -184,7 +194,7 @@ class AppointmentCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            appointmentModel.username,
+                            appointmentModel['patient_id']['name'],
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',
@@ -193,20 +203,23 @@ class AppointmentCard extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                     ),
                           ),
-                          Text(
-                            ' (${appointmentModel.relationType})',
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Open Sans',
-                                      fontSize: 12,
-                                    ),
-                          ),
+                          if (appointmentModel['patient_id']['name'] == 'Test1')
+                            Text(
+                              ' (mother)',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 12,
+                                  ),
+                            ),
                         ],
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
                         child: Text(
-                          'Dec 20, 2021 1:02PM',
+                          DateFormat('yyyy-MM-dd H:ma').format(DateTime.parse(
+                              appointmentModel['appointmentDate'])),
                           style:
                               FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Open Sans',
@@ -220,7 +233,12 @@ class AppointmentCard extends StatelessWidget {
                           onPressed: () {
                             print('Button pressed ...');
                           },
-                          text: appointmentModel.status,
+                          text: DateTime.now().millisecondsSinceEpoch >=
+                                  DateTime.parse(
+                                          appointmentModel['appointmentDate'])
+                                      .millisecondsSinceEpoch
+                              ? 'Completed'
+                              : 'Booked',
                           options: FFButtonOptions(
                             // width: 80,
                             height: 26,

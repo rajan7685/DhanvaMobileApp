@@ -1,24 +1,28 @@
 import 'package:flutter/cupertino.dart';
 
-class _GlobalAvailableTimeSlot {
+class GlobalAvailableTimeSlot {
   final List<String> docIds;
+  final List<String> docNames;
   final String availableTimeSlot;
 
-  _GlobalAvailableTimeSlot({
+  GlobalAvailableTimeSlot({
     @required this.availableTimeSlot,
+    @required this.docNames,
     @required this.docIds,
   });
 
-  factory _GlobalAvailableTimeSlot.fromJson(MapEntry<String, dynamic> json) =>
-      _GlobalAvailableTimeSlot(
+  factory GlobalAvailableTimeSlot.fromJson(MapEntry<String, dynamic> json) =>
+      GlobalAvailableTimeSlot(
           availableTimeSlot: json.key,
           docIds: List.generate((json.value as List).length,
-              (int index) => json.value[index]['id']));
+              (int index) => json.value[index]['id']),
+          docNames: List.generate((json.value as List).length,
+              (int index) => json.value[index]['name']));
 }
 
 class UniversalDateTimeSlot {
   final DateTime date;
-  final List<_GlobalAvailableTimeSlot> availableTimeSlots;
+  final List<GlobalAvailableTimeSlot> availableTimeSlots;
 
   UniversalDateTimeSlot({
     @required this.date,
@@ -27,9 +31,9 @@ class UniversalDateTimeSlot {
 
   factory UniversalDateTimeSlot.fromAllTimeSlotData(
       MapEntry<String, dynamic> json) {
-    List<_GlobalAvailableTimeSlot> slots = [];
+    List<GlobalAvailableTimeSlot> slots = [];
     (json.value as Map<String, dynamic>).entries.forEach((json) {
-      slots.add(_GlobalAvailableTimeSlot.fromJson(json));
+      slots.add(GlobalAvailableTimeSlot.fromJson(json));
     });
     return UniversalDateTimeSlot(
         date: DateTime.parse(json.key), availableTimeSlots: slots);

@@ -1,5 +1,12 @@
+import 'dart:convert';
+
 import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/doctors_details_service.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
+import 'package:dio/dio.dart';
 
 import '../booking_success_screen/booking_success_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -9,15 +16,23 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppointmentBookedScreenWidget extends StatefulWidget {
-  final Doctor doctor;
-  final double price;
-  final Patient patient;
+  final String doctorId;
+  final String doctorName;
+  final DateTime date;
+  final String timeString;
+  final String symtopms;
+  final String patientId;
+  final QuickServiceUiModel service;
 
   const AppointmentBookedScreenWidget(
       {Key key,
-      @required this.doctor,
-      @required this.patient,
-      @required this.price})
+      @required this.date,
+      @required this.symtopms,
+      @required this.patientId,
+      @required this.timeString,
+      @required this.doctorName,
+      @required this.doctorId,
+      @required this.service})
       : super(key: key);
 
   @override
@@ -28,6 +43,49 @@ class AppointmentBookedScreenWidget extends StatefulWidget {
 class _AppointmentBookedScreenWidgetState
     extends State<AppointmentBookedScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Patient p = Patient.fromJson(
+      jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+
+  bool isDataLoading = true;
+
+  Future<void> _bookAppointment() async {
+    Response res = await ApiService.dio.post(
+        'http://api3.dhanva.icu/payment/add',
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }),
+        data: {
+          "amount": "0",
+          "transaction_id": DateTime.now().millisecondsSinceEpoch,
+          "meta_info": {"payment_type": "Free"},
+          "payment_status_string": "Success",
+          "patient_id": widget.patientId,
+          "status": 0
+        });
+    Response bookingRes = await ApiService.dio.post(
+        'http://api3.dhanva.icu/appointment/book',
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }),
+        data: {
+          "symptoms": widget.symtopms,
+          "appointmentDate": widget.date.toString().split(' ')[0],
+          "patient_id": widget.patientId,
+          "name": widget.doctorName,
+          "time_slot": widget.timeString,
+          "payment_info": res.data['_id'],
+          "doctor": widget.doctorId,
+          "serviceId": widget.service.id
+        });
+    print(bookingRes.data);
+  }
+
+  @override
+  void initState() {
+    if (widget.service.amount == 0) _bookAppointment();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +155,7 @@ class _AppointmentBookedScreenWidgetState
                             ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Image.network(
-                                widget.doctor.profilePic.isEmpty
-                                    ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kigo369AKCLUVSYPBs4K54t0WQbsfL9Lmw&usqp=CAU'
-                                    : widget.doctor.profilePic,
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kigo369AKCLUVSYPBs4K54t0WQbsfL9Lmw&usqp=CAU',
                                 width: 80,
                                 height: 80,
                                 fit: BoxFit.cover,
@@ -114,7 +170,7 @@ class _AppointmentBookedScreenWidgetState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      widget.doctor.name,
+                                      widget.doctorName,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -125,7 +181,7 @@ class _AppointmentBookedScreenWidgetState
                                           ),
                                     ),
                                     Text(
-                                      widget.doctor.designation,
+                                      '',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -159,7 +215,7 @@ class _AppointmentBookedScreenWidgetState
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(8, 0, 0, 0),
                                               child: Text(
-                                                '02 Jan 08:30 AM',
+                                                '${DateFormat.MMMd().format(widget.date)} ${widget.timeString}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1
@@ -199,16 +255,20 @@ class _AppointmentBookedScreenWidgetState
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 10, 12, 12),
-                        child: Text(
-                          'Chest pain or discomfort. Most heart attacks involve discomfort in the center or left side of the chest that lasts for more than a few minutes or that goes away and comes back. The discomfort can feel like uncomfortable pressure, squeezing, fullness, or pain.',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF606E87),
-                                    fontSize: 12,
-                                  ),
+                      Align(
+                        alignment: AlignmentDirectional(-1, 0),
+                        child: Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(12, 10, 12, 12),
+                          child: Text(
+                            widget.symtopms,
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF606E87),
+                                      fontSize: 12,
+                                    ),
+                          ),
                         ),
                       ),
                     ],
@@ -237,31 +297,47 @@ class _AppointmentBookedScreenWidgetState
                           width: 2,
                         ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Pay \u20B9${widget.price.toInt()}',
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Open Sans',
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                            child: Image.asset(
-                              'assets/images/Layer_2.png',
-                              width: 35,
-                              height: 35,
-                              fit: BoxFit.contain,
+                      child: InkWell(
+                        onTap: () {
+                          if (widget.service.amount == 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Booked')),
+                            );
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => BookingSuccessScreenWidget()));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Can not make payment')),
+                            );
+                          }
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Pay \u20B9${widget.service.amount.toInt()}',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              child: Image.asset(
+                                'assets/images/Layer_2.png',
+                                width: 35,
+                                height: 35,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

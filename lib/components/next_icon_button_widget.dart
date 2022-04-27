@@ -22,6 +22,7 @@ class _NextIconButtonWidgetState extends State<NextIconButtonWidget> {
           'Next',
           style: FlutterFlowTheme.of(context).title1.override(
                 fontFamily: 'Open Sans',
+                fontSize: 20,
                 color: Color(0xFFF3F4F4),
               ),
         ),
@@ -29,8 +30,8 @@ class _NextIconButtonWidgetState extends State<NextIconButtonWidget> {
           padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
           child: Image.asset(
             'assets/images/Layer_2.png',
-            width: 30,
-            height: 30,
+            width: 25,
+            height: 25,
             fit: BoxFit.fill,
           ),
         ),

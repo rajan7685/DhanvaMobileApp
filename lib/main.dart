@@ -27,7 +27,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AuthenticationProvider.instance; // initiallize AuthProvider
-  TimeSlotApiService.fetchAllTImeSlots();
+  await SharedPreferenceService.init();
   runApp(MyApp());
 }
 
@@ -125,33 +125,34 @@ class _NavBarPageState extends State<NavBarPage> {
 
     // final currentIndex = tabs.keys.toList().indexOf(_currentPage);
     return Scaffold(
-        body: IndexedStack(
-          children: _navigationPages,
-          index: _currentPageIndex,
-        ),
-        bottomNavigationBar: CurvedBottomNavBar(
-          currentIndex: _currentPageIndex,
-          ontap: (int index) {
-            setState(() => {_currentPageIndex = index});
-          },
-          items: [
-            CurvedBottomNavBarItem(
-                title: "Home",
-                activeImage: _homeActiveImage,
-                inactiveImage: _homeInactiveImage),
-            CurvedBottomNavBarItem(
-                title: "Online",
-                activeImage: _onlineActiveImage,
-                inactiveImage: _onlineInactiveImage),
-            CurvedBottomNavBarItem(
-                title: 'Offline',
-                activeImage: _offlineActiveImage,
-                inactiveImage: _offlineInactiveImage),
-            CurvedBottomNavBarItem(
-                title: "Profile",
-                activeImage: _profileActiveImage,
-                inactiveImage: _profileInactiveImage)
-          ],
-        ));
+      body: IndexedStack(
+        children: _navigationPages,
+        index: _currentPageIndex,
+      ),
+      bottomNavigationBar: CurvedBottomNavBar(
+        currentIndex: _currentPageIndex,
+        ontap: (int index) {
+          setState(() => {_currentPageIndex = index});
+        },
+        items: [
+          CurvedBottomNavBarItem(
+              title: "Home",
+              activeImage: _homeActiveImage,
+              inactiveImage: _homeInactiveImage),
+          CurvedBottomNavBarItem(
+              title: "Online",
+              activeImage: _onlineActiveImage,
+              inactiveImage: _onlineInactiveImage),
+          CurvedBottomNavBarItem(
+              title: 'Offline',
+              activeImage: _offlineActiveImage,
+              inactiveImage: _offlineInactiveImage),
+          CurvedBottomNavBarItem(
+              title: "Profile",
+              activeImage: _profileActiveImage,
+              inactiveImage: _profileInactiveImage)
+        ],
+      ),
+    );
   }
 }
