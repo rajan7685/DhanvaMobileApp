@@ -43,6 +43,10 @@ class _MedicalRecordBottomSheetWidgetState
         TextEditingController(text: widget.newRecord ? '' : '6: 30 PM');
   }
 
+  _downloadFileAndPreview() async {
+    // need to implement new download and open logic due to the error
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -295,20 +299,25 @@ class _MedicalRecordBottomSheetWidgetState
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text(
-                    'Download All',
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFF00A8A3),
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                ],
+            InkWell(
+              onTap: () {
+                _downloadFileAndPreview();
+              },
+              child: Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(
+                      'Download All',
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Open Sans',
+                            color: Color(0xFF00A8A3),
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Padding(

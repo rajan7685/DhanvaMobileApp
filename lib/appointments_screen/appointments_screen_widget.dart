@@ -132,7 +132,9 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.65,
-                                      child: AppointmentsBottomSheetWidget(),
+                                      child: AppointmentsBottomSheetWidget(
+                                        appointmentJson: resData[index],
+                                      ),
                                     ),
                                   );
                                 },
@@ -155,6 +157,12 @@ class AppointmentCard extends StatelessWidget {
 
   const AppointmentCard({Key key, @required this.appointmentModel})
       : super(key: key);
+
+  String statusText(int val) {
+    if (val == 0) return 'Booked';
+    if (val == 1) return 'Completed';
+    return 'Cancelled';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -233,12 +241,7 @@ class AppointmentCard extends StatelessWidget {
                           onPressed: () {
                             print('Button pressed ...');
                           },
-                          text: DateTime.now().millisecondsSinceEpoch >=
-                                  DateTime.parse(
-                                          appointmentModel['appointmentDate'])
-                                      .millisecondsSinceEpoch
-                              ? 'Completed'
-                              : 'Booked',
+                          text: statusText(appointmentModel['status']),
                           options: FFButtonOptions(
                             // width: 80,
                             height: 26,

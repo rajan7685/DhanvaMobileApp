@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -16,6 +20,22 @@ class FamilyMembersScreenWidget extends StatefulWidget {
 
 class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isLoading = true;
+  Patient patient;
+  Future<void> _loadMembersData() async {
+    await SharedPreferenceService.init();
+    patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    _loadMembersData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,200 +87,118 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                     ),
                   ],
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      scrollDirection: Axis.vertical,
+                if (isLoading)
+                  CircularProgressIndicator()
+                else
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.vertical,
+                        itemCount: patient.relations.length + 1,
+                        itemBuilder: (_, int index) {
+                          return _buildFamilyMember(context, index);
+                        },
+                      ),
+                    ),
+                  ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(12, 18, 12, 10),
+                  child: Container(
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFEEEEEE),
+                      borderRadius: BorderRadius.circular(36),
+                      border: Border.all(
+                        color: Color(0xFF00A8A3),
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Image.asset(
-                              'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
-                              width: 30,
-                              height: 30,
-                              fit: BoxFit.cover,
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
-                                child: Text(
-                                  'Rajkumar',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Open Sans',
-                                        color: Color(0xFF6D6D6D),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                ),
-                              ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(0xFF6D6D6D),
-                              size: 32,
-                            ),
-                          ],
-                        ),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Image.asset(
-                                'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
-                                width: 30,
-                                height: 30,
-                                fit: BoxFit.cover,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Father',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Color(0xFF6D6D6D),
-                                              fontSize: 11,
-                                            ),
-                                      ),
-                                      Text(
-                                        'Srinivasan',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Color(0xFF6D6D6D),
-                                              fontSize: 16,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Color(0xFF6D6D6D),
-                                size: 32,
-                              ),
-                            ],
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                          child: Text(
+                            'Add Member',
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF00A8A3),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Image.asset(
-                                'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
-                                width: 30,
-                                height: 30,
-                                fit: BoxFit.cover,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      8, 0, 0, 0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Wife',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Color(0xFF6D6D6D),
-                                              fontSize: 11,
-                                            ),
-                                      ),
-                                      Text(
-                                        'Priya',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Poppins',
-                                              color: Color(0xFF6D6D6D),
-                                              fontSize: 16,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                color: Color(0xFF6D6D6D),
-                                size: 32,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(12, 18, 12, 0),
-                          child: Container(
-                            height: 55,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFEEEEEE),
-                              borderRadius: BorderRadius.circular(36),
-                              border: Border.all(
-                                color: Color(0xFF00A8A3),
-                                width: 2,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 12, 0),
-                                  child: Text(
-                                    'Add Member',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Open Sans',
-                                          color: Color(0xFF00A8A3),
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.add_circle_outline_sharp,
-                                  color: Color(0xFF00A8A3),
-                                  size: 32,
-                                ),
-                              ],
-                            ),
-                          ),
+                        Icon(
+                          Icons.add_circle_outline_sharp,
+                          color: Color(0xFF00A8A3),
+                          size: 32,
                         ),
                       ],
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  /**
+   * 
+   */
+
+  Row _buildFamilyMember(BuildContext context, int index) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Image.asset(
+          'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
+          width: 30,
+          height: 30,
+          fit: BoxFit.cover,
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (index != 0)
+                  Text(
+                    patient.relations[index - 1].type,
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Poppins',
+                          color: Color(0xFF6D6D6D),
+                          fontSize: 11,
+                        ),
+                  ),
+                Text(
+                  index == 0
+                      ? patient.name
+                      : patient.relations[index - 1].patientName,
+                  style: FlutterFlowTheme.of(context).bodyText1.override(
+                        fontFamily: 'Poppins',
+                        color: Color(0xFF6D6D6D),
+                        fontSize: 16,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Icon(
+          Icons.arrow_forward_ios,
+          color: Color(0xFF6D6D6D),
+          size: 32,
+        ),
+      ],
     );
   }
 }

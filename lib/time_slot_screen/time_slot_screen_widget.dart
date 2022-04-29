@@ -82,61 +82,60 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
     return Scaffold(
       backgroundColor: Color(0xFFF5F5F5),
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Row(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Icon(
+                    Icons.arrow_back_rounded,
+                    color: Color(0xff00A8A3),
+                    size: 34,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: double.maxFinite,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Icon(
-                      Icons.arrow_back_rounded,
-                      color: Color(0xff00A8A3),
-                      size: 34,
-                    ),
+                  Text(
+                    'Today',
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Open Sans',
+                          color: Color(0xFF282828),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Text(
+                    'Tomorrow',
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Open Sans',
+                          color: Color(0xFF282828),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Text(
+                    DateFormat.MMMd()
+                        .format(DateTime.now().add(Duration(days: 2))),
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Open Sans',
+                          color: Color(0xFF282828),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ),
-              SizedBox(
-                width: double.maxFinite,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'Today',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Color(0xFF282828),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Text(
-                      'Tomorrow',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Color(0xFF282828),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Text(
-                      DateFormat.MMMd()
-                          .format(DateTime.now().add(Duration(days: 2))),
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Color(0xFF282828),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-              Consumer(
+            ),
+            Expanded(
+              child: Consumer(
                 builder: (context, ref, child) {
                   TimeSlotProvider slotProv = ref.watch(_timeSotProvider);
                   if (slotProv.isTimeSlotDataLoading) {
@@ -153,33 +152,32 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
                   }
                 },
               ),
+            ),
 
-              InkWell(
-                onTap: () {
-                  print(_dateTimeSelectedId.split(',')[0]);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AppointmentBookedScreenWidget(
-                          symtopms: widget.symptopms,
-                          timeString: _dateTimeSelectedString,
-                          patientId: widget.patientId,
-                          date:
-                              DateTime.parse(_dateTimeSelectedId.split(',')[0]),
-                          doctorName: _selectedDoctorName,
-                          doctorId: _selectedDoctorId,
-                          service: widget.service)));
-                },
-                child: Container(
-                    width: 185,
-                    margin: EdgeInsets.only(bottom: 12),
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(22),
-                        color: Color(0xff00A8A3)),
-                    child: NextIconButtonWidget()),
-              )
-              // next button
-            ],
-          ),
+            InkWell(
+              onTap: () {
+                print(_dateTimeSelectedId.split(',')[0]);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AppointmentBookedScreenWidget(
+                        symtopms: widget.symptopms,
+                        timeString: _dateTimeSelectedString,
+                        patientId: widget.patientId,
+                        date: DateTime.parse(_dateTimeSelectedId.split(',')[0]),
+                        doctorName: _selectedDoctorName,
+                        doctorId: _selectedDoctorId,
+                        service: widget.service)));
+              },
+              child: Container(
+                  width: 225,
+                  margin: EdgeInsets.only(bottom: 18, top: 8),
+                  padding: EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(22),
+                      color: Color(0xff00A8A3)),
+                  child: NextIconButtonWidget()),
+            )
+            // next button
+          ],
         ),
       ),
     );
@@ -271,7 +269,7 @@ class _DoctorTimeSlotListRendererState
       flex: 1,
       child: ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
           itemCount: widget.slots.length,
           itemBuilder: (context, int index) {
@@ -366,7 +364,7 @@ class _GlobalTimeSlotRendererState extends State<GlobalTimeSlotRenderer> {
       flex: 1,
       child: ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
           itemCount: widget.availableTimeSlots.length,
           itemBuilder: (context, int index) {

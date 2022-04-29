@@ -1,3 +1,10 @@
+import 'dart:io';
+import 'dart:math';
+
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:dio/dio.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart' as path;
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +12,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppointmentsBottomSheetWidget extends StatefulWidget {
-  const AppointmentsBottomSheetWidget({Key key}) : super(key: key);
+  final Map<String, dynamic> appointmentJson;
+  const AppointmentsBottomSheetWidget({Key key, @required this.appointmentJson})
+      : super(key: key);
 
   @override
   _AppointmentsBottomSheetWidgetState createState() =>
@@ -14,6 +23,28 @@ class AppointmentsBottomSheetWidget extends StatefulWidget {
 
 class _AppointmentsBottomSheetWidgetState
     extends State<AppointmentsBottomSheetWidget> {
+  final String _prescriptionDownloadUri =
+      'http://api3.dhanva.icu/files/download/';
+  String statusText(int val) {
+    if (val == 0) return 'Booked';
+    if (val == 1) return 'Completed';
+    return 'Cancelled';
+  }
+
+  Future<void> _downloadFileAndPreview() async {
+    Directory appDocDir = await path.getTemporaryDirectory();
+    try {
+      Response res = await ApiService.dio.download(
+          '${_prescriptionDownloadUri}61cdcfdf7c9850a47de40886',
+          appDocDir.path + 'Medical_Records/61cdcfdf7c9850a47de40886.pdf');
+      await OpenFile.open(
+          '${appDocDir.path}/Medical_Records/61cdcfdf7c9850a47de40886.pdf');
+    } catch (e) {
+      print(e.toString());
+    }
+    print('opened the file');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -60,7 +91,7 @@ class _AppointmentsBottomSheetWidgetState
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                'Srinavasan',
+                                widget.appointmentJson['patient_id']['name'],
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -70,26 +101,28 @@ class _AppointmentsBottomSheetWidgetState
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),
-                              Align(
-                                alignment: AlignmentDirectional(0, 0),
-                                child: Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      4, 0, 0, 0),
-                                  child: Text(
-                                    '(Father)',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Open Sans',
-                                          fontSize: 12,
-                                        ),
-                                  ),
-                                ),
-                              ),
+                              // Align(
+                              //   alignment: AlignmentDirectional(0, 0),
+                              //   child: Padding(
+                              //     padding: EdgeInsetsDirectional.fromSTEB(
+                              //         4, 0, 0, 0),
+                              //     child: Text(
+                              //       '(Father)',
+                              //       style: FlutterFlowTheme.of(context)
+                              //           .bodyText1
+                              //           .override(
+                              //             fontFamily: 'Open Sans',
+                              //             fontSize: 12,
+                              //           ),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                           Text(
-                            'Dec 20, 2021 1:02PM',
+                            DateFormat('MMM d yyyy hh:mma').format(
+                                DateTime.parse(
+                                    widget.appointmentJson['appointmentDate'])),
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Poppins',
@@ -100,7 +133,7 @@ class _AppointmentsBottomSheetWidgetState
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                             child: Text(
-                              'Dr A R Rajesh',
+                              widget.appointmentJson['doctor']['name'],
                               style: FlutterFlowTheme.of(context)
                                   .subtitle1
                                   .override(
@@ -111,7 +144,7 @@ class _AppointmentsBottomSheetWidgetState
                             ),
                           ),
                           Text(
-                            '(General Physician)',
+                            "(${widget.appointmentJson['doctor']['designation']})",
                             style:
                                 FlutterFlowTheme.of(context).subtitle2.override(
                                       fontFamily: 'Poppins',
@@ -180,7 +213,7 @@ class _AppointmentsBottomSheetWidgetState
                             child: Align(
                               alignment: AlignmentDirectional(0, 0),
                               child: Text(
-                                'Booked',
+                                statusText(widget.appointmentJson['status']),
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -222,7 +255,39 @@ class _AppointmentsBottomSheetWidgetState
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    'Transaction id: \${idNumber}',
+                    "Transaction id: ${widget.appointmentJson['payment_info']['transaction_id']}",
+                    style: FlutterFlowTheme.of(context).subtitle2.override(
+                          fontFamily: 'Poppins',
+                          color: Color(0xFF7E7E7E),
+                          fontSize: 15,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  // Text(
+                  //   'Bank Name: ',
+                  //   style: FlutterFlowTheme.of(context).subtitle2.override(
+                  //         fontFamily: 'Poppins',
+                  //         color: Color(0xFF7E7E7E),
+                  //         fontSize: 15,
+                  //       ),
+                  // ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    'Payment Mode: ',
                     style: FlutterFlowTheme.of(context).subtitle2.override(
                           fontFamily: 'Poppins',
                           color: Color(0xFF7E7E7E),
@@ -238,39 +303,7 @@ class _AppointmentsBottomSheetWidgetState
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    'Bank Name: ICICI',
-                    style: FlutterFlowTheme.of(context).subtitle2.override(
-                          fontFamily: 'Poppins',
-                          color: Color(0xFF7E7E7E),
-                          fontSize: 15,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text(
-                    'Payment Mode: NetBanking',
-                    style: FlutterFlowTheme.of(context).subtitle2.override(
-                          fontFamily: 'Poppins',
-                          color: Color(0xFF7E7E7E),
-                          fontSize: 15,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text(
-                    'Paid: Rs 999',
+                    'Paid: ${widget.appointmentJson['payment_info']['amount']}',
                     style: FlutterFlowTheme.of(context).subtitle2.override(
                           fontFamily: 'Poppins',
                           color: Color(0xFF171717),
@@ -304,7 +337,7 @@ class _AppointmentsBottomSheetWidgetState
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    'Consultation notes will be plcaed here',
+                    widget.appointmentJson['symptoms'],
                     style: FlutterFlowTheme.of(context).subtitle2.override(
                           fontFamily: 'Poppins',
                           color: Color(0xFF7E7E7E),
@@ -315,50 +348,58 @@ class _AppointmentsBottomSheetWidgetState
               ),
             ),
             Spacer(),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 28),
-              child: InkWell(
-                onTap: () async {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  width: 340,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF00A8A3),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: AlignmentDirectional(0, 0),
-                        child: Text(
-                          'Download Prescription',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+            if (widget.appointmentJson['status'] == 1)
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 28),
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    _downloadFileAndPreview();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            'Please wait while the file is downloading...')));
+                  },
+                  child: Container(
+                    width: 340,
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF00A8A3),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional(0, 0),
+                          child: Text(
+                            'Download Prescription',
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
-                        child: Image.asset(
-                          'assets/images/Layer_2.png',
-                          width: 35,
-                          height: 35,
-                          fit: BoxFit.cover,
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(8, 0, 0, 0),
+                          child: Transform.rotate(
+                            angle: pi / 2,
+                            child: Image.asset(
+                              'assets/images/Layer_2.png',
+                              width: 32,
+                              height: 32,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),

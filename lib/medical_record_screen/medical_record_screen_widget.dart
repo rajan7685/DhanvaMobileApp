@@ -138,26 +138,26 @@ class _MedicalRecordScreenWidgetState
                         itemBuilder: (context, index) {
                           return InkWell(
                               onTap: () async {
-                                // await showModalBottomSheet(
-                                //   isScrollControlled: true,
-                                //   backgroundColor: Colors.transparent,
-                                //   context: context,
-                                //   builder: (context) {
-                                //     return Padding(
-                                //       padding:
-                                //           MediaQuery.of(context).viewInsets,
-                                //       child: Container(
-                                //         height:
-                                //             MediaQuery.of(context).size.height *
-                                //                 0.8,
-                                //         child: MedicalRecordBottomSheetWidget(
-                                //           medicalRecord:
-                                //               _prov.medicalRecords[index],
-                                //         ),
-                                //       ),
-                                //     );
-                                //   },
-                                // );
+                                await showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (context) {
+                                    return Padding(
+                                      padding:
+                                          MediaQuery.of(context).viewInsets,
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.8,
+                                        child: MedicalRecordBottomSheetWidget(
+                                          medicalRecord:
+                                              _prov.medicalRecords[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
                               },
                               child: MedicalRecordCard(
                                 medicalRecord: _prov.medicalRecords[index],
