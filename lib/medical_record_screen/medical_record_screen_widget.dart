@@ -225,13 +225,13 @@ class MedicalRecordCard extends StatelessWidget {
                       style: FlutterFlowTheme.of(context).bodyText1,
                     ),
                     Text(
-                      'Fr A R Rajesh',
+                      medicalRecord.employeeId ?? '',
                       style: FlutterFlowTheme.of(context).bodyText1,
                     ),
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                       child: Text(
-                        DateFormat('yyyy-MM-dd HH:mm')
+                        DateFormat('MMM d, yyyy h:mma')
                             .format(medicalRecord.createdAt),
                         style: FlutterFlowTheme.of(context).bodyText1.override(
                               fontFamily: 'Open Sans',

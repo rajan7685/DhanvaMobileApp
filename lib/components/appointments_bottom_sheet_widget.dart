@@ -32,7 +32,7 @@ class _AppointmentsBottomSheetWidgetState
   }
 
   Future<void> _downloadFileAndPreview() async {
-    Directory appDocDir = await path.getTemporaryDirectory();
+    Directory appDocDir = await path.getApplicationDocumentsDirectory();
     try {
       Response res = await ApiService.dio.download(
           '${_prescriptionDownloadUri}61cdcfdf7c9850a47de40886',

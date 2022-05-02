@@ -382,18 +382,18 @@ class _StartBookingScreen2WidgetState
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
-                                                'please enter patient\'s symptomps')));
+                                                'Please enter patient\'s symptomps')));
                                   } else if (radioButtonValue == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
-                                                'please select a doctor option')));
+                                                'Please select a doctor option')));
                                   } else if (radioButtonValue == 'Yes' &&
                                       _selectedDoctor == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
-                                                'please select a doctor')));
+                                                'Please select a doctor')));
                                   } else {
                                     Navigator.push(
                                         context,

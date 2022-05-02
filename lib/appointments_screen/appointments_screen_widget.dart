@@ -226,7 +226,7 @@ class AppointmentCard extends StatelessWidget {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
                         child: Text(
-                          DateFormat('yyyy-MM-dd H:ma').format(DateTime.parse(
+                          DateFormat('MMM d, yyyy h:mma').format(DateTime.parse(
                               appointmentModel['appointmentDate'])),
                           style:
                               FlutterFlowTheme.of(context).bodyText1.override(
