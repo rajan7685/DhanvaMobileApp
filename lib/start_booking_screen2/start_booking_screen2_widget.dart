@@ -25,8 +25,10 @@ ChangeNotifierProvider<DoctorRecordProvider> _doctorsProvider =
 
 class StartBookingScreen2Widget extends ConsumerStatefulWidget {
   final QuickServiceUiModel service;
+  final String pageTitle;
 
-  const StartBookingScreen2Widget({Key key, @required this.service})
+  const StartBookingScreen2Widget(
+      {Key key, @required this.service, this.pageTitle = 'Start Booking'})
       : super(key: key);
 
   @override
@@ -160,7 +162,7 @@ class _StartBookingScreen2WidgetState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Start Booking',
+                      widget.pageTitle,
                       textAlign: TextAlign.start,
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',

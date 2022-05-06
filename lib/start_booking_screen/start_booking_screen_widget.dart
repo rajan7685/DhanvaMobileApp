@@ -134,7 +134,7 @@ class _StartBookingScreenWidgetState extends State<StartBookingScreenWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Start Booking',
+                      'Start Offline Booking',
                       textAlign: TextAlign.start,
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',

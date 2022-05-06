@@ -9,6 +9,7 @@ import 'package:dhanva_mobile_app/global/services/api_services/medical_records_s
 import 'package:dhanva_mobile_app/global/services/api_services/time_slot_api_service.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
+import 'package:dhanva_mobile_app/offline_consultation_screen/offline_consultation_screen_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -119,7 +120,7 @@ class _NavBarPageState extends State<NavBarPage> {
     List<Widget> _navigationPages = [
       HomeScreenWidget(),
       HospitalScreenWidget(),
-      HospitalScreenWidget(),
+      OfflineConsultationScreen(),
       ProfileScreenWidget(),
     ];
 
