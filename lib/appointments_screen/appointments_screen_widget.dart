@@ -35,6 +35,8 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
     resData =
         await MedicalAppointmentsService.fetchMedicalAppointments(patient.id);
+    resData.sort((a, b) => DateTime.parse(b['appointmentDate'])
+        .compareTo(DateTime.parse(a['appointmentDate'])));
     setState(() {
       isDataLoading = false;
     });
@@ -207,7 +209,7 @@ class AppointmentCard extends StatelessWidget {
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',
                                       color: Colors.black,
-                                      fontSize: 22,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.w600,
                                     ),
                           ),
@@ -244,12 +246,13 @@ class AppointmentCard extends StatelessWidget {
                           text: statusText(appointmentModel['status']),
                           options: FFButtonOptions(
                             // width: 80,
-                            height: 26,
+                            height: 24,
                             color: Colors.white,
                             textStyle:
                                 FlutterFlowTheme.of(context).subtitle2.override(
                                       fontFamily: 'Poppins',
                                       color: Color(0xFF0BA6C3),
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                     ),
                             borderSide: BorderSide(

@@ -159,23 +159,23 @@ class _ServicesByHospitalScreenState
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.hospitalDetails['hospital_name'],
-                      textAlign: TextAlign.start,
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Color(0xFFF3F4F4),
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
+                    // Text(
+                    //   widget.hospitalDetails['hospital_name'],
+                    //   textAlign: TextAlign.start,
+                    //   style: FlutterFlowTheme.of(context).bodyText1.override(
+                    //         fontFamily: 'Open Sans',
+                    //         color: Color(0xFFF3F4F4),
+                    //         fontSize: 24,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    // ),
                     Text(
                       'Find your Specialist',
                       textAlign: TextAlign.start,
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Color(0xFFF3F4F4),
-                            fontSize: 22,
+                            fontSize: 28,
                             fontWeight: FontWeight.bold,
                           ),
                     ),
