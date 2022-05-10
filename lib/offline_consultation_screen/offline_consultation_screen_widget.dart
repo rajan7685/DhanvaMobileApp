@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/doctors_by_hospital_screen/doctors_by_hospital_screen_widget.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_theme.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/offline_consultation_screen/services_by_hospital_screen.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class OfflineConsultationScreen extends StatefulWidget {
@@ -18,58 +21,18 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isDataLoading = true;
   List<dynamic> _hospitalJsonList;
+  String _hospitalListApi = 'http://api3.dhanva.icu/hospital/get_all';
 
-  final String hospitalListData = """[
-    {
-        "location": {
-            "coordinates": [
-                111,
-                111
-            ],
-            "type": "Point"
-        },
-        "hospital_name": "Test",
-        "logo": "/appolo.png",
-        "address_line_1": "test Street",
-        "address_line_2": "Thirupalai",
-        "service": [],
-        "enabled": false,
-        "_id": "62702fd41275131dcf0b64a9",
-        "city": "Madurai",
-        "hospital_license_number": "1234567890",
-        "prescription_format": "<html></html>",
-        "createdAt": "2022-05-02T19:24:04.312Z",
-        "__v": 0
-    },
-    {
-        "location": {
-            "coordinates": [
-                111,
-                111
-            ],
-            "type": "Point"
-        },
-        "hospital_name": "Test 3",
-        "logo": "/appolo.png",
-        "address_line_1": "test Street",
-        "address_line_2": "Thirupalai",
-        "service": [
-            "6005ed2fe29edb6ec7976d72",
-            "6005ed42e29edb6ec7976d73"
-        ],
-        "enabled": true,
-        "_id": "6270d49d93c9af9f5a968b99",
-        "city": "Madurai",
-        "hospital_license_number": "1234567890",
-        "prescription_format": "<html></html>",
-        "createdAt": "2022-05-03T07:07:09.711Z",
-        "__v": 0
-    }
-]""";
+  Map<String, dynamic> _hospitalListData;
 
   void _loadHospitalData() async {
     await Future.delayed(Duration(milliseconds: 850));
-    _hospitalJsonList = jsonDecode(hospitalListData);
+    Response res = await ApiService.dio.get(_hospitalListApi,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    _hospitalJsonList = res.data;
+    // print(res.data);
     setState(() {
       isDataLoading = false;
     });
