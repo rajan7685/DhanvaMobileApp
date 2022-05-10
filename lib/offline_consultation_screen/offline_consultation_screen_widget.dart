@@ -23,6 +23,7 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   List<dynamic> _hospitalJsonList;
   String _hospitalListApi = 'http://api3.dhanva.icu/hospital/get_all';
 
+  // ignore: unused_field
   Map<String, dynamic> _hospitalListData;
 
   void _loadHospitalData() async {
@@ -141,7 +142,7 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(14, 12, 14, 0),
                     child: isDataLoading
-                        ? CircularProgressIndicator()
+                        ? Center(child: CircularProgressIndicator())
                         : ListView.builder(
                             padding: EdgeInsets.zero,
                             scrollDirection: Axis.vertical,

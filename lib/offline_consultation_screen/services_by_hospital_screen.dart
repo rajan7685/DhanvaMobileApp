@@ -1,15 +1,15 @@
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_theme.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
 import 'package:dhanva_mobile_app/start_booking_screen/start_booking_screen_widget.dart';
 import 'package:dhanva_mobile_app/start_booking_screen2/start_booking_screen2_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-ChangeNotifierProvider<HomeServicesProvider> _servicesProvider =
-    ChangeNotifierProvider((ref) => HomeServicesProvider());
 
 class ServicesByHospitalScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> hospitalDetails;
@@ -25,15 +25,30 @@ class ServicesByHospitalScreen extends ConsumerStatefulWidget {
 class _ServicesByHospitalScreenState
     extends ConsumerState<ServicesByHospitalScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isDataLoading = true;
+  List<dynamic> _servicesList;
+
+  Future<void> _loadServicesData() async {
+    Response res = await ApiService.dio.post(
+        'http://api3.dhanva.icu/hospital/get_services',
+        data: {"id": widget.hospitalDetails["_id"]},
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    _servicesList = res.data;
+    setState(() {
+      _isDataLoading = false;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    ref.read(_servicesProvider).fetchServicesList(init: true);
+    _loadServicesData();
     //
   }
 
-  Widget _buildServiceCard(BuildContext context, QuickServiceUiModel model) {
+  Widget _buildServiceCard(BuildContext context, Map<String, dynamic> model) {
     return Container(
       width: 100,
       decoration: BoxDecoration(
@@ -51,7 +66,7 @@ class _ServicesByHospitalScreenState
                   MaterialPageRoute(
                     builder: (_) => StartBookingScreen2Widget(
                       pageTitle: 'Start Offline Booking',
-                      service: model,
+                      service: QuickServiceUiModel.fromJson(model),
                     ),
                   ),
                 );
@@ -63,16 +78,21 @@ class _ServicesByHospitalScreenState
                   color: Color(0xFFEEEEEE),
                   shape: BoxShape.rectangle,
                 ),
-                child: SvgPicture.network(
-                  model.iconLink,
-                  fit: BoxFit.contain,
-                ),
+                child: model['icon'] == null
+                    ? Image.network(
+                        'https://img.icons8.com/external-kiranshastry-gradient-kiranshastry/2x/external-health-medical-kiranshastry-gradient-kiranshastry.png',
+                        fit: BoxFit.contain,
+                      )
+                    : SvgPicture.network(
+                        model['icon'],
+                        fit: BoxFit.contain,
+                      ),
               ),
             ),
           ),
           SizedBox(height: 2),
           Text(
-            model.name,
+            model['name'],
             maxLines: 2,
             overflow: TextOverflow.fade,
             style: FlutterFlowTheme.of(context).bodyText1.override(
@@ -198,27 +218,19 @@ class _ServicesByHospitalScreenState
                   ),
                   child: Padding(
                     padding: EdgeInsets.all(12),
-                    child: Consumer(
-                      builder: (context, ref, child) {
-                        HomeServicesProvider _prov =
-                            ref.watch(_servicesProvider);
-                        if (_prov.isLoading) {
-                          return Center(child: CircularProgressIndicator());
-                        } else {
-                          return GridView.builder(
-                              physics: BouncingScrollPhysics(),
-                              itemCount: _prov.quickServices.length,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      mainAxisSpacing: 18,
-                                      crossAxisCount: 3,
-                                      crossAxisSpacing: 22,
-                                      mainAxisExtent: 120),
-                              itemBuilder: (_, int index) => _buildServiceCard(
-                                  context, _prov.quickServices[index]));
-                        }
-                      },
-                    ),
+                    child: _isDataLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : GridView.builder(
+                            physics: BouncingScrollPhysics(),
+                            itemCount: _servicesList.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    mainAxisSpacing: 18,
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 22,
+                                    mainAxisExtent: 120),
+                            itemBuilder: (_, int index) => _buildServiceCard(
+                                context, _servicesList[index])),
                   ),
                 ),
               ),

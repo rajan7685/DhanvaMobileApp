@@ -8,6 +8,7 @@ import 'package:dhanva_mobile_app/global/services/api_services/doctors_details_s
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dio/dio.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../booking_success_screen/booking_success_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -44,6 +45,7 @@ class AppointmentBookedScreenWidget extends StatefulWidget {
 class _AppointmentBookedScreenWidgetState
     extends State<AppointmentBookedScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  Razorpay _rzPay;
 
   Patient p = Patient.fromJson(
       jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
@@ -82,10 +84,46 @@ class _AppointmentBookedScreenWidgetState
     print(bookingRes.data);
   }
 
+  Future<void> _makePayment() async {
+    var options = {
+      'key': 'rzp_test_xbbqVc7yVFG9f6',
+      'amount': widget.service.amount * 100,
+      'name': widget.service.name,
+      'description': 'Service',
+      'prefill': {'contact': p.phone, 'email': p.email}
+    };
+    try {
+      _rzPay.open(options);
+    } catch (err) {
+      print(err.toString());
+    }
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    print(response);
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print(response);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print(response);
+  }
+
   @override
   void initState() {
-    if (widget.service.amount == 0) _bookAppointment();
+    _rzPay = Razorpay();
+    _rzPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _rzPay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _rzPay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //
   }
 
   @override
@@ -129,7 +167,7 @@ class _AppointmentBookedScreenWidgetState
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                     child: Text(
-                      'Has been booked with',
+                      'Wil be booked with',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Color(0xFF282828),
@@ -216,7 +254,7 @@ class _AppointmentBookedScreenWidgetState
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(8, 0, 0, 0),
                                               child: Text(
-                                                '${DateFormat.MMMd().format(widget.date)} ${widget.timeString}',
+                                                '${DateFormat('MMM d, yyyy h:mma').format(widget.date)}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1
@@ -299,17 +337,16 @@ class _AppointmentBookedScreenWidgetState
                         ),
                       ),
                       child: InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (widget.service.amount == 0) {
+                            await _bookAppointment();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Booked')),
                             );
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => BookingSuccessScreenWidget()));
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Can not make payment')),
-                            );
+                            _makePayment();
                           }
                         },
                         child: Row(
