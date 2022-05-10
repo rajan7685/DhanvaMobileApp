@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+import 'package:dhanva_mobile_app/family_members_screen/add_family_members_screen.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 
@@ -115,29 +116,40 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                         width: 2,
                       ),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                          child: Text(
-                            'Add Member',
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFF00A8A3),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AddFamilyMembersScreenWidget()));
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                            child: Text(
+                              'Add Member',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF00A8A3),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
                           ),
-                        ),
-                        Icon(
-                          Icons.add_circle_outline_sharp,
-                          color: Color(0xFF00A8A3),
-                          size: 32,
-                        ),
-                      ],
+                          Icon(
+                            Icons.add_circle_outline_sharp,
+                            color: Color(0xFF00A8A3),
+                            size: 32,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 )
