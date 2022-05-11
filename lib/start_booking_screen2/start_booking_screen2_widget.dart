@@ -26,9 +26,13 @@ ChangeNotifierProvider<DoctorRecordProvider> _doctorsProvider =
 class StartBookingScreen2Widget extends ConsumerStatefulWidget {
   final QuickServiceUiModel service;
   final String pageTitle;
+  final bool isOnline;
 
   const StartBookingScreen2Widget(
-      {Key key, @required this.service, this.pageTitle = 'Start Booking'})
+      {Key key,
+      @required this.service,
+      this.isOnline = true,
+      this.pageTitle = 'Start Booking'})
       : super(key: key);
 
   @override
@@ -402,6 +406,7 @@ class _StartBookingScreen2WidgetState
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 TimeSlotScreenWidget(
+                                                  isOnline: widget.isOnline,
                                                   symptopms:
                                                       textController2.text,
                                                   service: widget.service,

@@ -65,6 +65,7 @@ class _ServicesByHospitalScreenState
                   context,
                   MaterialPageRoute(
                     builder: (_) => StartBookingScreen2Widget(
+                      isOnline: false,
                       pageTitle: 'Start Offline Booking',
                       service: QuickServiceUiModel.fromJson(model),
                     ),

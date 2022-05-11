@@ -41,6 +41,7 @@ class TimeSlotScreenWidget extends ConsumerStatefulWidget {
   final Doctor doctor;
   final String patientId;
   final String symptopms;
+  final bool isOnline;
 
   const TimeSlotScreenWidget(
       {Key key,
@@ -48,6 +49,7 @@ class TimeSlotScreenWidget extends ConsumerStatefulWidget {
       @required this.symptopms,
       @required this.service,
       @required this.isUniversalTimeSlot,
+      this.isOnline = true,
       this.doctor})
       : super(key: key);
 
@@ -159,6 +161,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
                 print(_dateTimeSelectedId.split(',')[0]);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => AppointmentBookedScreenWidget(
+                        isOnline: widget.isOnline,
                         symtopms: widget.symptopms,
                         timeString: _dateTimeSelectedString,
                         patientId: widget.patientId,

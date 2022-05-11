@@ -25,6 +25,7 @@ class AppointmentBookedScreenWidget extends StatefulWidget {
   final String symtopms;
   final String patientId;
   final QuickServiceUiModel service;
+  final bool isOnline;
 
   const AppointmentBookedScreenWidget(
       {Key key,
@@ -34,7 +35,8 @@ class AppointmentBookedScreenWidget extends StatefulWidget {
       @required this.timeString,
       @required this.doctorName,
       @required this.doctorId,
-      @required this.service})
+      @required this.service,
+      this.isOnline = true})
       : super(key: key);
 
   @override
@@ -52,18 +54,21 @@ class _AppointmentBookedScreenWidgetState
 
   bool isDataLoading = true;
 
-  Future<void> _bookAppointment() async {
+  Future<void> _bookAppointment({@required String transactionId}) async {
     Response res = await ApiService.dio.post(
         'http://api3.dhanva.icu/payment/add',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
         data: {
-          "amount": "0",
-          "transaction_id": DateTime.now().millisecondsSinceEpoch,
-          "meta_info": {"payment_type": "Free"},
+          "amount": widget.service.amount,
+          "transaction_id": transactionId,
+          "meta_info": {
+            "payment_type": widget.service.amount == 0 ? "Free" : "Paid"
+          },
           "payment_status_string": "Success",
           "patient_id": widget.patientId,
+          "is_online": widget.isOnline,
           "status": 0
         });
     Response bookingRes = await ApiService.dio.post(
@@ -99,25 +104,32 @@ class _AppointmentBookedScreenWidgetState
     }
   }
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    print(response);
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    print('Payment success : $response');
+    await _bookAppointment(transactionId: response.paymentId);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => BookingSuccessScreenWidget()));
   }
 
-  void _handlePaymentError(PaymentFailureResponse response) {
-    print(response);
+  void _handlePaymentError(PaymentFailureResponse response) async {
+    print('Payment Failure : ${response.code} ${response.message}');
+    Map<String, dynamic> res = jsonDecode(response.message);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            "Payment failed : ${res['error']['description']}\nPlease try again")));
   }
 
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    print(response);
+  void _handleExternalWallet(ExternalWalletResponse response) async {
+    print('Payment external : $response');
   }
 
   @override
   void initState() {
+    super.initState();
     _rzPay = Razorpay();
     _rzPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _rzPay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _rzPay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-    super.initState();
   }
 
   @override
@@ -339,7 +351,10 @@ class _AppointmentBookedScreenWidgetState
                       child: InkWell(
                         onTap: () async {
                           if (widget.service.amount == 0) {
-                            await _bookAppointment();
+                            await _bookAppointment(
+                                transactionId: DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString());
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('Booked')),
                             );
