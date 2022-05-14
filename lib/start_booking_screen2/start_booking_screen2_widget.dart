@@ -27,12 +27,14 @@ class StartBookingScreen2Widget extends ConsumerStatefulWidget {
   final QuickServiceUiModel service;
   final String pageTitle;
   final bool isOnline;
+  final Map<String, dynamic> hospital;
 
   const StartBookingScreen2Widget(
       {Key key,
       @required this.service,
       this.isOnline = true,
-      this.pageTitle = 'Start Booking'})
+      this.pageTitle = 'Start Booking',
+      this.hospital})
       : super(key: key);
 
   @override
@@ -184,6 +186,17 @@ class _StartBookingScreen2WidgetState
                             fontWeight: FontWeight.w300,
                           ),
                     ),
+                    if (widget.hospital != null)
+                      Text(
+                        widget.hospital['hospital_name'],
+                        textAlign: TextAlign.start,
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Open Sans',
+                              color: Color(0xFFF3F4F4),
+                              fontSize: 18,
+                              // fontWeight: FontWeight.bold,
+                            ),
+                      ),
                   ],
                 ),
               ),
@@ -191,7 +204,7 @@ class _StartBookingScreen2WidgetState
                 alignment: AlignmentDirectional(0, 1),
                 child: Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.77,
+                  height: MediaQuery.of(context).size.height * 0.72,
                   decoration: BoxDecoration(
                     color: Color(0xFFEDF3F3),
                     borderRadius: BorderRadius.only(

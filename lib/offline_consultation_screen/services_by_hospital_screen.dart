@@ -67,6 +67,7 @@ class _ServicesByHospitalScreenState
                     builder: (_) => StartBookingScreen2Widget(
                       isOnline: false,
                       pageTitle: 'Start Offline Booking',
+                      hospital: widget.hospitalDetails,
                       service: QuickServiceUiModel.fromJson(model),
                     ),
                   ),

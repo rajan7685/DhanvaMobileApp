@@ -136,6 +136,9 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 12,
+            ),
             Expanded(
               child: Consumer(
                 builder: (context, ref, child) {
@@ -146,10 +149,17 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
                     );
                   } else {
                     if (widget.isUniversalTimeSlot) {
-                      return UniversalTimeSlotList(
-                          timeSlots: slotProv.universalTimeSlots);
+                      return Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        child: UniversalTimeSlotList(
+                            timeSlots: slotProv.universalTimeSlots),
+                      );
                     } else {
-                      return DoctorTimeSlotList(slots: slotProv.timeSlots);
+                      return Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                          child: DoctorTimeSlotList(slots: slotProv.timeSlots));
                     }
                   }
                 },
