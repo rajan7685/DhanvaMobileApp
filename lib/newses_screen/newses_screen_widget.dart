@@ -1,5 +1,8 @@
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
-
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dio/dio.dart';
+import 'package:timeago/timeago.dart' as timeAgo;
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../news_view_screen/news_view_screen_widget.dart';
@@ -16,6 +19,25 @@ class NewsesScreenWidget extends StatefulWidget {
 
 class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  List<dynamic> newsListJson;
+  bool isLoading = true;
+
+  Future<void> _fetchNewses() async {
+    Response res = await ApiService.dio.get('http://api3.dhanva.icu/feeds/get',
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    newsListJson = res.data;
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNewses();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,270 +133,149 @@ class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
                   ),
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(14, 14, 14, 0),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      scrollDirection: Axis.vertical,
-                      children: [
-                        InkWell(
-                          onTap: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NewsViewScreenWidget(),
-                              ),
-                            );
-                          },
-                          child: Card(
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            color: Colors.white,
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 12, 0, 0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        'https://picsum.photos/seed/853/600',
-                                        width: double.infinity,
-                                        height: 120,
-                                        fit: BoxFit.cover,
+                    child: isLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            itemCount: newsListJson.length,
+                            itemBuilder: (context, int index) => InkWell(
+                                onTap: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          NewsViewScreenWidget(
+                                        jsonNews: newsListJson[index],
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 12, 0, 0),
-                                    child: Text(
-                                      '‘Science is flawed’: COVID-19, ivermectin, and beyond',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Colors.black,
-                                            fontSize: 19,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 4, 0, 0),
-                                        child: Text(
-                                          'Author: Ravichandran',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 8, 0, 0),
-                                    child: Text(
-                                      'His work covers chronic disease, the pandemic response, and more recently, error detection in science.',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 12, 0, 12),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Text(
-                                          '1hr ago',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                color: Colors.black,
-                                                fontSize: 10,
-                                              ),
-                                        ),
-                                        Expanded(
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 0, 8, 0),
-                                                child: Icon(
-                                                  Icons.favorite_border,
-                                                  color: Colors.black,
-                                                  size: 20,
-                                                ),
-                                              ),
-                                              Icon(
-                                                Icons.share_sharp,
-                                                color: Colors.black,
-                                                size: 24,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                  );
+                                },
+                                child: _NewsCard(
+                                  newsJson: newsListJson[index],
+                                )),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                          child: Card(
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            color: Colors.white,
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 12, 0, 0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        'https://picsum.photos/seed/853/600',
-                                        width: double.infinity,
-                                        height: 120,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 12, 0, 0),
-                                    child: Text(
-                                      '‘Science is flawed’: COVID-19, ivermectin, and beyond',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Colors.black,
-                                            fontSize: 19,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 4, 0, 0),
-                                        child: Text(
-                                          'Author: Ravichandran',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 8, 0, 0),
-                                    child: Text(
-                                      'His work covers chronic disease, the pandemic response, and more recently, error detection in science.',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 12, 0, 12),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Text(
-                                          '1hr ago',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                color: Colors.black,
-                                                fontSize: 10,
-                                              ),
-                                        ),
-                                        Expanded(
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 0, 8, 0),
-                                                child: Icon(
-                                                  Icons.favorite_border,
-                                                  color: Colors.black,
-                                                  size: 20,
-                                                ),
-                                              ),
-                                              Icon(
-                                                Icons.share_sharp,
-                                                color: Colors.black,
-                                                size: 24,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NewsCard extends StatelessWidget {
+  final Map<String, dynamic> newsJson;
+
+  const _NewsCard({Key key, @required this.newsJson}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      color: Colors.white,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 12, 0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  'https://picsum.photos/seed/853/600',
+                  width: double.infinity,
+                  height: 120,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+              child: Text(
+                newsJson['title'] ?? 'Trending News',
+                style: FlutterFlowTheme.of(context).bodyText1.override(
+                      fontFamily: 'Open Sans',
+                      color: Colors.black,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ),
+            if (false)
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                    child: Text(
+                      'Author: Ravichandran',
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Poppins',
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+              child: Text(
+                newsJson['body'],
+                maxLines: 3,
+                overflow: TextOverflow.fade,
+                style: FlutterFlowTheme.of(context).bodyText1.override(
+                      fontFamily: 'Open Sans',
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 12),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    timeAgo
+                        .format(DateTime.parse(newsJson['updated_datetime'])),
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Poppins',
+                          color: Colors.black,
+                          fontSize: 10,
+                        ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 8, 0),
+                          child: Icon(
+                            Icons.favorite_border,
+                            color: Colors.black,
+                            size: 20,
+                          ),
+                        ),
+                        Icon(
+                          Icons.share_sharp,
+                          color: Colors.black,
+                          size: 24,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
