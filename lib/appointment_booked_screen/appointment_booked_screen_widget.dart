@@ -54,6 +54,14 @@ class _AppointmentBookedScreenWidgetState
 
   bool isDataLoading = true;
 
+  String _paymentModeSring(int code) {
+    if (widget.service.paymentType == 0) return "Free";
+    if (widget.service.paymentType == 1) return "RazorPay";
+    if (widget.service.paymentType == 2) return "UPI/DEBIT";
+    if (widget.service.paymentType == 3) return "BOTH";
+    return 'n/a';
+  }
+
   Future<void> _bookAppointment({@required String transactionId}) async {
     Response res = await ApiService.dio.post(
         'http://api3.dhanva.icu/payment/add',
@@ -64,7 +72,7 @@ class _AppointmentBookedScreenWidgetState
           "amount": widget.service.amount,
           "transaction_id": transactionId,
           "meta_info": {
-            "payment_type": widget.service.amount == 0 ? "Free" : "Paid"
+            "payment_type": _paymentModeSring(widget.service.paymentType)
           },
           "payment_status_string": "Success",
           "patient_id": widget.patientId,
@@ -350,7 +358,7 @@ class _AppointmentBookedScreenWidgetState
                       ),
                       child: InkWell(
                         onTap: () async {
-                          if (widget.service.amount == 0) {
+                          if (widget.service.paymentType == 0) {
                             await _bookAppointment(
                                 transactionId: DateTime.now()
                                     .millisecondsSinceEpoch
@@ -360,7 +368,14 @@ class _AppointmentBookedScreenWidgetState
                             );
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => BookingSuccessScreenWidget()));
-                          } else {
+                          } else if (widget.service.paymentType == 1) {
+                            // razorpay
+                            _makePayment();
+                          } else if (widget.service.paymentType == 2) {
+                            // through UPI/Debit
+                            _makePayment();
+                          } else if (widget.service.paymentType == 3) {
+                            // through both cash and UPI/Debit
                             _makePayment();
                           }
                         },
