@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dhanva_mobile_app/components/next_icon_button_widget.dart';
+import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_radio_button.dart';
 import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
@@ -48,19 +49,12 @@ class _AppointmentBookedScreenWidgetState
     extends State<AppointmentBookedScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Razorpay _rzPay;
+  String _paymentValueType;
 
   Patient p = Patient.fromJson(
       jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
 
   bool isDataLoading = true;
-
-  String _paymentModeSring(int code) {
-    if (widget.service.paymentType == 0) return "Free";
-    if (widget.service.paymentType == 1) return "RazorPay";
-    if (widget.service.paymentType == 2) return "UPI/DEBIT";
-    if (widget.service.paymentType == 3) return "BOTH";
-    return 'n/a';
-  }
 
   Future<void> _bookAppointment({@required String transactionId}) async {
     Response res = await ApiService.dio.post(
@@ -71,9 +65,7 @@ class _AppointmentBookedScreenWidgetState
         data: {
           "amount": widget.service.amount,
           "transaction_id": transactionId,
-          "meta_info": {
-            "payment_type": _paymentModeSring(widget.service.paymentType)
-          },
+          "meta_info": {"payment_type": _paymentValueType},
           "payment_status_string": "Success",
           "patient_id": widget.patientId,
           "is_online": widget.isOnline,
@@ -333,6 +325,55 @@ class _AppointmentBookedScreenWidgetState
                     ],
                   ),
                 ),
+                Row(
+                  children: [
+                    Text(
+                      "Payment Type",
+                      style: FlutterFlowTheme.of(context).bodyText1.override(
+                            fontFamily: 'Open Sans',
+                            color: Color(0xFF606E87),
+                            fontSize: 18,
+                          ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 6),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: FlutterFlowRadioButton(
+                    options: [
+                      if (widget.service.paymentType == 0) 'Free',
+                      if (widget.service.paymentType == 1 ||
+                          widget.service.paymentType == 3)
+                        'Online Payment',
+                      if (widget.service.paymentType == 2 ||
+                          widget.service.paymentType == 3)
+                        'Cash (Offline)',
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _paymentValueType = value;
+                      });
+                    },
+                    optionHeight: 25,
+                    textStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Poppins',
+                          color: Colors.black,
+                        ),
+                    selectedTextStyle:
+                        FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Open Sans',
+                              color: Color(0xFF606E87),
+                            ),
+                    buttonPosition: RadioButtonPosition.left,
+                    direction: Axis.vertical,
+                    radioButtonColor: Color(0xFF00A8A3),
+                    inactiveRadioButtonColor: Colors.white,
+                    toggleable: false,
+                    horizontalAlignment: WrapAlignment.end,
+                    verticalAlignment: WrapCrossAlignment.start,
+                  ),
+                ),
                 Spacer(),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
@@ -358,25 +399,27 @@ class _AppointmentBookedScreenWidgetState
                       ),
                       child: InkWell(
                         onTap: () async {
-                          if (widget.service.paymentType == 0) {
-                            await _bookAppointment(
-                                transactionId: DateTime.now()
-                                    .millisecondsSinceEpoch
-                                    .toString());
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Booked')),
-                            );
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => BookingSuccessScreenWidget()));
-                          } else if (widget.service.paymentType == 1) {
-                            // razorpay
-                            _makePayment();
-                          } else if (widget.service.paymentType == 2) {
-                            // through UPI/Debit
-                            _makePayment();
-                          } else if (widget.service.paymentType == 3) {
-                            // through both cash and UPI/Debit
-                            _makePayment();
+                          if (_paymentValueType == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    'Please select a payment mode to proceed')));
+                          } else {
+                            if (_paymentValueType == 'Free' ||
+                                _paymentValueType == 'Cash (Offline)') {
+                              await _bookAppointment(
+                                  transactionId: DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString());
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Booked')),
+                              );
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) =>
+                                      BookingSuccessScreenWidget()));
+                            } else {
+                              // through UPI/Debit
+                              _makePayment();
+                            }
                           }
                         },
                         child: Row(
