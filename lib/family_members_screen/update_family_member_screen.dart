@@ -1,27 +1,22 @@
-import 'dart:convert';
-
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_radio_button.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_util.dart';
-import 'package:dhanva_mobile_app/global/models/patient.dart';
-import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
-import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-class AddFamilyMembersScreenWidget extends StatefulWidget {
-  const AddFamilyMembersScreenWidget({Key key}) : super(key: key);
+class UpdateFamilyMemberWidget extends StatefulWidget {
+  final Map<String, dynamic> memberData;
+  const UpdateFamilyMemberWidget({Key key, @required this.memberData})
+      : super(key: key);
 
   @override
-  State<AddFamilyMembersScreenWidget> createState() =>
-      _AddFamilyMembersScreenWidgetState();
+  State<UpdateFamilyMemberWidget> createState() =>
+      _UpdateFamilyMemberWidgetState();
 }
 
-class _AddFamilyMembersScreenWidgetState
-    extends State<AddFamilyMembersScreenWidget> {
-  final _formKey = GlobalKey<FormState>();
+class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
   String gender;
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _patientNameController;
   TextEditingController _patientAgeController;
   TextEditingController _patientPhoneController;
@@ -33,16 +28,19 @@ class _AddFamilyMembersScreenWidgetState
   TextEditingController _bgController, _dobController;
   DateTime _dob;
   String _patientRelationUpdateApi = 'http://api3.dhanva.icu/patient/update';
-  String _patientRelationAddApi = 'http://api3.dhanva.icu/patient/add_relation';
-
+  //'${this[0].toUpperCase()}${this.substring(1)}'
   @override
   void initState() {
     super.initState();
-    _patientNameController = TextEditingController();
+    gender =
+        '${widget.memberData['user']['gender'][0].toString().toUpperCase()}${widget.memberData['user']['gender'].toString().substring(1)}';
+    _patientNameController = TextEditingController()
+      ..text = widget.memberData['user']['name'];
     _patientAgeController = TextEditingController();
     _patientPhoneController = TextEditingController();
     _patientEmailController = TextEditingController();
-    _patientRelationController = TextEditingController();
+    _patientRelationController = TextEditingController()
+      ..text = widget.memberData['type'];
     _emergencyPhoneController = TextEditingController();
     _bgController = TextEditingController();
     _heightController = TextEditingController();
@@ -64,51 +62,6 @@ class _AddFamilyMembersScreenWidgetState
         _dob = pickedDate;
         _dobController.text = DateFormat('EEEE MMM d, yyyy').format(_dob);
       });
-  }
-
-  Future<void> _addMember() async {
-    await SharedPreferenceService.init();
-    Patient patient = Patient.fromJson(
-        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    print('Sending to $_patientRelationAddApi');
-    Response res = await ApiService.dio.post(_patientRelationAddApi,
-        data: {
-          //
-          "name": _patientNameController.text,
-          "email": _patientEmailController.text,
-          "phone": _patientPhoneController.text,
-          "dob": _dob.toString(),
-          "bloodGroup": _bgController.text,
-          "age": _patientAgeController.text,
-          "emergency_contact": _emergencyPhoneController.text,
-          "height": _heightController.text,
-          "weight": _weightController.text,
-          "relation_type": _patientRelationController.text,
-          "gender": gender,
-          "parent": patient.id
-        },
-        options: Options(headers: {
-          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
-        }));
-    if (res.statusCode == 200) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Member has been added')));
-      _patientNameController.clear();
-      _patientAgeController.clear();
-      _patientPhoneController.clear();
-      _patientEmailController.clear();
-      _patientRelationController.clear();
-      _emergencyPhoneController.clear();
-      _bgController.clear();
-      _heightController.clear();
-      _weightController.clear();
-      _dobController.clear();
-      gender = null;
-      setState(() {
-        // update data in ui
-      });
-    }
-    print(res.data);
   }
 
   @override
@@ -147,11 +100,11 @@ class _AddFamilyMembersScreenWidgetState
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(8, 12, 0, 0),
                 child: Text(
-                  'Family Member',
+                  'Update Family Member',
                   style: FlutterFlowTheme.of(context).bodyText1.override(
                         fontFamily: 'Open Sans',
                         color: Color(0xFF00A8A3),
-                        fontSize: 24,
+                        fontSize: 28,
                         fontWeight: FontWeight.w600,
                       ),
                 ),
@@ -241,6 +194,7 @@ class _AddFamilyMembersScreenWidgetState
                                 Expanded(
                                     flex: 2,
                                     child: FlutterFlowRadioButton(
+                                      initialValue: gender,
                                       options: ['Male', 'Female'],
                                       onChanged: (value) {
                                         setState(() {
@@ -813,22 +767,8 @@ class _AddFamilyMembersScreenWidgetState
                         padding: const EdgeInsets.symmetric(horizontal: 28),
                         child: InkWell(
                           onTap: () {
-                            if (_formKey.currentState.validate()) {
-                              if (gender == null)
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content:
-                                            Text('Please select your gender')));
-                              // Add member call here
-                              if (gender != null) {
-                                print('all OK');
-                                _addMember();
-                              }
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                      'Please fill all the fields properly')));
-                            }
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Invalid data')));
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -843,7 +783,7 @@ class _AddFamilyMembersScreenWidgetState
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Add',
+                                  'Save',
                                   style: TextStyle(
                                       fontFamily: 'Open Sans',
                                       fontWeight: FontWeight.bold,

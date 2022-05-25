@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/family_members_screen/add_family_members_screen.dart';
+import 'package:dhanva_mobile_app/family_members_screen/update_family_member_screen.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dio/dio.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -22,11 +25,18 @@ class FamilyMembersScreenWidget extends StatefulWidget {
 class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = true;
+  List<dynamic> _familyMemberList;
   Patient patient;
   Future<void> _loadMembersData() async {
     await SharedPreferenceService.init();
     patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    Response res = await ApiService.dio.get(
+        "http://api3.dhanva.icu/patient/getPatientRelations/${patient.id}",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    _familyMemberList = res.data;
     setState(() {
       isLoading = false;
     });
@@ -89,7 +99,7 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                   ],
                 ),
                 if (isLoading)
-                  CircularProgressIndicator()
+                  Expanded(child: Center(child: CircularProgressIndicator()))
                 else
                   Expanded(
                     child: Padding(
@@ -97,9 +107,19 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
                         scrollDirection: Axis.vertical,
-                        itemCount: patient.relations.length + 1,
+                        itemCount: _familyMemberList.length,
                         itemBuilder: (_, int index) {
-                          return _buildFamilyMember(context, index);
+                          return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            UpdateFamilyMemberWidget(
+                                                memberData:
+                                                    _familyMemberList[index])));
+                              },
+                              child: _buildFamilyMember(context, index));
                         },
                       ),
                     ),
@@ -182,19 +202,17 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (index != 0)
-                  Text(
-                    patient.relations[index - 1].type,
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Poppins',
-                          color: Color(0xFF6D6D6D),
-                          fontSize: 11,
-                        ),
-                  ),
+                // if (index != 0)
                 Text(
-                  index == 0
-                      ? patient.name
-                      : patient.relations[index - 1].patientName,
+                  _familyMemberList[index]['type'],
+                  style: FlutterFlowTheme.of(context).bodyText1.override(
+                        fontFamily: 'Poppins',
+                        color: Color(0xFF6D6D6D),
+                        fontSize: 11,
+                      ),
+                ),
+                Text(
+                  _familyMemberList[index]['user']['name'],
                   style: FlutterFlowTheme.of(context).bodyText1.override(
                         fontFamily: 'Poppins',
                         color: Color(0xFF6D6D6D),
