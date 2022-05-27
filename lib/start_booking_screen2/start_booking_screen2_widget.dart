@@ -344,8 +344,8 @@ class _StartBookingScreen2WidgetState
                                   textStyle: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.black,
+                                        fontFamily: 'Open Sans',
+                                        color: Color(0xFF606E87),
                                       ),
                                   selectedTextStyle:
                                       FlutterFlowTheme.of(context)
@@ -357,7 +357,7 @@ class _StartBookingScreen2WidgetState
                                   buttonPosition: RadioButtonPosition.left,
                                   direction: Axis.horizontal,
                                   radioButtonColor: Color(0xFF00A8A3),
-                                  inactiveRadioButtonColor: Colors.white,
+                                  inactiveRadioButtonColor: Color(0xFF00A8A3),
                                   toggleable: false,
                                   horizontalAlignment: WrapAlignment.start,
                                   verticalAlignment: WrapCrossAlignment.start,

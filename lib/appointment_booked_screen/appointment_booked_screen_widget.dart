@@ -325,19 +325,25 @@ class _AppointmentBookedScreenWidgetState
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 8,
+                ),
                 Row(
                   children: [
+                    SizedBox(
+                      width: 6,
+                    ),
                     Text(
                       "Payment Type",
                       style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Color(0xFF606E87),
-                            fontSize: 18,
-                          ),
+                          fontFamily: 'Open Sans',
+                          color: Color(0xFF606E87),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                SizedBox(height: 6),
+                SizedBox(height: 7),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: FlutterFlowRadioButton(
@@ -357,18 +363,20 @@ class _AppointmentBookedScreenWidgetState
                     },
                     optionHeight: 25,
                     textStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Poppins',
-                          color: Colors.black,
+                          fontFamily: 'Open Sans',
+                          color: Color(0xFF606E87),
+                          fontSize: 16,
                         ),
                     selectedTextStyle:
                         FlutterFlowTheme.of(context).bodyText1.override(
                               fontFamily: 'Open Sans',
                               color: Color(0xFF606E87),
+                              fontSize: 16,
                             ),
                     buttonPosition: RadioButtonPosition.left,
                     direction: Axis.vertical,
                     radioButtonColor: Color(0xFF00A8A3),
-                    inactiveRadioButtonColor: Colors.white,
+                    inactiveRadioButtonColor: Color(0xFF00A8A3),
                     toggleable: false,
                     horizontalAlignment: WrapAlignment.end,
                     verticalAlignment: WrapCrossAlignment.start,

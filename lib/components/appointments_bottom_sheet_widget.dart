@@ -120,11 +120,12 @@ class _AppointmentsBottomSheetWidgetState
                             ],
                           ),
                           Text(
-                            DateFormat('MMM d yyyy hh:mma').format(
+                            DateFormat('MMM d, yyyy at hh:mma').format(
                                 DateTime.parse(
                                     widget.appointmentJson['appointmentDate'])),
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
+                                      // fontSize: 17,
                                       fontFamily: 'Poppins',
                                       color: Color(0xFF636363),
                                     ),
@@ -294,6 +295,16 @@ class _AppointmentsBottomSheetWidgetState
                           fontSize: 15,
                         ),
                   ),
+                  //widget.appointmentJson
+                  Text(
+                    widget.appointmentJson['payment_info']['meta_info']
+                        ['payment_type'],
+                    style: FlutterFlowTheme.of(context).subtitle2.override(
+                          fontFamily: 'Poppins',
+                          color: Color(0xFF7E7E7E),
+                          fontSize: 15,
+                        ),
+                  ),
                 ],
               ),
             ),
@@ -303,7 +314,7 @@ class _AppointmentsBottomSheetWidgetState
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    'Paid: ${widget.appointmentJson['payment_info']['amount']}',
+                    'Paid: Rs. ${widget.appointmentJson['payment_info']['amount']}',
                     style: FlutterFlowTheme.of(context).subtitle2.override(
                           fontFamily: 'Poppins',
                           color: Color(0xFF171717),
@@ -320,7 +331,7 @@ class _AppointmentsBottomSheetWidgetState
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text(
-                    'Consultation Notes',
+                    'Symptoms',
                     style: FlutterFlowTheme.of(context).title1.override(
                           fontFamily: 'Open Sans',
                           color: Colors.black,

@@ -22,18 +22,36 @@ class _AddFamilyMembersScreenWidgetState
     extends State<AddFamilyMembersScreenWidget> {
   final _formKey = GlobalKey<FormState>();
   String gender;
+  String patientRelationType;
   TextEditingController _patientNameController;
   TextEditingController _patientAgeController;
   TextEditingController _patientPhoneController;
   TextEditingController _patientEmailController;
-  TextEditingController _patientRelationController;
   TextEditingController _emergencyPhoneController;
   TextEditingController _heightController;
   TextEditingController _weightController;
   TextEditingController _bgController, _dobController;
   DateTime _dob;
+  List<String> relationList = [];
   String _patientRelationUpdateApi = 'http://api3.dhanva.icu/patient/update';
   String _patientRelationAddApi = 'http://api3.dhanva.icu/patient/add_relation';
+  String _patientRelationConsts =
+      'http://api3.dhanva.icu/patient/get_relation_constants';
+
+  Future<void> _loadRelationTypeButton() async {
+    await SharedPreferenceService.init();
+    Patient patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    Response res = await ApiService.dio.get(_patientRelationConsts,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    setState(() {
+      for (var a in res.data['data']) {
+        relationList.add(a);
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -42,12 +60,12 @@ class _AddFamilyMembersScreenWidgetState
     _patientAgeController = TextEditingController();
     _patientPhoneController = TextEditingController();
     _patientEmailController = TextEditingController();
-    _patientRelationController = TextEditingController();
     _emergencyPhoneController = TextEditingController();
     _bgController = TextEditingController();
     _heightController = TextEditingController();
     _weightController = TextEditingController();
     _dobController = TextEditingController();
+    _loadRelationTypeButton();
   }
 
   void _selectDob() async {
@@ -83,7 +101,7 @@ class _AddFamilyMembersScreenWidgetState
           "emergency_contact": _emergencyPhoneController.text,
           "height": _heightController.text,
           "weight": _weightController.text,
-          "relation_type": _patientRelationController.text,
+          "relation_type": patientRelationType,
           "gender": gender,
           "parent": patient.id
         },
@@ -97,13 +115,12 @@ class _AddFamilyMembersScreenWidgetState
       _patientAgeController.clear();
       _patientPhoneController.clear();
       _patientEmailController.clear();
-      _patientRelationController.clear();
       _emergencyPhoneController.clear();
       _bgController.clear();
       _heightController.clear();
       _weightController.clear();
       _dobController.clear();
-      gender = null;
+      gender = patientRelationType = null;
       setState(() {
         // update data in ui
       });
@@ -696,53 +713,33 @@ class _AddFamilyMembersScreenWidgetState
                       SizedBox(
                         height: 12,
                       ),
-                      TextFormField(
-                        controller: _patientRelationController,
-                        validator: (String relation) {
-                          if (relation.isEmpty) return 'Email cannot be empty';
-                          return null;
-                        },
-                        obscureText: false,
+                      // relation dropdown,
+                      DropdownButtonFormField(
                         decoration: InputDecoration(
-                          labelText: 'Relationship',
-                          labelStyle:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF9A9A9A),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                          hintStyle:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF606E87),
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0xFFC1C1C1),
-                              width: 1,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(26),
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0xFFC1C1C1),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Open Sans',
-                              color: Color(0xFF606E87),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                        textAlign: TextAlign.start,
-                        keyboardType: TextInputType.text,
+                            filled: true,
+                            hintStyle: TextStyle(color: Color(0xFF606E87)),
+                            hintText: "Relation Type",
+                            fillColor: Colors.white),
+                        value: patientRelationType,
+                        items: relationList
+                            .map((String type) => DropdownMenuItem(
+                                  child: Text(type),
+                                  value: type,
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            patientRelationType = value;
+                          });
+                        },
+                        iconEnabledColor: Color(0xFF606E87),
+                        iconDisabledColor: Color(0xFF606E87),
                       ),
                       SizedBox(
                         height: 8,
