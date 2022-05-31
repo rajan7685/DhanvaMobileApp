@@ -1,9 +1,12 @@
+import 'package:html/dom.dart' as HTML;
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
+import 'package:html/parser.dart' show parse;
 
 class NewsViewScreenWidget extends StatefulWidget {
   final Map<String, dynamic> jsonNews;
@@ -16,6 +19,14 @@ class NewsViewScreenWidget extends StatefulWidget {
 
 class _NewsViewScreenWidgetState extends State<NewsViewScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  HTML.Document data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = parse(widget.jsonNews['body']);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,15 +140,24 @@ class _NewsViewScreenWidgetState extends State<NewsViewScreenWidget> {
                       ),
                     ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                    child: Text(
-                      widget.jsonNews['body'],
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Colors.black,
-                          ),
-                    ),
-                  ),
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                      child: Column(
+                        children: List.generate(
+                            data.querySelectorAll('p').length,
+                            (index) => Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2),
+                                  child: Text(
+                                    data.querySelectorAll('p')[index].text,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Open Sans',
+                                          color: Colors.black,
+                                        ),
+                                  ),
+                                )),
+                      )),
                 ],
               ),
             ),

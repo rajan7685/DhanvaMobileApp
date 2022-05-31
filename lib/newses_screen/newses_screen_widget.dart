@@ -9,6 +9,8 @@ import '../news_view_screen/news_view_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:html/dom.dart' as HTML;
+import 'package:html/parser.dart' show parse;
 
 class NewsesScreenWidget extends StatefulWidget {
   const NewsesScreenWidget({Key key}) : super(key: key);
@@ -227,7 +229,7 @@ class _NewsCard extends StatelessWidget {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
               child: Text(
-                newsJson['body'],
+                parse(newsJson['body']).querySelector('p').text,
                 maxLines: 3,
                 overflow: TextOverflow.fade,
                 style: FlutterFlowTheme.of(context).bodyText1.override(
