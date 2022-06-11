@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:dhanva_mobile_app/global/models/medical_record.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dio/dio.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -27,9 +33,24 @@ class _MedicalRecordBottomSheetWidgetState
   TextEditingController textController4;
   TextEditingController textController5;
 
+  Future<void> _loadPatientInformation() async {
+    await SharedPreferenceService.init();
+    Patient patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    Response res = await ApiService.dio.get(
+        "http://api3.dhanva.icu/patient/getPatientDetails/${widget.medicalRecord.patientId}",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    setState(() {
+      textController1.text = res.data['name'];
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _loadPatientInformation();
     textController1 =
         TextEditingController(text: widget.newRecord ? '' : 'Test');
     textController2 =
