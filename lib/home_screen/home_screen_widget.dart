@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
@@ -9,6 +10,7 @@ import 'package:dhanva_mobile_app/psychometrics_assesment_screen/models/psychome
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/psychometrics_assesment_screen.dart';
 import 'package:dhanva_mobile_app/start_booking_screen/start_booking_screen_widget.dart';
 import 'package:dhanva_mobile_app/start_booking_screen2/start_booking_screen2_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../app_guide_screen1/app_guide_screen1_widget.dart';
@@ -47,12 +49,32 @@ class HomeScreenWidget extends ConsumerStatefulWidget {
 class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
   PageController pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isDataLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    ref.read(_servicesProvider).fetchServicesList(init: true);
     SharedPreferenceService.init();
+    // ref.read(_servicesProvider).fetchServicesList(init: true);
+    SharedPreferenceService.init();
+  }
+
+  void loadData() async {
+    String _hospitalListApi = 'http://api3.dhanva.icu/hospital/get_all/';
+
+    // data processing
+    await SharedPreferenceService.init();
+    try {
+      Response data = await Dio().get(
+          'http://api2.dhanva.icu/hospital/get_all/',
+          options: Options(headers: {
+            'Authorization':
+                SharedPreferenceService.loadString(key: AuthTokenKey)
+          }));
+      print(data);
+    } catch (w) {
+      print('error ${w.toString()}');
+    }
   }
 
   @override
@@ -281,20 +303,20 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
                             decoration: BoxDecoration(
                               color: Color(0xFFEEEEEE),
                             ),
-                            child: Consumer(
-                              builder: (context, ref, child) {
-                                HomeServicesProvider _prov =
-                                    ref.watch(_servicesProvider);
-                                if (_prov.isLoading) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
-                                } else {
-                                  return QuickServicesListView(
-                                    services: _prov.quickServices,
-                                  );
-                                }
-                              },
-                            ),
+                            // child: Consumer(
+                            //   builder: (context, ref, child) {
+                            //     HomeServicesProvider _prov =
+                            //         ref.watch(_servicesProvider);
+                            //     if (_prov.isLoading) {
+                            //       return Center(
+                            //           child: CircularProgressIndicator());
+                            //     } else {
+                            //       return QuickServicesListView(
+                            //         services: _prov.quickServices,
+                            //       );
+                            //     }
+                            //   },
+                            // ),
                           ),
                           // Padding(
                           //   padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
