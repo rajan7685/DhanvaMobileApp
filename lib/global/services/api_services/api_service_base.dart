@@ -13,8 +13,12 @@ class ApiService {
   /// files/docs/{PatientId}
   static const String medicalRecordsApi = 'files/docs/';
   static const String upcomingMedicalAppointmentsApi = 'appointment/upcoming/';
-  static const String allDoctorsApi = 'employee/doctor/all/'; //+docID
-  static const String allTImeSlotsApi = 'appointment/get_all_time_slots';
+
+  /// +@hospitalId/+@serviceId required to work
+  static const String allDoctorsApi = 'employee/doctors/';
+
+  /// +@OnlinehospitalId required to work
+  static const String allTimeSlotsApi = 'appointment/get_all_time_slots/';
 
   /// +@docId required
   /// appointment/get_time_slots/{docId}

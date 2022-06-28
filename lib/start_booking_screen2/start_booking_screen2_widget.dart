@@ -9,6 +9,7 @@ import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart
 import 'package:dhanva_mobile_app/start_booking_screen/start_booking_screen_widget.dart';
 import 'package:dhanva_mobile_app/time_slot_screen/time_slot_screen_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../components/next_icon_button_widget.dart';
 import '../flutter_flow/flutter_flow_radio_button.dart';
@@ -18,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Doctor _selectedDoctor = null;
+Doctor _selectedDoctor;
 
 ChangeNotifierProvider<DoctorRecordProvider> _doctorsProvider =
     ChangeNotifierProvider((ref) => DoctorRecordProvider());
@@ -27,11 +28,13 @@ class StartBookingScreen2Widget extends ConsumerStatefulWidget {
   final QuickServiceUiModel service;
   final String pageTitle;
   final bool isOnline;
+  final String hospitalId;
   final Map<String, dynamic> hospital;
 
   const StartBookingScreen2Widget(
       {Key key,
       @required this.service,
+      @required this.hospitalId,
       this.isOnline = true,
       this.pageTitle = 'Start Booking',
       this.hospital})
@@ -419,6 +422,7 @@ class _StartBookingScreen2WidgetState
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 TimeSlotScreenWidget(
+                                                  hospitalId: widget.hospitalId,
                                                   isOnline: widget.isOnline,
                                                   symptopms:
                                                       textController2.text,
@@ -504,7 +508,7 @@ class DoctorCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.network(
+              child: SvgPicture.network(
                 doctor.profilePic.isEmpty
                     ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kigo369AKCLUVSYPBs4K54t0WQbsfL9Lmw&usqp=CAU'
                     : doctor.profilePic,

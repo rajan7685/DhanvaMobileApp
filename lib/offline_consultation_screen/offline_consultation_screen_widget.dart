@@ -21,7 +21,7 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isDataLoading = true;
   List<dynamic> _hospitalJsonList;
-  String _hospitalListApi = 'http://api3.dhanva.icu/hospital/get_all';
+  String _hospitalListApi = 'http://api2.dhanva.icu/hospital/get_all';
 
   // ignore: unused_field
   Map<String, dynamic> _hospitalListData;
@@ -33,6 +33,9 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
     _hospitalJsonList = res.data;
+    // remove the online services
+    _hospitalJsonList
+        .removeWhere((jsonData) => jsonData['hospital_name'] == 'Online');
     // print(res.data);
     setState(() {
       isDataLoading = false;

@@ -6,8 +6,8 @@ import 'package:dio/dio.dart';
 class TimeSlotApiService {
   TimeSlotApiService._();
 
-  static const String _allTimeSlotUri =
-      '${ApiService.protocol}${ApiService.baseUrl}${ApiService.allTImeSlotsApi}';
+  static String _allTimeSlotUri =
+      '${ApiService.protocol}${ApiService.baseUrl}${ApiService.allTimeSlotsApi}${SharedPreferenceService.loadString(key: OnlineHospitalKey)}';
   static const String _timeSlotByDoctorUri =
       '${ApiService.protocol}${ApiService.baseUrl}${ApiService.timeSlotsByDoctorApi}';
 

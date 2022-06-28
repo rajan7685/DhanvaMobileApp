@@ -18,7 +18,7 @@ class MedicalAppointmentsService {
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-    print(res.data[0]);
+    // print(res.data[0]);
     // MedicalAppointment app = MedicalAppointment.fromJson(res.data[0]);
     // print(app.doctor.name);
     return res.data;

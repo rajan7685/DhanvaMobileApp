@@ -26,14 +26,16 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
 
   bool _isDataLoading = true;
   List<dynamic> _servicesList;
+  String _hospitalId;
 
   Future<void> _loadServicesData() async {
     Response res = await ApiService.dio.get(
-        'http://api3.dhanva.icu/services/get',
+        'http://api2.dhanva.icu/services/get_online',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-    _servicesList = res.data;
+    _servicesList = res.data['services'];
+    _hospitalId = res.data['hospitalId'];
     setState(() {
       _isDataLoading = false;
     });
@@ -64,6 +66,7 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
                   MaterialPageRoute(
                     builder: (_) => StartBookingScreen2Widget(
                       isOnline: false,
+                      hospitalId: _hospitalId,
                       pageTitle: 'Start Online Booking',
                       service: QuickServiceUiModel.fromJson(model),
                     ),
@@ -135,16 +138,6 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
                   mainAxisSize: MainAxisSize.max,
                   // mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back_rounded,
-                        color: Colors.white,
-                        size: 34,
-                      ),
-                    ),
                     Spacer(),
                     Container(
                       width: 45,

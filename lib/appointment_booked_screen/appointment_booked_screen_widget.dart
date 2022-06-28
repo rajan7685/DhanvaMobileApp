@@ -20,6 +20,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppointmentBookedScreenWidget extends StatefulWidget {
   final String doctorId;
+  final String hospitalId;
   final String doctorName;
   final DateTime date;
   final String timeString;
@@ -31,6 +32,7 @@ class AppointmentBookedScreenWidget extends StatefulWidget {
   const AppointmentBookedScreenWidget(
       {Key key,
       @required this.date,
+      @required this.hospitalId,
       @required this.symtopms,
       @required this.patientId,
       @required this.timeString,
@@ -58,7 +60,7 @@ class _AppointmentBookedScreenWidgetState
 
   Future<void> _bookAppointment({@required String transactionId}) async {
     Response res = await ApiService.dio.post(
-        'http://api3.dhanva.icu/payment/add',
+        'http://api2.dhanva.icu/payment/add',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
@@ -72,7 +74,7 @@ class _AppointmentBookedScreenWidgetState
           "status": 0
         });
     Response bookingRes = await ApiService.dio.post(
-        'http://api3.dhanva.icu/appointment/book',
+        'http://api2.dhanva.icu/appointment/book',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
@@ -84,7 +86,8 @@ class _AppointmentBookedScreenWidgetState
           "time_slot": widget.timeString,
           "payment_info": res.data['_id'],
           "doctor": widget.doctorId,
-          "serviceId": widget.service.id
+          "serviceId": widget.service.id,
+          "hospital_id": widget.hospitalId
         });
     print(bookingRes.data);
   }

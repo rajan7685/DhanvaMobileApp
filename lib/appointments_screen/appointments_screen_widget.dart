@@ -74,7 +74,7 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
           // final res = await FilePicker.platform.pickFiles(allowMultiple: false);
           // await OpenFile.open(res.files.first.path);
           final String _prescriptionDownloadUri =
-              'http://api3.dhanva.icu/files/download/';
+              'http://api2.dhanva.icu/files/download/';
           Directory path = await getApplicationDocumentsDirectory();
 
           print(path.uri);
@@ -126,34 +126,40 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
                 Expanded(
                   child: isDataLoading
                       ? Center(child: CircularProgressIndicator())
-                      : ListView.builder(
-                          itemCount: resData.length,
-                          itemBuilder: (_, int index) => GestureDetector(
-                            child: AppointmentCard(
-                              appointmentModel: resData[index],
-                            ),
-                            onTap: () async {
-                              await showModalBottomSheet(
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                builder: (context) {
-                                  return Padding(
-                                    padding: MediaQuery.of(context).viewInsets,
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
+                      : (resData.length == 0
+                          ? Center(
+                              child: Text(
+                                  'Nothing yet, Try booking an appointment'))
+                          : ListView.builder(
+                              itemCount: resData.length,
+                              itemBuilder: (_, int index) => GestureDetector(
+                                child: AppointmentCard(
+                                  appointmentModel: resData[index],
+                                ),
+                                onTap: () async {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:
+                                            MediaQuery.of(context).viewInsets,
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
                                               0.65,
-                                      child: AppointmentsBottomSheetWidget(
-                                        appointmentJson: resData[index],
-                                      ),
-                                    ),
+                                          child: AppointmentsBottomSheetWidget(
+                                            appointmentJson: resData[index],
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            },
-                          ),
-                        ),
+                              ),
+                            )),
                 ),
               ],
             ),
