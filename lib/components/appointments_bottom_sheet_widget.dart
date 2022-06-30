@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:html/dom.dart' as HTML;
 
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
+import 'package:html/parser.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -25,10 +28,28 @@ class _AppointmentsBottomSheetWidgetState
     extends State<AppointmentsBottomSheetWidget> {
   final String _prescriptionDownloadUri =
       'http://api3.dhanva.icu/files/download/';
+  String _consultationNotes;
+
+  HTML.Document _data;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.appointmentJson['hasConsultation']) _loadConsultaionNotes();
+  }
+
   String statusText(int val) {
-    if (val == 0) return 'Booked';
-    if (val == 1) return 'Completed';
-    return 'Cancelled';
+    String status;
+    if (widget.appointmentJson['hasConsultation'])
+      status = 'Completed';
+    else if (val == 0)
+      status = 'Booked';
+    else if (val == 1)
+      status = 'Accepted';
+    else if (val == 2)
+      status = 'Cancelled';
+    else if (val == 3) status = 'Error';
+    return status;
   }
 
   Future<void> _downloadFileAndPreview() async {
@@ -37,6 +58,7 @@ class _AppointmentsBottomSheetWidgetState
       Response res = await ApiService.dio.download(
           '${_prescriptionDownloadUri}61cdcfdf7c9850a47de40886',
           appDocDir.path + 'Medical_Records/61cdcfdf7c9850a47de40886.pdf');
+      print(res.data);
       await OpenFile.open(
           '${appDocDir.path}/Medical_Records/61cdcfdf7c9850a47de40886.pdf');
     } catch (e) {
@@ -45,10 +67,21 @@ class _AppointmentsBottomSheetWidgetState
     print('opened the file');
   }
 
+  void _loadConsultaionNotes() async {
+    String consultationNoteUri = 'http://api2.dhanva.icu/prescription/get/';
+    Response res = await ApiService.dio.get(
+        '$consultationNoteUri${widget.appointmentJson['_id']}',
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    setState(() {
+      _consultationNotes = res.data['Consultation_notes'];
+    });
+    _data = parse(_consultationNotes);
+  }
+
   @override
   Widget build(BuildContext context) {
-    debugPrint(widget.appointmentJson.toString());
-    debugPrint(widget.appointmentJson['payment_info']['meta_info'].toString());
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
       child: Container(
@@ -122,7 +155,7 @@ class _AppointmentsBottomSheetWidgetState
                             ],
                           ),
                           Text(
-                            DateFormat('MMM d, yyyy at hh:mma').format(
+                            DateFormat('MMM d, yyyy hh:mma').format(
                                 DateTime.parse(
                                     widget.appointmentJson['appointmentDate'])),
                             style:
@@ -360,6 +393,48 @@ class _AppointmentsBottomSheetWidgetState
                 ],
               ),
             ),
+            SizedBox(
+              height: 12,
+            ),
+            if (widget.appointmentJson['hasConsultation'])
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      'Consultaion Notes',
+                      style: FlutterFlowTheme.of(context).title1.override(
+                            fontFamily: 'Open Sans',
+                            color: Colors.black,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            SizedBox(
+              height: 16,
+            ),
+            if (_consultationNotes != null && _consultationNotes.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      _data
+                          .querySelector('p')
+                          .querySelector('strong')
+                          .innerHtml,
+                      style: FlutterFlowTheme.of(context).subtitle2.override(
+                            fontFamily: 'Poppins',
+                            color: Color(0xFF7E7E7E),
+                            fontSize: 15,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
             Spacer(),
             if (widget.appointmentJson['status'] == 1)
               Padding(

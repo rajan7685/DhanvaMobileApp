@@ -149,7 +149,7 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.65,
+                                              0.88,
                                           child: AppointmentsBottomSheetWidget(
                                             appointmentJson: resData[index],
                                           ),
@@ -177,9 +177,15 @@ class AppointmentCard extends StatelessWidget {
       : super(key: key);
 
   String statusText(int val) {
-    if (val == 0) return 'Booked';
-    if (val == 1) return 'Completed';
-    return 'Cancelled';
+    String status;
+    if (appointmentModel['hasConsultation'])
+      status = 'Completed';
+    else if (val == 0)
+      status = 'Booked';
+    else if (val == 1)
+      status = 'Accepted';
+    else if (val == 2) status = 'Cancelled';
+    return status;
   }
 
   @override
