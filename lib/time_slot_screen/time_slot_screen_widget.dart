@@ -41,6 +41,7 @@ class TimeSlotScreenWidget extends ConsumerStatefulWidget {
   final QuickServiceUiModel service;
   final Doctor doctor;
   final String patientId;
+  final String patientRelationType;
   final String symptopms;
   final bool isOnline;
   final String hospitalId;
@@ -48,6 +49,7 @@ class TimeSlotScreenWidget extends ConsumerStatefulWidget {
   const TimeSlotScreenWidget(
       {Key key,
       @required this.patientId,
+      @required this.patientRelationType,
       @required this.hospitalId,
       @required this.symptopms,
       @required this.service,
@@ -71,9 +73,9 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
       print(widget.doctor.name);
       _selectedDoctorId = widget.doctor.id;
       _selectedDoctorName = widget.doctor.name;
-      ref
-          .read(_timeSotProvider)
-          .fetchTimeSlotByDoctor(widget.doctor.id, init: true);
+      ref.read(_timeSotProvider).fetchTimeSlotByDoctor(
+          widget.hospitalId, widget.doctor.id,
+          init: true);
     }
   }
 
@@ -174,6 +176,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
                 print(_dateTimeSelectedId.split(',')[0]);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => AppointmentBookedScreenWidget(
+                        patientRelationType: widget.patientRelationType,
                         hospitalId: widget.hospitalId,
                         isOnline: widget.isOnline,
                         symtopms: widget.symptopms,

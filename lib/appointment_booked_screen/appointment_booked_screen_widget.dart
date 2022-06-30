@@ -26,6 +26,7 @@ class AppointmentBookedScreenWidget extends StatefulWidget {
   final String timeString;
   final String symtopms;
   final String patientId;
+  final String patientRelationType;
   final QuickServiceUiModel service;
   final bool isOnline;
 
@@ -33,6 +34,7 @@ class AppointmentBookedScreenWidget extends StatefulWidget {
       {Key key,
       @required this.date,
       @required this.hospitalId,
+      @required this.patientRelationType,
       @required this.symtopms,
       @required this.patientId,
       @required this.timeString,
@@ -67,12 +69,18 @@ class _AppointmentBookedScreenWidgetState
         data: {
           "amount": widget.service.amount,
           "transaction_id": transactionId,
-          "meta_info": {"payment_type": _paymentValueType},
+          // two params (more) ->
+          "meta_info": {
+            "payment_type": _paymentValueType,
+            "booking_type": widget.isOnline ? "Online" : "Offline",
+            "relation_type": widget.patientRelationType
+          },
           "payment_status_string": "Success",
           "patient_id": widget.patientId,
           "is_online": widget.isOnline,
           "status": 0
         });
+    //http://ae7a-49-204-130-5.ngrok.io
     Response bookingRes = await ApiService.dio.post(
         'http://api2.dhanva.icu/appointment/book',
         options: Options(headers: {
@@ -89,7 +97,7 @@ class _AppointmentBookedScreenWidgetState
           "serviceId": widget.service.id,
           "hospital_id": widget.hospitalId
         });
-    print(bookingRes.data);
+    print('Booking response > ${bookingRes.data}');
   }
 
   Future<void> _makePayment() async {
@@ -143,6 +151,7 @@ class _AppointmentBookedScreenWidgetState
 
   @override
   Widget build(BuildContext context) {
+    print(widget.isOnline);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(

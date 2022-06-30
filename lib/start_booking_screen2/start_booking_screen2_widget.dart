@@ -54,6 +54,7 @@ class _StartBookingScreen2WidgetState
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<DropdownMenuItem<String>> patientNames = [];
   String _selectedPatientId;
+  String patientRelationType = "Self";
 
   @override
   void initState() {
@@ -266,6 +267,16 @@ class _StartBookingScreen2WidgetState
                               setState(() {
                                 _selectedPatientId = value;
                               });
+                              Map<String, dynamic> _patientJson = jsonDecode(
+                                  SharedPreferenceService.loadString(
+                                      key: PatientKey));
+                              int idx = patient.relations.indexWhere(
+                                  (element) =>
+                                      _selectedPatientId == element.patientId);
+                              patientRelationType = idx == -1
+                                  ? "Self"
+                                  : patient.relations[idx].type;
+                              // print(patientRelationType);
                             },
                             decoration: InputDecoration(
                               filled: true,
@@ -422,6 +433,8 @@ class _StartBookingScreen2WidgetState
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 TimeSlotScreenWidget(
+                                                  patientRelationType:
+                                                      patientRelationType,
                                                   hospitalId: widget.hospitalId,
                                                   isOnline: widget.isOnline,
                                                   symptopms:

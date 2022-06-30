@@ -229,9 +229,34 @@ class AppointmentCard extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                     ),
                           ),
-                          if (appointmentModel['patient_id']['name'] == 'Test1')
+                          if (appointmentModel['payment_info']['meta_info']
+                                  ['relation_type'] !=
+                              null)
                             Text(
-                              ' (mother)',
+                                " (${appointmentModel['payment_info']['meta_info']['relation_type']})")
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
+                            child: Text(
+                              DateFormat('MMM d, yyyy h:mma').format(
+                                  DateTime.parse(
+                                      appointmentModel['appointmentDate'])),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 12,
+                                  ),
+                            ),
+                          ),
+                          if (appointmentModel['payment_info']['meta_info']
+                                  ['booking_type'] !=
+                              null)
+                            Text(
+                              " (${appointmentModel['payment_info']['meta_info']['booking_type']} booking)",
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -240,18 +265,6 @@ class AppointmentCard extends StatelessWidget {
                                   ),
                             ),
                         ],
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
-                        child: Text(
-                          DateFormat('MMM d, yyyy h:mma').format(DateTime.parse(
-                              appointmentModel['appointmentDate'])),
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    fontSize: 12,
-                                  ),
-                        ),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),

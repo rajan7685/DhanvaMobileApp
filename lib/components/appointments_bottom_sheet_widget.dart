@@ -47,6 +47,8 @@ class _AppointmentsBottomSheetWidgetState
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(widget.appointmentJson.toString());
+    debugPrint(widget.appointmentJson['payment_info']['meta_info'].toString());
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
       child: Container(

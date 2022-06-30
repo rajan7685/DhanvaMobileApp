@@ -26,10 +26,11 @@ class TimeSlotProvider extends ChangeNotifier {
     _universalTimeSlots = slots;
   }
 
-  Future<void> fetchTimeSlotByDoctor(String docID, {bool init = false}) async {
+  Future<void> fetchTimeSlotByDoctor(String hospitalId, String docID,
+      {bool init = false}) async {
     if (!init) _setSlotLoadingState(true);
     Map<String, dynamic> data =
-        await TimeSlotApiService.fetchTimeSlotsByDoctor(docID);
+        await TimeSlotApiService.fetchTimeSlotsByDoctor(hospitalId, docID);
     List<DateTimeSlot> slots = [];
     data.entries.forEach((timeSlotData) {
       slots.add(DateTimeSlot.fromSlotDataByDoctor(timeSlotData));

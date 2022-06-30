@@ -12,16 +12,20 @@ class ApiService {
   /// +@PatientId required
   /// files/docs/{PatientId}
   static const String medicalRecordsApi = 'files/docs/';
-  static const String upcomingMedicalAppointmentsApi = 'appointment/upcoming/';
+  static const String upcomingMedicalAppointmentsApi =
+      'appointment/upcoming/patient/';
 
   /// +@hospitalId/+@serviceId required to work
   static const String allDoctorsApi = 'employee/doctors/';
+
+  /// +@hospitalId/+@serviceId
+  static const String doctorsByHospitalAndServiceApi = 'employee/doctors/';
 
   /// +@OnlinehospitalId required to work
   static const String allTimeSlotsApi = 'appointment/get_all_time_slots/';
 
   /// +@docId required
-  /// appointment/get_time_slots/{docId}
+  /// +@hospitalId/+@docId
   static const String timeSlotsByDoctorApi = 'appointment/get_time_slots/';
 
   /// +@PatientId required
