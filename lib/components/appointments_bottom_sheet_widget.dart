@@ -422,10 +422,7 @@ class _AppointmentsBottomSheetWidgetState
                 child: Row(
                   children: [
                     Text(
-                      _data
-                          .querySelector('p')
-                          .querySelector('strong')
-                          .innerHtml,
+                      _data.querySelector('p')?.innerHtml ?? _consultationNotes,
                       style: FlutterFlowTheme.of(context).subtitle2.override(
                             fontFamily: 'Poppins',
                             color: Color(0xFF7E7E7E),

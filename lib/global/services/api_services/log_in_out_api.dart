@@ -19,7 +19,7 @@ class LoginApiService {
   }
 
   static Future<Map<String, dynamic>> verifyLogin(
-      {String mobile = '8016291431', String otp = '1253'}) async {
+      {String mobile, String otp}) async {
     Response res = await ApiService.dio
         .post(_verifyLoginUri, data: {'phone': mobile, 'otp': otp});
     return res.data;
