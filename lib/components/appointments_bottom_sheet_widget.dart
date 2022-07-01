@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:html/dom.dart' as HTML;
-
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
 import 'package:html/parser.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart' as path;
+import 'package:permission_handler/permission_handler.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ class AppointmentsBottomSheetWidget extends StatefulWidget {
 class _AppointmentsBottomSheetWidgetState
     extends State<AppointmentsBottomSheetWidget> {
   final String _prescriptionDownloadUri =
-      'http://api3.dhanva.icu/files/download/';
+      'http://api2.dhanva.icu/files/download/';
   String _consultationNotes;
 
   HTML.Document _data;
@@ -35,6 +35,7 @@ class _AppointmentsBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
+
     if (widget.appointmentJson['hasConsultation']) _loadConsultaionNotes();
   }
 
@@ -53,18 +54,36 @@ class _AppointmentsBottomSheetWidgetState
   }
 
   Future<void> _downloadFileAndPreview() async {
-    Directory appDocDir = await path.getApplicationDocumentsDirectory();
+    // Directory appDocDir = await path.getExternalStorageDirectory();
+    // android download file directory
+
+    PermissionStatus stat = await Permission.storage.status;
+    PermissionStatus writestat = await Permission.manageExternalStorage.status;
+    if (!writestat.isGranted) await Permission.manageExternalStorage.request();
+    if (!stat.isGranted) await Permission.storage.request();
+    print('Storage $stat External $writestat');
+    // Directory appDocDir = Directory('/storage/emulated/0/Download');
+    // String _timeStampName = DateTime.now().millisecondsSinceEpoch.toString();
+    // print(
+    //     'filesave path : ${appDocDir.path}/medical_record_$_timeStampName.pdf');
     try {
-      Response res = await ApiService.dio.download(
-          '${_prescriptionDownloadUri}61cdcfdf7c9850a47de40886',
-          appDocDir.path + 'Medical_Records/61cdcfdf7c9850a47de40886.pdf');
-      print(res.data);
-      await OpenFile.open(
-          '${appDocDir.path}/Medical_Records/61cdcfdf7c9850a47de40886.pdf');
+      // Response res = await ApiService.dio.download(
+      //     '$_prescriptionDownloadUri${widget.appointmentJson['_id']}',
+      //     appDocDir.path + '/medical_record_$_timeStampName.pdf');
+      // print(res.data.toString());
+      // await OpenFile.open(
+      //     '${appDocDir.path}/Medical_Records/$_timeStampName.pdf');
     } catch (e) {
       print(e.toString());
     }
-    print('opened the file');
+    // print('opened the file');
+
+    // Directory dir = Directory('/storage/emulated/0/Download');
+    // String fileUrl =
+    //     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+    // Directory externalDir = await path.getExternalStorageDirectory();
+    // print(dir.path);
+    // print(externalDir.path);
   }
 
   void _loadConsultaionNotes() async {
