@@ -35,7 +35,9 @@ class _ServicesByHospitalScreenState
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
+
     _servicesList = res.data;
+    print(_servicesList);
     setState(() {
       _isDataLoading = false;
     });

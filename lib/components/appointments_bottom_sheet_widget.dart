@@ -54,25 +54,24 @@ class _AppointmentsBottomSheetWidgetState
   }
 
   Future<void> _downloadFileAndPreview() async {
-    // Directory appDocDir = await path.getExternalStorageDirectory();
+    Directory appDocDir = await path.getExternalStorageDirectory();
     // android download file directory
-
-    PermissionStatus stat = await Permission.storage.status;
-    PermissionStatus writestat = await Permission.manageExternalStorage.status;
-    if (!writestat.isGranted) await Permission.manageExternalStorage.request();
-    if (!stat.isGranted) await Permission.storage.request();
-    print('Storage $stat External $writestat');
     // Directory appDocDir = Directory('/storage/emulated/0/Download');
-    // String _timeStampName = DateTime.now().millisecondsSinceEpoch.toString();
-    // print(
-    //     'filesave path : ${appDocDir.path}/medical_record_$_timeStampName.pdf');
+    PermissionStatus stat = await Permission.storage.status;
+    // PermissionStatus writestat = await Permission.manageExternalStorage.status;
+    // if (!writestat.isGranted) await Permission`.manageExternalStorage.request();
+    if (!stat.isGranted) await Permission.storage.request();
+
+    String _timeStampName = DateTime.now().millisecondsSinceEpoch.toString();
+    print(
+        'filesave path : ${appDocDir.path}/medical_record_$_timeStampName.pdf');
     try {
-      // Response res = await ApiService.dio.download(
-      //     '$_prescriptionDownloadUri${widget.appointmentJson['_id']}',
-      //     appDocDir.path + '/medical_record_$_timeStampName.pdf');
-      // print(res.data.toString());
-      // await OpenFile.open(
-      //     '${appDocDir.path}/Medical_Records/$_timeStampName.pdf');
+      Response res = await ApiService.dio.download(
+          '$_prescriptionDownloadUri${widget.appointmentJson['_id']}',
+          appDocDir.path + '/medical_record_$_timeStampName.pdf');
+      print(res.data.toString());
+      await OpenFile.open(
+          '${appDocDir.path}/medical_record_$_timeStampName.pdf');
     } catch (e) {
       print(e.toString());
     }
@@ -452,7 +451,7 @@ class _AppointmentsBottomSheetWidgetState
                 ),
               ),
             Spacer(),
-            if (widget.appointmentJson['status'] == 1)
+            if (widget.appointmentJson['hasConsultation'])
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 28),
                 child: InkWell(
