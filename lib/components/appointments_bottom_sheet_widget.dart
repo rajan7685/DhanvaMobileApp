@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'dart:math';
-
+import 'package:html/dom.dart' as HTML;
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
+import 'package:html/parser.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart' as path;
+import 'package:permission_handler/permission_handler.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -24,25 +27,75 @@ class AppointmentsBottomSheetWidget extends StatefulWidget {
 class _AppointmentsBottomSheetWidgetState
     extends State<AppointmentsBottomSheetWidget> {
   final String _prescriptionDownloadUri =
-      'http://api3.dhanva.icu/files/download/';
+      'http://api2.dhanva.icu/files/download/';
+  String _consultationNotes;
+
+  HTML.Document _data;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.appointmentJson['hasConsultation']) _loadConsultaionNotes();
+  }
+
   String statusText(int val) {
-    if (val == 0) return 'Booked';
-    if (val == 1) return 'Completed';
-    return 'Cancelled';
+    String status;
+    if (widget.appointmentJson['hasConsultation'])
+      status = 'Completed';
+    else if (val == 0)
+      status = 'Booked';
+    else if (val == 1)
+      status = 'Accepted';
+    else if (val == 2)
+      status = 'Cancelled';
+    else if (val == 3) status = 'Error';
+    return status;
   }
 
   Future<void> _downloadFileAndPreview() async {
-    Directory appDocDir = await path.getApplicationDocumentsDirectory();
+    Directory appDocDir = await path.getExternalStorageDirectory();
+    // android download file directory
+    // Directory appDocDir = Directory('/storage/emulated/0/Download');
+    PermissionStatus stat = await Permission.storage.status;
+    // PermissionStatus writestat = await Permission.manageExternalStorage.status;
+    // if (!writestat.isGranted) await Permission`.manageExternalStorage.request();
+    if (!stat.isGranted) await Permission.storage.request();
+
+    String _timeStampName = DateTime.now().millisecondsSinceEpoch.toString();
+    print(
+        'filesave path : ${appDocDir.path}/medical_record_$_timeStampName.pdf');
     try {
       Response res = await ApiService.dio.download(
-          '${_prescriptionDownloadUri}61cdcfdf7c9850a47de40886',
-          appDocDir.path + 'Medical_Records/61cdcfdf7c9850a47de40886.pdf');
+          '$_prescriptionDownloadUri${widget.appointmentJson['_id']}',
+          appDocDir.path + '/medical_record_$_timeStampName.pdf');
+      print(res.data.toString());
       await OpenFile.open(
-          '${appDocDir.path}/Medical_Records/61cdcfdf7c9850a47de40886.pdf');
+          '${appDocDir.path}/medical_record_$_timeStampName.pdf');
     } catch (e) {
       print(e.toString());
     }
-    print('opened the file');
+    // print('opened the file');
+
+    // Directory dir = Directory('/storage/emulated/0/Download');
+    // String fileUrl =
+    //     'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf';
+    // Directory externalDir = await path.getExternalStorageDirectory();
+    // print(dir.path);
+    // print(externalDir.path);
+  }
+
+  void _loadConsultaionNotes() async {
+    String consultationNoteUri = 'http://api2.dhanva.icu/prescription/get/';
+    Response res = await ApiService.dio.get(
+        '$consultationNoteUri${widget.appointmentJson['_id']}',
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    setState(() {
+      _consultationNotes = res.data['Consultation_notes'];
+    });
+    _data = parse(_consultationNotes);
   }
 
   @override
@@ -120,7 +173,7 @@ class _AppointmentsBottomSheetWidgetState
                             ],
                           ),
                           Text(
-                            DateFormat('MMM d, yyyy at hh:mma').format(
+                            DateFormat('MMM d, yyyy hh:mma').format(
                                 DateTime.parse(
                                     widget.appointmentJson['appointmentDate'])),
                             style:
@@ -358,8 +411,47 @@ class _AppointmentsBottomSheetWidgetState
                 ],
               ),
             ),
+            SizedBox(
+              height: 12,
+            ),
+            if (widget.appointmentJson['hasConsultation'])
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      'Consultaion Notes',
+                      style: FlutterFlowTheme.of(context).title1.override(
+                            fontFamily: 'Open Sans',
+                            color: Colors.black,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            SizedBox(
+              height: 16,
+            ),
+            if (_consultationNotes != null && _consultationNotes.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    Text(
+                      _data.querySelector('p')?.innerHtml ?? _consultationNotes,
+                      style: FlutterFlowTheme.of(context).subtitle2.override(
+                            fontFamily: 'Poppins',
+                            color: Color(0xFF7E7E7E),
+                            fontSize: 15,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
             Spacer(),
-            if (widget.appointmentJson['status'] == 1)
+            if (widget.appointmentJson['hasConsultation'])
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 28),
                 child: InkWell(

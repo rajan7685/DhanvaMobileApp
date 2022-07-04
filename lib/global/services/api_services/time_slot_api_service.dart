@@ -6,8 +6,8 @@ import 'package:dio/dio.dart';
 class TimeSlotApiService {
   TimeSlotApiService._();
 
-  static const String _allTimeSlotUri =
-      '${ApiService.protocol}${ApiService.baseUrl}${ApiService.allTImeSlotsApi}';
+  static String _allTimeSlotUri =
+      '${ApiService.protocol}${ApiService.baseUrl}${ApiService.allTimeSlotsApi}${SharedPreferenceService.loadString(key: OnlineHospitalKey)}';
   static const String _timeSlotByDoctorUri =
       '${ApiService.protocol}${ApiService.baseUrl}${ApiService.timeSlotsByDoctorApi}';
 
@@ -20,9 +20,12 @@ class TimeSlotApiService {
     return res.data;
   }
 
-  static Future<dynamic> fetchTimeSlotsByDoctor(String docId) async {
+  static Future<dynamic> fetchTimeSlotsByDoctor(
+      String hospitalId, String docId) async {
     await SharedPreferenceService.init();
-    Response res = await ApiService.dio.get('$_timeSlotByDoctorUri$docId',
+    print('$_timeSlotByDoctorUri$hospitalId/$docId');
+    Response res = await ApiService.dio.get(
+        '$_timeSlotByDoctorUri$hospitalId/$docId',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));

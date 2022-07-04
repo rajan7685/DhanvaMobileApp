@@ -38,21 +38,21 @@ class Patient {
       @required this.relations});
 
   factory Patient.fromJson(Map<String, dynamic> json) => Patient(
-        name: json['name'] ?? 'Aniket',
+        name: json['name'] ?? 'n/a',
         v: json['__v'] ?? 0,
         dob: DateTime.parse(json['dob'] ?? '2000-03-22T05:25:58.55'),
         createdDateTime: DateTime.parse(json['created_datetime']),
         id: json['_id'],
         enabled: json['enabled'],
-        location: json['latlong'] ?? 'what',
-        email: json['email'] ?? 'aniket@regami.solutions',
-        gender: json['gender'] ?? 'male',
-        maritalStatus: json['marital_status'] ?? 'Single',
+        location: json['latlong'] ?? 'n/a',
+        email: json['email'] ?? '',
+        gender: json['gender'] ?? '',
+        maritalStatus: json['marital_status'] ?? '',
         bloodGroup: json['bloodGroup'],
-        phone: json['phone'].toString() ?? '8016291431',
-        emergencyContact: json['emergency_contact'],
-        height: double.parse(json['height'] ?? '0'),
-        weight: double.parse(json['weight'] ?? '0'),
+        phone: json['phone'].toString() ?? '',
+        emergencyContact: json['emergency_contact'] ?? '',
+        height: double.parse(json['height'] ?? '0') ?? '',
+        weight: double.parse(json['weight'] ?? '0') ?? '',
         relations: List.generate(
           (json['relation_id'].length),
           (int index) => PatientRelation.fromJson(

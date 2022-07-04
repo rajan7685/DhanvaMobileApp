@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 //key constansts
 const String PatientKey = 'PatientData';
 const String AuthTokenKey = 'AuthToken';
+const String OnlineHospitalKey = 'OnlineHospital';
 
 class SharedPreferenceService {
   SharedPreferenceService._();

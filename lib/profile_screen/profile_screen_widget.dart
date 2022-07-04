@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:dhanva_mobile_app/about_screen/about_screen.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/login_screen/login_screen_widget.dart';
+import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
 
 import '../appointments_screen/appointments_screen_widget.dart';
@@ -158,25 +160,34 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 6, 0, 0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        FaIcon(
-                                          FontAwesomeIcons.edit,
-                                          color: Color(0xFF00FFF7),
-                                          size: 18,
-                                        ),
-                                        Text(
-                                          'Edit Profile',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Open Sans',
-                                                color: Color(0xFF00FFF7),
-                                                fontSize: 16,
-                                              ),
-                                        ),
-                                      ],
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    EditProfileScreenWidget()));
+                                      },
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          FaIcon(
+                                            FontAwesomeIcons.edit,
+                                            color: Color(0xFF00FFF7),
+                                            size: 18,
+                                          ),
+                                          Text(
+                                            'Edit Profile',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily: 'Open Sans',
+                                                  color: Color(0xFF00FFF7),
+                                                  fontSize: 16,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -358,41 +369,51 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/1904673_achievement_favorite_favourite_premium_rate_icon.png',
-                                width: 18,
-                                height: 18,
-                                fit: BoxFit.contain,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                                child: Text(
-                                  'About us',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF434343),
-                                        fontSize: 20,
-                                      ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AboutScreenWidget(),
                                 ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: AlignmentDirectional(1, 0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: Color(0xFF5A5A5A),
-                                    size: 34,
+                              );
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/1904673_achievement_favorite_favourite_premium_rate_icon.png',
+                                  width: 18,
+                                  height: 18,
+                                  fit: BoxFit.contain,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 0, 0),
+                                  child: Text(
+                                    'About us',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF434343),
+                                          fontSize: 20,
+                                        ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional(1, 0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Color(0xFF5A5A5A),
+                                      size: 34,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Padding(

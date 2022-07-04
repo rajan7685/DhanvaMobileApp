@@ -30,12 +30,14 @@ class _ServicesByHospitalScreenState
 
   Future<void> _loadServicesData() async {
     Response res = await ApiService.dio.post(
-        'http://api3.dhanva.icu/hospital/get_services',
+        'http://api2.dhanva.icu/hospital/get_services',
         data: {"id": widget.hospitalDetails["_id"]},
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
+
     _servicesList = res.data;
+    print(_servicesList);
     setState(() {
       _isDataLoading = false;
     });
@@ -65,6 +67,7 @@ class _ServicesByHospitalScreenState
                   context,
                   MaterialPageRoute(
                     builder: (_) => StartBookingScreen2Widget(
+                      hospitalId: widget.hospitalDetails['_id'],
                       isOnline: false,
                       pageTitle: 'Start Offline Booking',
                       hospital: widget.hospitalDetails,
@@ -222,17 +225,22 @@ class _ServicesByHospitalScreenState
                     padding: EdgeInsets.all(12),
                     child: _isDataLoading
                         ? Center(child: CircularProgressIndicator())
-                        : GridView.builder(
-                            physics: BouncingScrollPhysics(),
-                            itemCount: _servicesList.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    mainAxisSpacing: 18,
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 22,
-                                    mainAxisExtent: 120),
-                            itemBuilder: (_, int index) => _buildServiceCard(
-                                context, _servicesList[index])),
+                        : (_servicesList.length == 0
+                            ? Center(
+                                child:
+                                    Text('No services available at the moment'))
+                            : GridView.builder(
+                                physics: BouncingScrollPhysics(),
+                                itemCount: _servicesList.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisSpacing: 18,
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 22,
+                                        mainAxisExtent: 120),
+                                itemBuilder: (_, int index) =>
+                                    _buildServiceCard(
+                                        context, _servicesList[index]))),
                   ),
                 ),
               ),

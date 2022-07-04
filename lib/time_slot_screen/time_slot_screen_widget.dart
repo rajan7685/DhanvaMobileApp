@@ -5,6 +5,7 @@ import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_util.dart';
 import 'package:dhanva_mobile_app/global/models/date_time_slot.dart';
 import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/providers/time_slot_provider.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,12 +41,16 @@ class TimeSlotScreenWidget extends ConsumerStatefulWidget {
   final QuickServiceUiModel service;
   final Doctor doctor;
   final String patientId;
+  final String patientRelationType;
   final String symptopms;
   final bool isOnline;
+  final String hospitalId;
 
   const TimeSlotScreenWidget(
       {Key key,
       @required this.patientId,
+      @required this.patientRelationType,
+      @required this.hospitalId,
       @required this.symptopms,
       @required this.service,
       @required this.isUniversalTimeSlot,
@@ -68,9 +73,9 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
       print(widget.doctor.name);
       _selectedDoctorId = widget.doctor.id;
       _selectedDoctorName = widget.doctor.name;
-      ref
-          .read(_timeSotProvider)
-          .fetchTimeSlotByDoctor(widget.doctor.id, init: true);
+      ref.read(_timeSotProvider).fetchTimeSlotByDoctor(
+          widget.hospitalId, widget.doctor.id,
+          init: true);
     }
   }
 
@@ -171,6 +176,8 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
                 print(_dateTimeSelectedId.split(',')[0]);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => AppointmentBookedScreenWidget(
+                        patientRelationType: widget.patientRelationType,
+                        hospitalId: widget.hospitalId,
                         isOnline: widget.isOnline,
                         symtopms: widget.symptopms,
                         timeString: _dateTimeSelectedString,

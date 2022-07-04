@@ -20,17 +20,21 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppointmentBookedScreenWidget extends StatefulWidget {
   final String doctorId;
+  final String hospitalId;
   final String doctorName;
   final DateTime date;
   final String timeString;
   final String symtopms;
   final String patientId;
+  final String patientRelationType;
   final QuickServiceUiModel service;
   final bool isOnline;
 
   const AppointmentBookedScreenWidget(
       {Key key,
       @required this.date,
+      @required this.hospitalId,
+      @required this.patientRelationType,
       @required this.symtopms,
       @required this.patientId,
       @required this.timeString,
@@ -58,21 +62,27 @@ class _AppointmentBookedScreenWidgetState
 
   Future<void> _bookAppointment({@required String transactionId}) async {
     Response res = await ApiService.dio.post(
-        'http://api3.dhanva.icu/payment/add',
+        'http://api2.dhanva.icu/payment/add',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
         data: {
           "amount": widget.service.amount,
           "transaction_id": transactionId,
-          "meta_info": {"payment_type": _paymentValueType},
+          // two params (more) ->
+          "meta_info": {
+            "payment_type": _paymentValueType,
+            "booking_type": widget.isOnline ? "Online" : "Offline",
+            "relation_type": widget.patientRelationType
+          },
           "payment_status_string": "Success",
           "patient_id": widget.patientId,
           "is_online": widget.isOnline,
           "status": 0
         });
+    //http://ae7a-49-204-130-5.ngrok.io
     Response bookingRes = await ApiService.dio.post(
-        'http://api3.dhanva.icu/appointment/book',
+        'http://api2.dhanva.icu/appointment/book',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
@@ -84,9 +94,10 @@ class _AppointmentBookedScreenWidgetState
           "time_slot": widget.timeString,
           "payment_info": res.data['_id'],
           "doctor": widget.doctorId,
-          "serviceId": widget.service.id
+          "serviceId": widget.service.id,
+          "hospital_id": widget.hospitalId
         });
-    print(bookingRes.data);
+    print('Booking response > ${bookingRes.data}');
   }
 
   Future<void> _makePayment() async {
@@ -140,6 +151,7 @@ class _AppointmentBookedScreenWidgetState
 
   @override
   Widget build(BuildContext context) {
+    print(widget.isOnline);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(

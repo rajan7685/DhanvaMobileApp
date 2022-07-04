@@ -20,8 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-ChangeNotifierProvider<HomeServicesProvider> _servicesProvider =
-    ChangeNotifierProvider((ref) => HomeServicesProvider());
+// ChangeNotifierProvider<HomeServicesProvider> _servicesProvider =
+// ChangeNotifierProvider((ref) => HomeServicesProvider());
 
 // mock data
 final List<PsychometricsAssesmentQuestion> _questions = [
@@ -50,32 +50,58 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
   PageController pageViewController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isDataLoaded = false;
+  List<QuickServiceUiModel> homeServices;
 
   @override
   void initState() {
     super.initState();
     SharedPreferenceService.init();
+    loadServicesData();
     // ref.read(_servicesProvider).fetchServicesList(init: true);
-    SharedPreferenceService.init();
   }
 
-  void loadData() async {
-    String _hospitalListApi = 'http://api3.dhanva.icu/hospital/get_all/';
-
-    // data processing
+  void loadServicesData() async {
+    setState(() {
+      isDataLoaded = false;
+    });
+    String _servicesApi = 'http://api2.dhanva.icu/services/get_online';
     await SharedPreferenceService.init();
-    try {
-      Response data = await Dio().get(
-          'http://api2.dhanva.icu/hospital/get_all/',
-          options: Options(headers: {
-            'Authorization':
-                SharedPreferenceService.loadString(key: AuthTokenKey)
-          }));
-      print(data);
-    } catch (w) {
-      print('error ${w.toString()}');
-    }
+    Response res = await ApiService.dio.get(_servicesApi,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+
+    SharedPreferenceService.saveString(
+        key: OnlineHospitalKey, value: res.data['hospitalId']);
+    homeServices = List.generate((res.data['services'] as List).length,
+        (index) => QuickServiceUiModel.fromJson(res.data['services'][index]));
+    // when loaded
+    setState(() {
+      isDataLoaded = true;
+    });
   }
+
+  // void loadHospitalKey() async {
+  //   // data processing
+  //   await SharedPreferenceService.init();
+  //   try {
+  //     Response res = await ApiService.dio.get(
+  //         'http://api2.dhanva.icu/hospital/get_all',
+  //         options: Options(headers: {
+  //           'Authorization':
+  //               SharedPreferenceService.loadString(key: AuthTokenKey)
+  //         }));
+  //     dynamic data = (res.data as List)
+  //         .singleWhere((json) => json['hospital_name'] == 'Online');
+
+  //     // OnlineHospitalKey
+  //     SharedPreferenceService.saveString(
+  //         key: OnlineHospitalKey, value: data['_id']);
+  //     loadServicesData();
+  //   } catch (w) {
+  //     print('error ${w.toString()}');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -298,26 +324,35 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),
-                          Container(
-                            height: 145,
-                            decoration: BoxDecoration(
-                              color: Color(0xFFEEEEEE),
-                            ),
-                            // child: Consumer(
-                            //   builder: (context, ref, child) {
-                            //     HomeServicesProvider _prov =
-                            //         ref.watch(_servicesProvider);
-                            //     if (_prov.isLoading) {
-                            //       return Center(
-                            //           child: CircularProgressIndicator());
-                            //     } else {
-                            //       return QuickServicesListView(
-                            //         services: _prov.quickServices,
-                            //       );
-                            //     }
-                            //   },
-                            // ),
+                          SizedBox(
+                            height: 18,
                           ),
+                          Container(
+                              height: 145,
+                              decoration: BoxDecoration(
+                                color: Color(0xFFEEEEEE),
+                              ),
+                              child: isDataLoaded == false
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : QuickServicesListView(
+                                      services: homeServices)
+                              // child: Consumer(
+                              //   builder: (context, ref, child) {
+                              //     HomeServicesProvider _prov =
+                              //         ref.watch(_servicesProvider);
+                              //     if (_prov.isLoading) {
+                              //       return Center(
+                              //           child: CircularProgressIndicator());
+                              //     } else {
+                              //       return QuickServicesListView(
+                              //         services: _prov.quickServices,
+                              //       );
+                              //     }
+                              //   },
+                              // ),
+                              ),
                           // Padding(
                           //   padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                           //   child: FFButtonWidget(
@@ -406,6 +441,8 @@ class QuickServicesListView extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => StartBookingScreen2Widget(
                       service: services[index],
+                      hospitalId: SharedPreferenceService.loadString(
+                          key: OnlineHospitalKey),
                     ),
                   ),
                 );

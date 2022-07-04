@@ -74,7 +74,7 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
           // final res = await FilePicker.platform.pickFiles(allowMultiple: false);
           // await OpenFile.open(res.files.first.path);
           final String _prescriptionDownloadUri =
-              'http://api3.dhanva.icu/files/download/';
+              'http://api2.dhanva.icu/files/download/';
           Directory path = await getApplicationDocumentsDirectory();
 
           print(path.uri);
@@ -126,34 +126,40 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
                 Expanded(
                   child: isDataLoading
                       ? Center(child: CircularProgressIndicator())
-                      : ListView.builder(
-                          itemCount: resData.length,
-                          itemBuilder: (_, int index) => GestureDetector(
-                            child: AppointmentCard(
-                              appointmentModel: resData[index],
-                            ),
-                            onTap: () async {
-                              await showModalBottomSheet(
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                builder: (context) {
-                                  return Padding(
-                                    padding: MediaQuery.of(context).viewInsets,
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.65,
-                                      child: AppointmentsBottomSheetWidget(
-                                        appointmentJson: resData[index],
-                                      ),
-                                    ),
+                      : (resData.length == 0
+                          ? Center(
+                              child: Text(
+                                  'Nothing yet, Try booking an appointment'))
+                          : ListView.builder(
+                              itemCount: resData.length,
+                              itemBuilder: (_, int index) => GestureDetector(
+                                child: AppointmentCard(
+                                  appointmentModel: resData[index],
+                                ),
+                                onTap: () async {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:
+                                            MediaQuery.of(context).viewInsets,
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.88,
+                                          child: AppointmentsBottomSheetWidget(
+                                            appointmentJson: resData[index],
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            },
-                          ),
-                        ),
+                              ),
+                            )),
                 ),
               ],
             ),
@@ -171,9 +177,15 @@ class AppointmentCard extends StatelessWidget {
       : super(key: key);
 
   String statusText(int val) {
-    if (val == 0) return 'Booked';
-    if (val == 1) return 'Completed';
-    return 'Cancelled';
+    String status;
+    if (appointmentModel['hasConsultation'])
+      status = 'Completed';
+    else if (val == 0)
+      status = 'Booked';
+    else if (val == 1)
+      status = 'Accepted';
+    else if (val == 2) status = 'Cancelled';
+    return status;
   }
 
   @override
@@ -223,9 +235,34 @@ class AppointmentCard extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                     ),
                           ),
-                          if (appointmentModel['patient_id']['name'] == 'Test1')
+                          if (appointmentModel['payment_info']['meta_info']
+                                  ['relation_type'] !=
+                              null)
                             Text(
-                              ' (mother)',
+                                " (${appointmentModel['payment_info']['meta_info']['relation_type']})")
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
+                            child: Text(
+                              DateFormat('MMM d, yyyy h:mma').format(
+                                  DateTime.parse(
+                                      appointmentModel['appointmentDate'])),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 12,
+                                  ),
+                            ),
+                          ),
+                          if (appointmentModel['payment_info']['meta_info']
+                                  ['booking_type'] !=
+                              null)
+                            Text(
+                              " (${appointmentModel['payment_info']['meta_info']['booking_type']} booking)",
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -234,18 +271,6 @@ class AppointmentCard extends StatelessWidget {
                                   ),
                             ),
                         ],
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
-                        child: Text(
-                          DateFormat('MMM d, yyyy h:mma').format(DateTime.parse(
-                              appointmentModel['appointmentDate'])),
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    fontSize: 12,
-                                  ),
-                        ),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
