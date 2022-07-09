@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:dhanva_mobile_app/global/models/medical_record.dart';
-import 'package:http/http.dart' as http;
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart' as path;
+
 import 'package:permission_handler/permission_handler.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -33,6 +35,7 @@ class _MedicalRecordBottomSheetWidgetState
   TextEditingController doctorNameController;
   TextEditingController reportDateController;
   TextEditingController reportTimeController;
+  List<PlatformFile> _pickedFiles = [];
 
   Future<void> _loadPatientInformation() async {
     await SharedPreferenceService.init();
@@ -65,15 +68,22 @@ class _MedicalRecordBottomSheetWidgetState
     print(res.data);
   }
 
-  void _pickFiles() async {
+  void _pickFiles({bool allowMultiple = false}) async {
     if (!await Permission.storage.status.isGranted) {
       await Permission.storage.request();
     }
     //pick files
+
     FilePickerResult files = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
+      allowMultiple: allowMultiple,
     );
-    uploadFile(files);
+    files.files.forEach((file) {
+      _pickedFiles.add(file);
+    });
+    setState(() {
+      // updateUI
+    });
+    // uploadFile(files);
   }
 
   @override
@@ -81,9 +91,9 @@ class _MedicalRecordBottomSheetWidgetState
     super.initState();
     _loadPatientInformation();
     patientNameController =
-        TextEditingController(text: widget.newRecord ? '' : 'Test');
+        TextEditingController(text: widget.newRecord ? '' : '');
     reportTypeController =
-        TextEditingController(text: widget.newRecord ? '' : 'Xray');
+        TextEditingController(text: widget.newRecord ? '' : 'Document');
     doctorNameController =
         TextEditingController(text: widget.newRecord ? '' : '');
 
@@ -98,8 +108,68 @@ class _MedicalRecordBottomSheetWidgetState
   }
 
   _downloadFileAndPreview() async {
-    // need to implement new download and open logic due to the error
+    Directory appDocDir = await path.getExternalStorageDirectory();
+    PermissionStatus stat = await Permission.storage.status;
+
+    if (!stat.isGranted) await Permission.storage.request();
+
+    String _timeStampName = DateTime.now().millisecondsSinceEpoch.toString();
+    List<String> _terms = widget.medicalRecord.filePath.split('/');
+    String fileName = _terms[_terms.length - 1];
+    print('${appDocDir.path}/$fileName');
+    try {
+      Response res = await ApiService.dio.download(
+          widget.medicalRecord.filePath,
+          '${appDocDir.path}/${_timeStampName}_$fileName');
+      print(res.data.toString());
+      await OpenFile.open('${appDocDir.path}/${_timeStampName}_$fileName');
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
   }
+
+  Container _filesListView() => Container(
+        width: double.maxFinite,
+        height: 65,
+        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+        child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: _pickedFiles.length + 1,
+            itemBuilder: (_, int index) {
+              if (_pickedFiles.length != 0 && index < _pickedFiles.length)
+                return Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Image.asset(
+                    'assets/images/Group_607.png',
+                    width: 65,
+                    height: 65,
+                    fit: BoxFit.contain,
+                  ),
+                );
+              return InkWell(
+                onTap: () => _pickFiles(),
+                child: Container(
+                  width: 55,
+                  height: 55,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFEEEEEE),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: Color(0xFF5A6771),
+                      width: 4,
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    color: Color(0xFF535F6B),
+                    size: 42,
+                  ),
+                ),
+              );
+            }),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -238,6 +308,7 @@ class _MedicalRecordBottomSheetWidgetState
                           controller: reportDateController,
                           obscureText: false,
                           decoration: InputDecoration(
+                            enabled: false,
                             labelText: 'Report Date',
                             labelStyle:
                                 FlutterFlowTheme.of(context).bodyText1.override(
@@ -278,6 +349,7 @@ class _MedicalRecordBottomSheetWidgetState
                           controller: reportTimeController,
                           obscureText: false,
                           decoration: InputDecoration(
+                            enabled: false,
                             labelText: 'Report Time',
                             labelStyle:
                                 FlutterFlowTheme.of(context).bodyText1.override(
@@ -331,36 +403,10 @@ class _MedicalRecordBottomSheetWidgetState
                   ],
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  _pickFiles();
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
-                        width: 55,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          color: Color(0xFFEEEEEE),
-                          borderRadius: BorderRadius.circular(14),
-                          border: Border.all(
-                            color: Color(0xFF5A6771),
-                            width: 4,
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.add,
-                          color: Color(0xFF535F6B),
-                          size: 42,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              SizedBox(
+                height: 6,
               ),
+              _filesListView(),
               InkWell(
                 onTap: () {
                   _downloadFileAndPreview();

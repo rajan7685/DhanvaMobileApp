@@ -55,11 +55,8 @@ class _AppointmentsBottomSheetWidgetState
 
   Future<void> _downloadFileAndPreview() async {
     Directory appDocDir = await path.getExternalStorageDirectory();
-    // android download file directory
-    // Directory appDocDir = Directory('/storage/emulated/0/Download');
     PermissionStatus stat = await Permission.storage.status;
-    // PermissionStatus writestat = await Permission.manageExternalStorage.status;
-    // if (!writestat.isGranted) await Permission`.manageExternalStorage.request();
+
     if (!stat.isGranted) await Permission.storage.request();
 
     String _timeStampName = DateTime.now().millisecondsSinceEpoch.toString();
