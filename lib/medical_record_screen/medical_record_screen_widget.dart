@@ -131,38 +131,46 @@ class _MedicalRecordScreenWidgetState
                         child: CircularProgressIndicator(),
                       );
                     } else {
-                      return ListView.builder(
-                        itemCount: _prov.medicalRecords.length,
-                        padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                              onTap: () async {
-                                await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding:
-                                          MediaQuery.of(context).viewInsets,
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.8,
-                                        child: MedicalRecordBottomSheetWidget(
-                                          medicalRecord:
-                                              _prov.medicalRecords[index],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: MedicalRecordCard(
-                                medicalRecord: _prov.medicalRecords[index],
-                              ));
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          ref
+                              .read(_medicalRecordsProvider)
+                              .fetchMedicalRecords();
                         },
+                        child: ListView.builder(
+                          itemCount: _prov.medicalRecords.length,
+                          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () async {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:
+                                            MediaQuery.of(context).viewInsets,
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.8,
+                                          child: MedicalRecordBottomSheetWidget(
+                                            medicalRecord:
+                                                _prov.medicalRecords[index],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: MedicalRecordCard(
+                                  medicalRecord: _prov.medicalRecords[index],
+                                ));
+                          },
+                        ),
                       );
                     }
                   },

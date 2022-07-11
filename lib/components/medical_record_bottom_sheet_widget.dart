@@ -6,6 +6,7 @@ import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart' as path;
 
@@ -51,14 +52,50 @@ class _MedicalRecordBottomSheetWidgetState
     });
   }
 
+  Future<void> createRecordAndUpload(List<PlatformFile> pickedFiles) async {
+    List<MultipartFile> uploadableFiles = [];
+    List<String> fileNames = [];
+    Map<String, dynamic> fileMapData = {};
+    Patient patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    await Future.forEach(pickedFiles, (PlatformFile file) async {
+      fileNames.add(file.name);
+      uploadableFiles
+          .add(await MultipartFile.fromFile(file.path, filename: file.name));
+    });
+
+    // generate dynamic keys
+    uploadableFiles.asMap().entries.forEach((_fileEntry) {
+      // print('file${_fileEntry.key} : ${_fileEntry.value}');
+      fileMapData['file${_fileEntry.key + 1}'] = _fileEntry.value;
+    });
+
+    Map<String, dynamic> map = {
+      "patient_id": patient.id,
+      "employee_id": patient.id,
+      "docType": reportTypeController.text ?? "Report",
+      "file_name": fileNames,
+      ...fileMapData,
+    };
+
+    FormData _formData = FormData.fromMap(map);
+
+    Response res = await ApiService.dio.post(
+        "http://api2.dhanva.icu/files/uploads",
+        data: _formData,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    print(res.data);
+    Navigator.pop(context);
+  }
+
   void uploadFile(FilePickerResult pickedFiles) async {
     String fileUploadUri = 'http://api2.dhanva.icu/files/upload';
     FormData _formData = FormData.fromMap({
       "patient_id": widget.medicalRecord.patientId,
       "docType": reportTypeController.text ?? "Report",
       "file_name": pickedFiles.files.first.name,
-      "file1": await MultipartFile.fromFile(pickedFiles.files.first.path,
-          filename: pickedFiles.files.first.name)
     });
     Response res = await ApiService.dio.post(fileUploadUri,
         options: Options(headers: {
@@ -86,10 +123,22 @@ class _MedicalRecordBottomSheetWidgetState
     // uploadFile(files);
   }
 
+  void deleteRecord() async {
+    String deleteUri = 'http://api2.dhanva.icu/files/delete/';
+    print('$deleteUri${widget.medicalRecord.id}');
+    Response res = await ApiService.dio.get(
+        '$deleteUri${widget.medicalRecord.id}',
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    Navigator.pop(context);
+    // print(res.data);
+  }
+
   @override
   void initState() {
     super.initState();
-    _loadPatientInformation();
+    if (!widget.newRecord) _loadPatientInformation();
     patientNameController =
         TextEditingController(text: widget.newRecord ? '' : '');
     reportTypeController =
@@ -200,7 +249,6 @@ class _MedicalRecordBottomSheetWidgetState
                         fontFamily: 'Open Sans',
                         color: Color(0xFF9A9A9A),
                       ),
-                  hintText: '[Some hint text...]',
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0xFFC1C1C1),
@@ -235,7 +283,6 @@ class _MedicalRecordBottomSheetWidgetState
                           fontFamily: 'Open Sans',
                           color: Color(0xFF9A9A9A),
                         ),
-                    hintText: '[Some hint text...]',
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xFFC1C1C1),
@@ -271,7 +318,6 @@ class _MedicalRecordBottomSheetWidgetState
                           fontFamily: 'Open Sans',
                           color: Color(0xFF9A9A9A),
                         ),
-                    hintText: '[Some hint text...]',
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xFFC1C1C1),
@@ -407,27 +453,29 @@ class _MedicalRecordBottomSheetWidgetState
                 height: 6,
               ),
               _filesListView(),
-              InkWell(
-                onTap: () {
-                  _downloadFileAndPreview();
-                },
-                child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(
-                        'Download All',
-                        style: FlutterFlowTheme.of(context).bodyText1.override(
-                              fontFamily: 'Open Sans',
-                              color: Color(0xFF00A8A3),
-                              fontWeight: FontWeight.w500,
-                            ),
-                      ),
-                    ],
+              if (!widget.newRecord)
+                InkWell(
+                  onTap: () {
+                    _downloadFileAndPreview();
+                  },
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          'Download All',
+                          style:
+                              FlutterFlowTheme.of(context).bodyText1.override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF00A8A3),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
               if (!widget.newRecord)
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 42, 0, 0),
@@ -482,28 +530,34 @@ class _MedicalRecordBottomSheetWidgetState
                       onTap: () async {
                         Navigator.pop(context);
                       },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Save Record',
-                            style: FlutterFlowTheme.of(context).title1.override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                            child: Image.asset(
-                              'assets/images/Layer_2.png',
-                              width: 35,
-                              height: 35,
-                              fit: BoxFit.cover,
+                      child: InkWell(
+                        onTap: () async {
+                          await createRecordAndUpload(_pickedFiles);
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Save Record',
+                              style:
+                                  FlutterFlowTheme.of(context).title1.override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              child: Image.asset(
+                                'assets/images/Layer_2.png',
+                                width: 35,
+                                height: 35,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -526,39 +580,43 @@ class _MedicalRecordBottomSheetWidgetState
                           width: 2,
                         ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Delete Record',
-                            style: FlutterFlowTheme.of(context).title1.override(
-                                  fontFamily: 'Poppins',
-                                  color: Color(0xFF00A8A3),
+                      child: InkWell(
+                        onTap: deleteRecord,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Delete Record',
+                              style:
+                                  FlutterFlowTheme.of(context).title1.override(
+                                        fontFamily: 'Poppins',
+                                        color: Color(0xFF00A8A3),
+                                      ),
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFEEEEEE),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Color(0xFF00A8A3),
+                                    width: 2,
+                                  ),
                                 ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                            child: Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFEEEEEE),
-                                shape: BoxShape.circle,
-                                border: Border.all(
+                                child: Icon(
+                                  Icons.close,
                                   color: Color(0xFF00A8A3),
-                                  width: 2,
+                                  size: 24,
                                 ),
-                              ),
-                              child: Icon(
-                                Icons.close,
-                                color: Color(0xFF00A8A3),
-                                size: 24,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
