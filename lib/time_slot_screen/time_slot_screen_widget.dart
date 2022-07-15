@@ -16,6 +16,7 @@ String _selectedDoctorId;
 String _selectedDoctorName;
 
 String _to24HourTime(String time) {
+  print("Given time $time");
   String timeMaridane = time.split(' ')[1];
   String hourTime = time.split(' ')[0];
   int hour = int.parse(hourTime.split(':')[0]);
@@ -24,12 +25,14 @@ String _to24HourTime(String time) {
     hour = (hour + 12);
   }
   if (minute == 0) {
+    if (hour.toString().length == 1) return '0$hour:00';
     return '$hour:00';
   }
   if (hour.toString().length == 1) {
-    print('0$hour:$minute');
+    print('Formatted time 0$hour:$minute');
     return '0$hour:$minute';
   }
+  print('Formatted time $hour:$minute');
   return '$hour:$minute';
 }
 

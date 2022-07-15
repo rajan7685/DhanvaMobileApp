@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dhanva_mobile_app/global/models/patient_relation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dhanva_mobile_app/global/models/medical_record.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart' as path;
 
@@ -36,66 +36,160 @@ class _MedicalRecordBottomSheetWidgetState
   TextEditingController doctorNameController;
   TextEditingController reportDateController;
   TextEditingController reportTimeController;
-  List<PlatformFile> _pickedFiles = [];
+  // List<PlatformFile> _pickedFiles = [];
+  DateTime _datetime;
+  DateTime _time;
+
+  PlatformFile _selectedFile;
+  bool _isFileLoading = false;
+  bool _isFileUploading = false;
+  Patient patient;
+
+  List<DropdownMenuItem<String>> patientNames = [];
+  String _selectedPatientId;
+  String patientRelationType = "Self";
 
   Future<void> _loadPatientInformation() async {
     await SharedPreferenceService.init();
-    Patient patient = Patient.fromJson(
+    patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    Response res = await ApiService.dio.get(
-        "http://api3.dhanva.icu/patient/getPatientDetails/${widget.medicalRecord.patientId}",
-        options: Options(headers: {
-          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
-        }));
+    patientNameController.text = patient.name;
+    patientNames.add(DropdownMenuItem(
+      child: Text(patient.name),
+      value: patient.id,
+    ));
+    for (PatientRelation relation in patient.relations) {
+      patientNames.add(DropdownMenuItem(
+        child: Text(relation.patientName),
+        value: relation.patientId,
+      ));
+    }
+    _selectedPatientId = patient.id;
     setState(() {
-      patientNameController.text = res.data['name'];
+      // updateUI
     });
   }
 
-  Future<void> createRecordAndUpload(List<PlatformFile> pickedFiles) async {
-    List<MultipartFile> uploadableFiles = [];
-    List<String> fileNames = [];
-    Map<String, dynamic> fileMapData = {};
+  // Future<void> createRecordAndUpload(List<PlatformFile> pickedFiles) async {
+  //   List<MultipartFile> uploadableFiles = [];
+  //   Map<String, dynamic> fileNameData = {};
+  //   Map<String, dynamic> fileMapData = {};
+
+  //   // generate dynamic file names
+  //   pickedFiles.asMap().entries.forEach((_fileEntry) {
+  //     // print('file${_fileEntry.key} : ${_fileEntry.value}');
+  //     fileNameData['file_name[${_fileEntry.key}]'] =
+  //         _fileEntry.value.name.split('.')[0];
+  //   });
+
+  //   Patient patient = Patient.fromJson(
+  //       jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+  //   await Future.forEach(pickedFiles, (PlatformFile file) async {
+  //     uploadableFiles
+  //         .add(await MultipartFile.fromFile(file.path, filename: file.name));
+  //   });
+
+  //   // generate dynamic keys
+  //   uploadableFiles.asMap().entries.forEach((_fileEntry) {
+  //     // print('file${_fileEntry.key} : ${_fileEntry.value}');
+  //     fileMapData['file1[${_fileEntry.key}]'] = _fileEntry.value;
+  //   });
+
+  //   Map<String, dynamic> map = {
+  //     "patient_id": patient.id,
+  //     "employee_id": patient.id,
+  //     "docType": reportTypeController.text ?? "Report",
+  //     ...fileNameData,
+  //     ...fileMapData,
+  //   };
+
+  //   print(map);
+
+  //   FormData _formData = FormData.fromMap(map);
+
+  //   Response res = await ApiService.dio.post(
+  //       "http://api2.dhanva.icu/files/uploads",
+  //       data: _formData,
+  //       options: Options(headers: {
+  //         'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+  //       }));
+  //   print(res.data);
+  //   Navigator.pop(context);
+  // }
+
+  void _selectReportDate() async {
+    final DateTime pickedDate = await showDatePicker(
+        helpText: 'Select report date',
+        cancelText: 'Cancel',
+        confirmText: 'Done',
+        context: context,
+        initialDate: _datetime ?? DateTime(2000),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2025));
+    if (pickedDate != null && pickedDate != _datetime)
+      setState(() {
+        _datetime = pickedDate;
+        reportDateController.text =
+            DateFormat('EEEE MMM d, yyyy').format(_datetime);
+      });
+  }
+
+  void _selectReportTime() async {
+    final TimeOfDay pickedTime = await showTimePicker(
+      initialTime: _time ?? TimeOfDay.now(),
+      helpText: 'Select report time',
+      cancelText: 'Cancel',
+      confirmText: 'Done',
+      context: context,
+    );
+    if (pickedTime != null)
+      setState(() {
+        _time = DateTime.parse(
+            "2000-02-02 ${pickedTime.toString().substring(10, 15)}:00Z");
+        reportTimeController.text = DateFormat('h:mm a').format(_time);
+      });
+  }
+
+  void updateRecord() async {
+    String filePath = await _downloadFileAndPreview(autopreview: false);
+    if (filePath.isNotEmpty) {
+      await deleteRecord(autopop: false);
+      String fileUploadUri = 'http://api2.dhanva.icu/files/upload';
+      Patient patient = Patient.fromJson(
+          jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+      FormData _formData = FormData.fromMap({
+        "patient_id": _selectedPatientId ?? patient.id,
+        "employee_id": widget.medicalRecord?.patientId ?? patient.id,
+        "docType": reportTypeController.text ?? "Report",
+        "file_name": filePath.split('/').last,
+        "file1": await MultipartFile.fromFile(filePath,
+            filename: filePath.split('/').last)
+      });
+      Response res = await ApiService.dio.post(fileUploadUri,
+          options: Options(headers: {
+            'Authorization':
+                SharedPreferenceService.loadString(key: AuthTokenKey)
+          }),
+          data: _formData);
+      print(res.data);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Record updated, Please refresh the page")));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Error occured")));
+    }
+  }
+
+  Future<void> uploadFile(PlatformFile file) async {
+    String fileUploadUri = 'http://api2.dhanva.icu/files/upload';
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    await Future.forEach(pickedFiles, (PlatformFile file) async {
-      fileNames.add(file.name);
-      uploadableFiles
-          .add(await MultipartFile.fromFile(file.path, filename: file.name));
-    });
-
-    // generate dynamic keys
-    uploadableFiles.asMap().entries.forEach((_fileEntry) {
-      // print('file${_fileEntry.key} : ${_fileEntry.value}');
-      fileMapData['file${_fileEntry.key + 1}'] = _fileEntry.value;
-    });
-
-    Map<String, dynamic> map = {
-      "patient_id": patient.id,
-      "employee_id": patient.id,
-      "docType": reportTypeController.text ?? "Report",
-      "file_name": fileNames,
-      ...fileMapData,
-    };
-
-    FormData _formData = FormData.fromMap(map);
-
-    Response res = await ApiService.dio.post(
-        "http://api2.dhanva.icu/files/uploads",
-        data: _formData,
-        options: Options(headers: {
-          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
-        }));
-    print(res.data);
-    Navigator.pop(context);
-  }
-
-  void uploadFile(FilePickerResult pickedFiles) async {
-    String fileUploadUri = 'http://api2.dhanva.icu/files/upload';
     FormData _formData = FormData.fromMap({
-      "patient_id": widget.medicalRecord.patientId,
+      "patient_id": _selectedPatientId ?? patient.id,
+      "employee_id": widget.medicalRecord?.patientId ?? patient.id,
       "docType": reportTypeController.text ?? "Report",
-      "file_name": pickedFiles.files.first.name,
+      "file_name": file.name,
+      "file1": await MultipartFile.fromFile(file.path, filename: file.name)
     });
     Response res = await ApiService.dio.post(fileUploadUri,
         options: Options(headers: {
@@ -105,7 +199,7 @@ class _MedicalRecordBottomSheetWidgetState
     print(res.data);
   }
 
-  void _pickFiles({bool allowMultiple = false}) async {
+  Future<void> _pickFiles({bool allowMultiple = false}) async {
     if (!await Permission.storage.status.isGranted) {
       await Permission.storage.request();
     }
@@ -114,16 +208,15 @@ class _MedicalRecordBottomSheetWidgetState
     FilePickerResult files = await FilePicker.platform.pickFiles(
       allowMultiple: allowMultiple,
     );
-    files.files.forEach((file) {
-      _pickedFiles.add(file);
-    });
+
+    _selectedFile = files.files.first;
+
     setState(() {
-      // updateUI
+      //
     });
-    // uploadFile(files);
   }
 
-  void deleteRecord() async {
+  Future<void> deleteRecord({bool autopop = true}) async {
     String deleteUri = 'http://api2.dhanva.icu/files/delete/';
     print('$deleteUri${widget.medicalRecord.id}');
     Response res = await ApiService.dio.get(
@@ -131,14 +224,14 @@ class _MedicalRecordBottomSheetWidgetState
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-    Navigator.pop(context);
+    if (autopop) Navigator.pop(context);
     // print(res.data);
   }
 
   @override
   void initState() {
     super.initState();
-    if (!widget.newRecord) _loadPatientInformation();
+    _loadPatientInformation();
     patientNameController =
         TextEditingController(text: widget.newRecord ? '' : '');
     reportTypeController =
@@ -156,11 +249,15 @@ class _MedicalRecordBottomSheetWidgetState
             : DateFormat('h:mma').format(widget.medicalRecord.createdAt));
   }
 
-  _downloadFileAndPreview() async {
+  Future<dynamic> _downloadFileAndPreview({bool autopreview = true}) async {
     Directory appDocDir = await path.getExternalStorageDirectory();
     PermissionStatus stat = await Permission.storage.status;
 
     if (!stat.isGranted) await Permission.storage.request();
+
+    setState(() {
+      _isFileLoading = true;
+    });
 
     String _timeStampName = DateTime.now().millisecondsSinceEpoch.toString();
     List<String> _terms = widget.medicalRecord.filePath.split('/');
@@ -171,7 +268,12 @@ class _MedicalRecordBottomSheetWidgetState
           widget.medicalRecord.filePath,
           '${appDocDir.path}/${_timeStampName}_$fileName');
       print(res.data.toString());
-      await OpenFile.open('${appDocDir.path}/${_timeStampName}_$fileName');
+      setState(() {
+        _isFileLoading = false;
+      });
+      if (autopreview)
+        await OpenFile.open('${appDocDir.path}/${_timeStampName}_$fileName');
+      return '${appDocDir.path}/${_timeStampName}_$fileName';
     } catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.toString())));
@@ -185,9 +287,9 @@ class _MedicalRecordBottomSheetWidgetState
         child: ListView.builder(
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
-            itemCount: _pickedFiles.length + 1,
+            itemCount: 1,
             itemBuilder: (_, int index) {
-              if (_pickedFiles.length != 0 && index < _pickedFiles.length)
+              if (!widget.newRecord || _selectedFile != null)
                 return Padding(
                   padding: const EdgeInsets.only(right: 5),
                   child: Image.asset(
@@ -197,26 +299,28 @@ class _MedicalRecordBottomSheetWidgetState
                     fit: BoxFit.contain,
                   ),
                 );
-              return InkWell(
-                onTap: () => _pickFiles(),
-                child: Container(
-                  width: 55,
-                  height: 55,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFEEEEEE),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: Color(0xFF5A6771),
-                      width: 4,
+              if (_selectedFile == null)
+                return InkWell(
+                  onTap: () => _pickFiles(),
+                  child: Container(
+                    width: 55,
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFEEEEEE),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: Color(0xFF5A6771),
+                        width: 4,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: Color(0xFF535F6B),
+                      size: 42,
                     ),
                   ),
-                  child: Icon(
-                    Icons.add,
-                    color: Color(0xFF535F6B),
-                    size: 42,
-                  ),
-                ),
-              );
+                );
+              return SizedBox();
             }),
       );
 
@@ -240,37 +344,59 @@ class _MedicalRecordBottomSheetWidgetState
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              TextFormField(
-                controller: patientNameController,
-                obscureText: false,
-                decoration: InputDecoration(
-                  labelText: 'Patient Name',
-                  labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Open Sans',
-                        color: Color(0xFF9A9A9A),
-                      ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color(0xFFC1C1C1),
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.circular(12),
+              // TextFormField(
+              //   controller: patientNameController,
+              //   obscureText: false,
+              //   decoration: InputDecoration(
+              //     labelText: 'Patient Name',
+              //     labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+              //           fontFamily: 'Open Sans',
+              //           color: Color(0xFF9A9A9A),
+              //         ),
+              //     enabledBorder: OutlineInputBorder(
+              //       borderSide: BorderSide(
+              //         color: Color(0xFFC1C1C1),
+              //         width: 1,
+              //       ),
+              //       borderRadius: BorderRadius.circular(12),
+              //     ),
+              //     focusedBorder: OutlineInputBorder(
+              //       borderSide: BorderSide(
+              //         color: Color(0xFFC1C1C1),
+              //         width: 1,
+              //       ),
+              //       borderRadius: BorderRadius.circular(12),
+              //     ),
+              //     filled: true,
+              //     fillColor: Colors.white,
+              //   ),
+              //   style: FlutterFlowTheme.of(context).bodyText1.override(
+              //         fontFamily: 'Open Sans',
+              //         color: Color(0xFF485163),
+              //         fontWeight: FontWeight.w500,
+              //       ),
+              // ),
+              DropdownButtonHideUnderline(
+                child: DropdownButtonFormField(
+                  items: patientNames,
+                  value: _selectedPatientId,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedPatientId = value;
+                    });
+                    int idx = patient.relations.indexWhere(
+                        (element) => _selectedPatientId == element.patientId);
+                    patientRelationType =
+                        idx == -1 ? "Self" : patient.relations[idx].type;
+                    // print(patientRelationType);
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color(0x00000000),
+                    labelText: 'Patient Name',
+                    // border:
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color(0xFFC1C1C1),
-                      width: 1,
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
                 ),
-                style: FlutterFlowTheme.of(context).bodyText1.override(
-                      fontFamily: 'Open Sans',
-                      color: Color(0xFF485163),
-                      fontWeight: FontWeight.w500,
-                    ),
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
@@ -350,82 +476,94 @@ class _MedicalRecordBottomSheetWidgetState
                     Expanded(
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                        child: TextFormField(
-                          controller: reportDateController,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            enabled: false,
-                            labelText: 'Report Date',
-                            labelStyle:
-                                FlutterFlowTheme.of(context).bodyText1.override(
+                        child: InkWell(
+                          onTap: _selectReportDate,
+                          child: IgnorePointer(
+                            child: TextFormField(
+                              controller: reportDateController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                enabled: true,
+                                labelText: 'Report Date',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
                                       fontFamily: 'Open Sans',
                                       color: Color(0xFF9A9A9A),
                                     ),
-                            hintText: '[Some hint text...]',
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xFFC1C1C1),
-                                width: 1,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0xFFC1C1C1),
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0xFFC1C1C1),
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
                               ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xFFC1C1C1),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
                                     fontFamily: 'Open Sans',
                                     color: Color(0xFF485163),
                                     fontWeight: FontWeight.w500,
                                   ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     Expanded(
                       child: Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: TextFormField(
-                          controller: reportTimeController,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            enabled: false,
-                            labelText: 'Report Time',
-                            labelStyle:
-                                FlutterFlowTheme.of(context).bodyText1.override(
+                        child: InkWell(
+                          onTap: _selectReportTime,
+                          child: IgnorePointer(
+                            child: TextFormField(
+                              controller: reportTimeController,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                enabled: true,
+                                labelText: 'Report Time',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
                                       fontFamily: 'Open Sans',
                                       color: Color(0xFF9A9A9A),
                                     ),
-                            hintText: '[Some hint text...]',
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xFFC1C1C1),
-                                width: 1,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0xFFC1C1C1),
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0xFFC1C1C1),
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
                               ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color(0xFFC1C1C1),
-                                width: 1,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
                                     fontFamily: 'Open Sans',
                                     color: Color(0xFF485163),
                                     fontWeight: FontWeight.w500,
                                   ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -464,7 +602,7 @@ class _MedicalRecordBottomSheetWidgetState
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Text(
-                          'Download All',
+                          'Download File',
                           style:
                               FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Open Sans',
@@ -472,6 +610,13 @@ class _MedicalRecordBottomSheetWidgetState
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
+                        SizedBox(
+                          width: 18,
+                        ),
+                        if (_isFileLoading)
+                          CircularProgressIndicator(
+                            strokeWidth: 2,
+                          )
                       ],
                     ),
                   ),
@@ -487,9 +632,7 @@ class _MedicalRecordBottomSheetWidgetState
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: InkWell(
-                      onTap: () async {
-                        Navigator.pop(context);
-                      },
+                      onTap: updateRecord,
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -528,37 +671,48 @@ class _MedicalRecordBottomSheetWidgetState
                     ),
                     child: InkWell(
                       onTap: () async {
+                        setState(() {
+                          _isFileUploading = true;
+                        });
+                        uploadFile(_selectedFile);
+                        setState(() {
+                          _isFileUploading = false;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Record Saved")));
                         Navigator.pop(context);
                       },
-                      child: InkWell(
-                        onTap: () async {
-                          await createRecordAndUpload(_pickedFiles);
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Save Record',
-                              style:
-                                  FlutterFlowTheme.of(context).title1.override(
+                      child: !_isFileUploading
+                          ? Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Save Record',
+                                  style: FlutterFlowTheme.of(context)
+                                      .title1
+                                      .override(
                                         fontFamily: 'Poppins',
                                         color: Colors.white,
                                       ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                              child: Image.asset(
-                                'assets/images/Layer_2.png',
-                                width: 35,
-                                height: 35,
-                                fit: BoxFit.cover,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 0, 0),
+                                  child: Image.asset(
+                                    'assets/images/Layer_2.png',
+                                    width: 35,
+                                    height: 35,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
                     ),
                   ),
                 ),
