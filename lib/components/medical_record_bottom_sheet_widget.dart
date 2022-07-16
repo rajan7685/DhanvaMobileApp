@@ -433,41 +433,41 @@ class _MedicalRecordBottomSheetWidgetState
                       ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                child: TextFormField(
-                  controller: doctorNameController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Doctor Name',
-                    labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFF9A9A9A),
-                        ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFFC1C1C1),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFFC1C1C1),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Open Sans',
-                        color: Color(0xFF485163),
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
-              ),
+              // Padding(
+              //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+              //   child: TextFormField(
+              //     controller: doctorNameController,
+              //     obscureText: false,
+              //     decoration: InputDecoration(
+              //       labelText: 'Doctor Name',
+              //       labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+              //             fontFamily: 'Open Sans',
+              //             color: Color(0xFF9A9A9A),
+              //           ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: Color(0xFFC1C1C1),
+              //           width: 1,
+              //         ),
+              //         borderRadius: BorderRadius.circular(12),
+              //       ),
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: Color(0xFFC1C1C1),
+              //           width: 1,
+              //         ),
+              //         borderRadius: BorderRadius.circular(12),
+              //       ),
+              //       filled: true,
+              //       fillColor: Colors.white,
+              //     ),
+              //     style: FlutterFlowTheme.of(context).bodyText1.override(
+              //           fontFamily: 'Open Sans',
+              //           color: Color(0xFF485163),
+              //           fontWeight: FontWeight.w500,
+              //         ),
+              //   ),
+              // ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                 child: Row(
