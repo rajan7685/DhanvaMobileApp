@@ -621,44 +621,44 @@ class _MedicalRecordBottomSheetWidgetState
                     ),
                   ),
                 ),
-              if (!widget.newRecord)
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 42, 0, 0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.78,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF00A8A3),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: InkWell(
-                      onTap: updateRecord,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Update Record',
-                            style: FlutterFlowTheme.of(context).title1.override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                            child: Image.asset(
-                              'assets/images/Layer_2.png',
-                              width: 35,
-                              height: 35,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+              // if (!widget.newRecord)
+              //   Padding(
+              //     padding: EdgeInsetsDirectional.fromSTEB(0, 42, 0, 0),
+              //     child: Container(
+              //       width: MediaQuery.of(context).size.width * 0.78,
+              //       height: 55,
+              //       decoration: BoxDecoration(
+              //         color: Color(0xFF00A8A3),
+              //         borderRadius: BorderRadius.circular(24),
+              //       ),
+              //       child: InkWell(
+              //         onTap: updateRecord,
+              //         child: Row(
+              //           mainAxisSize: MainAxisSize.max,
+              //           mainAxisAlignment: MainAxisAlignment.center,
+              //           children: [
+              //             Text(
+              //               'Update Record',
+              //               style: FlutterFlowTheme.of(context).title1.override(
+              //                     fontFamily: 'Poppins',
+              //                     color: Colors.white,
+              //                   ),
+              //             ),
+              //             Padding(
+              //               padding:
+              //                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+              //               child: Image.asset(
+              //                 'assets/images/Layer_2.png',
+              //                 width: 35,
+              //                 height: 35,
+              //                 fit: BoxFit.cover,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
               if (widget.newRecord)
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 42, 0, 0),
