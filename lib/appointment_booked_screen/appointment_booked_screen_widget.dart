@@ -137,6 +137,7 @@ class _AppointmentBookedScreenWidgetState
   @override
   void initState() {
     super.initState();
+    print(widget.timeString);
     _rzPay = Razorpay();
     _rzPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _rzPay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);

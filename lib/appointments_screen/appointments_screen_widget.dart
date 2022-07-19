@@ -68,25 +68,25 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
         elevation: 0,
       ),
       backgroundColor: Color(0xFFF3F4F4),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // file picking action
-          // final res = await FilePicker.platform.pickFiles(allowMultiple: false);
-          // await OpenFile.open(res.files.first.path);
-          final String _prescriptionDownloadUri =
-              'http://api2.dhanva.icu/files/download/';
-          Directory path = await getApplicationDocumentsDirectory();
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     // file picking action
+      //     // final res = await FilePicker.platform.pickFiles(allowMultiple: false);
+      //     // await OpenFile.open(res.files.first.path);
+      //     final String _prescriptionDownloadUri =
+      //         'http://api2.dhanva.icu/files/download/';
+      //     Directory path = await getApplicationDocumentsDirectory();
 
-          print(path.uri);
-        },
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-        elevation: 8,
-        child: Icon(
-          Icons.add_rounded,
-          color: Colors.white,
-          size: 24,
-        ),
-      ),
+      //     print(path.uri);
+      //   },
+      //   backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+      //   elevation: 8,
+      //   child: Icon(
+      //     Icons.add_rounded,
+      //     color: Colors.white,
+      //     size: 24,
+      //   ),
+      // ),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -130,34 +130,43 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
                           ? Center(
                               child: Text(
                                   'Nothing yet, Try booking an appointment'))
-                          : ListView.builder(
-                              itemCount: resData.length,
-                              itemBuilder: (_, int index) => GestureDetector(
-                                child: AppointmentCard(
-                                  appointmentModel: resData[index],
-                                ),
-                                onTap: () async {
-                                  await showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    context: context,
-                                    builder: (context) {
-                                      return Padding(
-                                        padding:
-                                            MediaQuery.of(context).viewInsets,
-                                        child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.88,
-                                          child: AppointmentsBottomSheetWidget(
-                                            appointmentJson: resData[index],
+                          : RefreshIndicator(
+                              onRefresh: () async {
+                                setState(() {
+                                  isDataLoading = true;
+                                });
+                                _loadAppointmentsData();
+                              },
+                              child: ListView.builder(
+                                itemCount: resData.length,
+                                itemBuilder: (_, int index) => GestureDetector(
+                                  child: AppointmentCard(
+                                    appointmentModel: resData[index],
+                                  ),
+                                  onTap: () async {
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (context) {
+                                        return Padding(
+                                          padding:
+                                              MediaQuery.of(context).viewInsets,
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.88,
+                                            child:
+                                                AppointmentsBottomSheetWidget(
+                                              appointmentJson: resData[index],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
                             )),
                 ),

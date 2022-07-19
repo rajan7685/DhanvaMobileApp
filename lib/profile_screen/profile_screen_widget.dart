@@ -4,6 +4,7 @@ import 'package:dhanva_mobile_app/about_screen/about_screen.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/help_screen/help_screen.dart';
 import 'package:dhanva_mobile_app/login_screen/login_screen_widget.dart';
 import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
@@ -491,6 +492,52 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                       12, 0, 0, 0),
                                   child: Text(
                                     'Favorites',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Color(0xFF434343),
+                                          fontSize: 20,
+                                        ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Align(
+                                    alignment: AlignmentDirectional(1, 0),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Color(0xFF5A5A5A),
+                                      size: 34,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                          child: InkWell(
+                            onTap: () async {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => HelpScreenWidget()));
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.info_outline_rounded,
+                                  size: 21,
+                                  color: Color(0xff00A8A3),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      12, 0, 0, 0),
+                                  child: Text(
+                                    'Help',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(

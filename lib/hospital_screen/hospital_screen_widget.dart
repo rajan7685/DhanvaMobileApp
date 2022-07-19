@@ -212,17 +212,26 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
                     padding: EdgeInsets.all(12),
                     child: _isDataLoading
                         ? Center(child: CircularProgressIndicator())
-                        : GridView.builder(
-                            physics: BouncingScrollPhysics(),
-                            itemCount: _servicesList.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    mainAxisSpacing: 18,
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 22,
-                                    mainAxisExtent: 120),
-                            itemBuilder: (_, int index) => _buildServiceCard(
-                                context, _servicesList[index])),
+                        : RefreshIndicator(
+                            onRefresh: () async {
+                              setState(() {
+                                _isDataLoading = true;
+                              });
+                              _loadServicesData();
+                            },
+                            child: GridView.builder(
+                                physics: BouncingScrollPhysics(),
+                                itemCount: _servicesList.length,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        mainAxisSpacing: 18,
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 22,
+                                        mainAxisExtent: 120),
+                                itemBuilder: (_, int index) =>
+                                    _buildServiceCard(
+                                        context, _servicesList[index])),
+                          ),
                   ),
                 ),
               ),
