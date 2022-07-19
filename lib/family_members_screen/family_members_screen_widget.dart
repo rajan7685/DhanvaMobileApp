@@ -104,23 +104,31 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        itemCount: _familyMemberList.length,
-                        itemBuilder: (_, int index) {
-                          return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            UpdateFamilyMemberWidget(
-                                                memberData:
-                                                    _familyMemberList[index])));
-                              },
-                              child: _buildFamilyMember(context, index));
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          _loadMembersData();
                         },
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.vertical,
+                          itemCount: _familyMemberList.length,
+                          itemBuilder: (_, int index) {
+                            return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) =>
+                                              UpdateFamilyMemberWidget(
+                                                  memberData: _familyMemberList[
+                                                      index])));
+                                },
+                                child: _buildFamilyMember(context, index));
+                          },
+                        ),
                       ),
                     ),
                   ),

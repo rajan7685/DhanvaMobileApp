@@ -146,12 +146,20 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
                     padding: EdgeInsetsDirectional.fromSTEB(14, 12, 14, 0),
                     child: isDataLoading
                         ? Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                            padding: EdgeInsets.zero,
-                            scrollDirection: Axis.vertical,
-                            itemCount: _hospitalJsonList.length,
-                            itemBuilder: (context, index) =>
-                                _buildHospitalListItem(context, index)),
+                        : RefreshIndicator(
+                            onRefresh: () async {
+                              setState(() {
+                                isDataLoading = true;
+                              });
+                              _loadHospitalData();
+                            },
+                            child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                scrollDirection: Axis.vertical,
+                                itemCount: _hospitalJsonList.length,
+                                itemBuilder: (context, index) =>
+                                    _buildHospitalListItem(context, index)),
+                          ),
                   ),
                 ),
               ),

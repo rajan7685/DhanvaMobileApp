@@ -2,6 +2,7 @@ import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
+import 'package:html/dom_parsing.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -137,23 +138,31 @@ class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(14, 14, 14, 0),
                     child: isLoading
                         ? Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                            itemCount: newsListJson.length,
-                            itemBuilder: (context, int index) => InkWell(
-                                onTap: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NewsViewScreenWidget(
-                                        jsonNews: newsListJson[index],
+                        : RefreshIndicator(
+                            onRefresh: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              _fetchNewses();
+                            },
+                            child: ListView.builder(
+                              itemCount: newsListJson.length,
+                              itemBuilder: (context, int index) => InkWell(
+                                  onTap: () async {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            NewsViewScreenWidget(
+                                          jsonNews: newsListJson[index],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                child: _NewsCard(
-                                  newsJson: newsListJson[index],
-                                )),
+                                    );
+                                  },
+                                  child: _NewsCard(
+                                    newsJson: newsListJson[index],
+                                  )),
+                            ),
                           ),
                   ),
                 ),

@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/models/medical_record.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/providers/medical_records_provider.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../components/medical_record_bottom_sheet_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -131,38 +131,46 @@ class _MedicalRecordScreenWidgetState
                         child: CircularProgressIndicator(),
                       );
                     } else {
-                      return ListView.builder(
-                        itemCount: _prov.medicalRecords.length,
-                        padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                        scrollDirection: Axis.vertical,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                              onTap: () async {
-                                await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (context) {
-                                    return Padding(
-                                      padding:
-                                          MediaQuery.of(context).viewInsets,
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.8,
-                                        child: MedicalRecordBottomSheetWidget(
-                                          medicalRecord:
-                                              _prov.medicalRecords[index],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: MedicalRecordCard(
-                                medicalRecord: _prov.medicalRecords[index],
-                              ));
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          ref
+                              .read(_medicalRecordsProvider)
+                              .fetchMedicalRecords();
                         },
+                        child: ListView.builder(
+                          itemCount: _prov.medicalRecords.length,
+                          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () async {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (context) {
+                                      return Padding(
+                                        padding:
+                                            MediaQuery.of(context).viewInsets,
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.8,
+                                          child: MedicalRecordBottomSheetWidget(
+                                            medicalRecord:
+                                                _prov.medicalRecords[index],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: MedicalRecordCard(
+                                  medicalRecord: _prov.medicalRecords[index],
+                                ));
+                          },
+                        ),
                       );
                     }
                   },
