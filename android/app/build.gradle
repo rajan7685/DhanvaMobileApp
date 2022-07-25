@@ -48,8 +48,8 @@ android {
         applicationId "com.celestial.dhanva"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 21 //flutterVersionCode.toInteger()
+        versionName "3.0.0" //flutterVersionName
     }
 
    signingConfigs {
