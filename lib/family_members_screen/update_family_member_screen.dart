@@ -50,8 +50,10 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
     _heightController.text = memberDetails['height'];
     _weightController.text = memberDetails['weight'];
     _bgController.text = memberDetails['bloodGroup'];
-    _dobController.text = DateFormat('EEEE MMM d, yyyy')
-        .format(DateTime.parse(memberDetails['dob']));
+    _dobController.text = memberDetails['dob'] != null
+        ? DateFormat('EEEE MMM d, yyyy')
+            .format(DateTime.parse(memberDetails['dob']))
+        : '';
     gender = memberDetails['gender'];
     setState(() {
       // update the values

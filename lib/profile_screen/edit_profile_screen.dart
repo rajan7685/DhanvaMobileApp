@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_radio_button.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_theme.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_util.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class EditProfileScreenWidget extends StatefulWidget {
   const EditProfileScreenWidget({Key key}) : super(key: key);
@@ -17,6 +24,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
 
   String gender;
   String patientRelationType;
+  List<String> _relationTypes = [];
   TextEditingController _patientNameController;
   TextEditingController _patientAgeController;
   TextEditingController _patientPhoneController;
@@ -40,7 +48,50 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
     _heightController = TextEditingController();
     _weightController = TextEditingController();
     _dobController = TextEditingController();
-    // _loadRelationTypeButton();
+    _relationTypes = [];
+    _getAndSetRelations();
+    _loadPatientInfo();
+  }
+
+  Future<void> _getAndSetRelations() async {
+    String uri = 'http://api2.dhanva.icu/patient/get_relation_constants';
+    Response res = await ApiService.dio.get(uri,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+
+    (res.data['data'] as List).forEach((type) => _relationTypes.add(type));
+    setState(() {
+      // updateUI
+    });
+  }
+
+  Future<void> _loadPatientInfo() async {
+    String patientId = Patient.fromJson(
+            jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
+        .id;
+    String uri = 'http://api2.dhanva.icu/patient/getPatientDetails/$patientId';
+    Response res = await ApiService.dio.get(uri,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    if (res.data['name'] == null)
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please fill all of your details first')));
+    print(res.data['gender']);
+    setState(() {
+      _patientNameController.text = res.data['name'];
+      _patientAgeController.text = res.data['age'];
+      _patientPhoneController.text = res.data['phone'].toString();
+      _patientEmailController.text = res.data['email'];
+      _emergencyPhoneController.text = res.data['emergency_contact'];
+      _bgController.text = res.data['name'];
+      _heightController.text = res.data['height'];
+      _weightController.text = res.data['weight'];
+      gender = res.data['gender'];
+      patientRelationType;
+      _dob = res.data['dob'] != null ? DateTime.parse(res.data['dob']) : null;
+    });
   }
 
   void _selectDob() async {
@@ -57,6 +108,37 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
         _dob = pickedDate;
         _dobController.text = DateFormat('EEEE MMM d, yyyy').format(_dob);
       });
+  }
+
+  Future<void> _savePatientDetails() async {
+    //
+    String _uri = 'http://api2.dhanva.icu/patient/update';
+    String patientId = Patient.fromJson(
+            jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
+        .id;
+    Response res = await ApiService.dio.post(_uri,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }),
+        data: {
+          "name": _patientNameController.text,
+          "email": _patientEmailController.text,
+          "dob": _dobController.text,
+          "phone": _patientPhoneController.text,
+          "bloodGroup": _bgController.text,
+          "age": _patientAgeController.text,
+          "emergency_contact": _emergencyPhoneController.text,
+          "height": _heightController.text,
+          "weight": _weightController.text,
+          "relation_type": patientRelationType,
+          "gender": gender,
+          // patient id
+          "id": patientId,
+        });
+    print('update response : ${res.data}');
+    SharedPreferenceService.saveString(
+        key: PatientKey, value: jsonEncode(res.data));
+    return res.data;
   }
 
   //dispose
@@ -662,7 +744,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                             hintText: "Relation Type",
                             fillColor: Colors.white),
                         value: patientRelationType,
-                        items: ["an", "hj"]
+                        items: _relationTypes
                             .map((String type) => DropdownMenuItem(
                                   child: Text(type),
                                   value: type,
@@ -680,15 +762,11 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                         height: 8,
                       ),
                       InkWell(
-                        onTap: () {
-                          _selectDob();
-                        },
+                        onTap: _selectDob,
                         child: IgnorePointer(
                           child: TextFormField(
                             controller: _dobController,
-                            validator: (String relation) {
-                              if (relation.isEmpty)
-                                return 'Please provide your date of birth';
+                            validator: (String _) {
                               return null;
                             },
                             obscureText: false,
@@ -744,12 +822,11 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 28),
                         child: InkWell(
-                          onTap: () {
-                            if (_formKey.currentState.validate()) {
-                              //
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                      'Please fill all the fields properly')));
+                          onTap: () async {
+                            if (_formKey.currentState.validate() &&
+                                gender != null) {
+                              await _savePatientDetails();
+                              Navigator.pop(context);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text(
@@ -769,7 +846,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Add',
+                                  'Save',
                                   style: TextStyle(
                                       fontFamily: 'Open Sans',
                                       fontWeight: FontWeight.bold,

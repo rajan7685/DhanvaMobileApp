@@ -44,6 +44,7 @@ class _MedicalRecordBottomSheetWidgetState
   bool _isFileLoading = false;
   bool _isFileUploading = false;
   Patient patient;
+  List<PatientRelation> _relations = [];
 
   List<DropdownMenuItem<String>> patientNames = [];
   String _selectedPatientId;
@@ -58,7 +59,14 @@ class _MedicalRecordBottomSheetWidgetState
       child: Text(patient.name),
       value: patient.id,
     ));
-    for (PatientRelation relation in patient.relations) {
+    Response res = await ApiService.dio.get(
+        'http://api2.dhanva.icu/patient/getPatientRelations/$pid',
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    _relations =
+        (res.data as List).map((e) => PatientRelation.fromJson(e)).toList();
+    for (PatientRelation relation in _relations) {
       patientNames.add(DropdownMenuItem(
         child: Text(relation.patientName),
         value: relation.patientId,
@@ -384,10 +392,10 @@ class _MedicalRecordBottomSheetWidgetState
                     setState(() {
                       _selectedPatientId = value;
                     });
-                    int idx = patient.relations.indexWhere(
+                    int idx = _relations.indexWhere(
                         (element) => _selectedPatientId == element.patientId);
                     patientRelationType =
-                        idx == -1 ? "Self" : patient.relations[idx].type;
+                        idx == -1 ? "Self" : _relations[idx].type;
                     // print(patientRelationType);
                   },
                   decoration: InputDecoration(

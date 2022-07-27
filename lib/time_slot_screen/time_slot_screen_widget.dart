@@ -232,7 +232,7 @@ class _UniversalTimeSlotListState extends State<UniversalTimeSlotList> {
 
   @override
   Widget build(BuildContext context) {
-    print('main list len ${widget.timeSlots.length}');
+    print('main list len ${widget.timeSlots}');
     return SizedBox(
       width: double.maxFinite,
       child: Row(

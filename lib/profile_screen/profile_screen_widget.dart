@@ -45,7 +45,8 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
   Widget build(BuildContext context) {
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    String _patientFirstName = patient.name.split(' ')[0];
+    String _patientFirstName =
+        patient.name != null ? patient.name.split(' ')[0] : '';
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFFF5F5F5),
@@ -154,7 +155,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                         .override(
                                           fontFamily: 'Open Sans',
                                           color: Color(0xFFF3F4F4),
-                                          fontSize: 15,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w300,
                                         ),
                                   ),

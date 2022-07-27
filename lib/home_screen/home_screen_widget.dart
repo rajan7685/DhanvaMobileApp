@@ -6,6 +6,7 @@ import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
+import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/models/psychometrics_assesment_question.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/psychometrics_assesment_screen.dart';
 import 'package:dhanva_mobile_app/start_booking_screen/start_booking_screen_widget.dart';
@@ -107,7 +108,8 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
   Widget build(BuildContext context) {
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    String _patientFirstName = patient.name.split(' ')[0];
+    String _patientFirstName =
+        patient.name != null ? patient.name.split(' ')[0] : '';
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFFF3F4F4),
@@ -424,6 +426,8 @@ class QuickServicesListView extends StatelessWidget {
   }) : super(key: key);
 
   Widget _buildServiceCard(BuildContext context, int index) {
+    Patient _patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
     return Container(
       width: 100,
       decoration: BoxDecoration(
@@ -436,16 +440,24 @@ class QuickServicesListView extends StatelessWidget {
             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
             child: InkWell(
               onTap: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => StartBookingScreen2Widget(
-                      service: services[index],
-                      hospitalId: SharedPreferenceService.loadString(
-                          key: OnlineHospitalKey),
+                if (_patient.name != null)
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => StartBookingScreen2Widget(
+                        service: services[index],
+                        hospitalId: SharedPreferenceService.loadString(
+                            key: OnlineHospitalKey),
+                      ),
                     ),
-                  ),
-                );
+                  );
+                else
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => EditProfileScreenWidget(),
+                    ),
+                  );
               },
               child: Container(
                 width: 85,

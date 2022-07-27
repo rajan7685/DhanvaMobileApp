@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/doctors_by_hospital_screen/doctors_by_hospital_screen_widget.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_theme.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/offline_consultation_screen/services_by_hospital_screen.dart';
+import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -179,14 +181,24 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
       ),
       child: InkWell(
         onTap: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ServicesByHospitalScreen(
-                hospitalDetails: _hospitalJsonList[index],
+          Patient _patient = Patient.fromJson(
+              jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+          if (_patient.name == null)
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => EditProfileScreenWidget(),
               ),
-            ),
-          );
+            );
+          else
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ServicesByHospitalScreen(
+                  hospitalDetails: _hospitalJsonList[index],
+                ),
+              ),
+            );
         },
         child: Row(
           mainAxisSize: MainAxisSize.max,
