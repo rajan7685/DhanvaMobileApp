@@ -29,6 +29,7 @@ class _ServicesByHospitalScreenState
   List<dynamic> _servicesList;
 
   Future<void> _loadServicesData() async {
+    print(widget.hospitalDetails["_id"]);
     Response res = await ApiService.dio.post(
         'http://api2.dhanva.icu/hospital/get_services',
         data: {"id": widget.hospitalDetails["_id"]},
@@ -37,7 +38,7 @@ class _ServicesByHospitalScreenState
         }));
 
     _servicesList = res.data;
-    print(_servicesList);
+    // print(_servicesList);
     setState(() {
       _isDataLoading = false;
     });

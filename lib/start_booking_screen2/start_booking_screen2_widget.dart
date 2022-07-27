@@ -371,6 +371,7 @@ class _StartBookingScreen2WidgetState
                                       ref
                                           .read(_doctorsProvider)
                                           .fetchAllDoctors(
+                                              hospitalId: widget.hospitalId,
                                               serviceId: widget.service.id);
                                     }
                                   },
