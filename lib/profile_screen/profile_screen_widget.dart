@@ -31,6 +31,7 @@ class ProfileScreenWidget extends StatefulWidget {
 class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  // demo bug fix
   Future<void> initSharedService() async {
     await SharedPreferenceService.init();
   }
