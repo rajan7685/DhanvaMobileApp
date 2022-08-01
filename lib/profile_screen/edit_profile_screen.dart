@@ -201,7 +201,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                       TextFormField(
                         controller: _patientNameController,
                         validator: (String name) {
-                          if (name.isEmpty) return 'Name cannot be empty';
+                          if (name.isEmpty) return 'Name is Required';
                           return null;
                         },
                         obscureText: false,
@@ -263,7 +263,8 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                         .bodyText1
                                         .override(
                                           fontFamily: 'Open Sans',
-                                          color: Color(0xFF606E87),
+                                          color:
+                                              Color.fromARGB(255, 12, 16, 22),
                                           fontSize: 11,
                                         ),
                                   ),
@@ -309,7 +310,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                     controller: _patientAgeController,
                                     validator: (String number) {
                                       if (number.isEmpty)
-                                        return 'Age cannot be empty';
+                                        return 'Age is Required';
                                       return null;
                                     },
                                     obscureText: false,
@@ -371,14 +372,13 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                   controller: _emergencyPhoneController,
                                   validator: (String phone) {
                                     if (phone.isEmpty)
-                                      return 'Contact cannot be empty';
-                                    if (phone.length != 10)
-                                      return 'Must be a valid phone number';
+                                      return 'Contact is Required';
+                                    if (phone.length < 10 || phone.length > 11)
+                                      return 'Enter valid phone number';
                                     return null;
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    prefix: Text('+91  '),
                                     labelText: 'Emergency Contact',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -431,14 +431,13 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                   controller: _patientPhoneController,
                                   validator: (String phone) {
                                     if (phone.isEmpty)
-                                      return 'Phone cannot be empty';
-                                    if (phone.length != 10)
+                                      return 'Phone is Required';
+                                    if (phone.length < 10 || phone.length > 11)
                                       return 'Must be a valid phone number';
                                     return null;
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    prefix: Text('+91  '),
                                     labelText: 'Phone',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -495,7 +494,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                   controller: _patientEmailController,
                                   validator: (String email) {
                                     if (email.isEmpty)
-                                      return 'Email cannot be empty';
+                                      return 'Email is Required';
                                     return null;
                                   },
                                   obscureText: false,
@@ -556,12 +555,13 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                   controller: _heightController,
                                   validator: (String phone) {
                                     if (phone.isEmpty)
-                                      return 'Height cannot be empty';
+                                      return 'Height is Required';
 
                                     return null;
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
+                                    suffix: Text("cms"),
                                     labelText: 'Height',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -614,12 +614,13 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                   controller: _weightController,
                                   validator: (String phone) {
                                     if (phone.isEmpty)
-                                      return 'Weight cannot be empty';
+                                      return 'Weight is required';
 
                                     return null;
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
+                                    suffix: Text("kg"),
                                     labelText: 'Weight',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -670,9 +671,11 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                 Expanded(
                                     child: TextFormField(
                                   controller: _bgController,
-                                  validator: (String phone) {
+                                  validator: (
+                                    String phone,
+                                  ) {
                                     if (phone.isEmpty)
-                                      return 'Blood group cannot be empty';
+                                      return 'Blood group is required';
 
                                     return null;
                                   },
