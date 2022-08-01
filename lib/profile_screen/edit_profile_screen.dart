@@ -758,7 +758,8 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                         ),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 0,
+                        width: 3,
                       ),
                       // relation dropdown,
                       Row(
@@ -829,7 +830,8 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                             ),
                           ),
                           SizedBox(
-                            width: 20,
+                            width: 8,
+                            height: 90,
                           ),
                         ],
                       ),

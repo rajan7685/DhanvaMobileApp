@@ -731,7 +731,7 @@ class _AddFamilyMembersScreenWidgetState
                         ),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 0,
                       ),
                       // relation dropdown,
                       Row(
@@ -802,7 +802,7 @@ class _AddFamilyMembersScreenWidgetState
                             ),
                           ),
                           SizedBox(
-                            height: 6,
+                            height: 90,
                           ),
                         ],
                       ),
