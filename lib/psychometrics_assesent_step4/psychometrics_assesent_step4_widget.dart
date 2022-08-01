@@ -430,7 +430,7 @@ class _PsychometricsAssesentStep4WidgetState
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Next',
+                                        'Finish',
                                         style: FlutterFlowTheme.of(context)
                                             .title1
                                             .override(

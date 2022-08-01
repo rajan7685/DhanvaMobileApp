@@ -9,6 +9,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../time_slot_screen/time_slot_screen_widget.dart';
 
 class HVTAssestmentScreenWidget extends StatefulWidget {
   const HVTAssestmentScreenWidget({Key key}) : super(key: key);
@@ -175,7 +176,7 @@ class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
                             ),
                           ),
                           Text(
-                            'Pre Assesment Questionarie',
+                            'Pre Assesment Questinnarie',
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',
@@ -262,7 +263,7 @@ class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
                                 '7',
                                 '8',
                                 '9',
-                                '10'
+                                '10',
                               ],
                               onChanged: (value) {
                                 setState(() => radioButtonValue1 = value);
@@ -378,7 +379,7 @@ class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(0, 4, 0, 4),
                               child: Text(
-                                'Or, ',
+                                'Or ',
                                 style: FlutterFlowTheme.of(context).bodyText1,
                               ),
                             ),
@@ -387,44 +388,56 @@ class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
                             alignment: AlignmentDirectional(0, 0),
                             child: Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.82,
-                                height: 55,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(24),
-                                  border: Border.all(
-                                    color: Color(0xFF00A8A3),
-                                    width: 2,
+                                  EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+                              child: InkWell(
+                                onTap: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          TimeSlotScreenWidget(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.82,
+                                  height: 55,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(24),
+                                    border: Border.all(
+                                      color: Color(0xFF00A8A3),
+                                      width: 2,
+                                    ),
                                   ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Schedule your Slot',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Color(0xFF00A8A3),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          8, 0, 0, 0),
-                                      child: Image.asset(
-                                        'assets/images/Layer_2__.png',
-                                        width: 30,
-                                        height: 30,
-                                        fit: BoxFit.contain,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Schedule your Slot',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Color(0xFF00A8A3),
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8, 0, 0, 0),
+                                        child: Image.asset(
+                                          'assets/images/Layer_2__.png',
+                                          width: 30,
+                                          height: 30,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

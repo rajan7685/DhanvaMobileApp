@@ -22,9 +22,13 @@ class EditProfileScreenWidget extends StatefulWidget {
 class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
   final _formKey = GlobalKey<FormState>();
 
+  String valueChoose;
+
   String gender;
   String patientRelationType;
   List<String> _relationTypes = [];
+  String bloodGroupType;
+  List<String> _bloodGroupTypes = [];
   TextEditingController _patientNameController;
   TextEditingController _patientAgeController;
   TextEditingController _patientPhoneController;
@@ -49,8 +53,23 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
     _weightController = TextEditingController();
     _dobController = TextEditingController();
     _relationTypes = [];
+    _bloodGroupTypes = [];
+    _getBloodGroup();
     _getAndSetRelations();
     _loadPatientInfo();
+  }
+
+  Future<void> _getBloodGroup() {
+    ([
+      'A+',
+      'B+',
+      'AB+',
+      'AB-',
+      'O+',
+      'O-',
+      'A-',
+      'B-',
+    ]).forEach((type) => _bloodGroupTypes.add(type));
   }
 
   Future<void> _getAndSetRelations() async {
@@ -59,6 +78,8 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
+
+    print(res.data['data']);
 
     (res.data['data'] as List).forEach((type) => _relationTypes.add(type));
     setState(() {
@@ -85,12 +106,15 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
       _patientPhoneController.text = res.data['phone'].toString();
       _patientEmailController.text = res.data['email'];
       _emergencyPhoneController.text = res.data['emergency_contact'];
-      _bgController.text = res.data['name'];
+      _bgController.text = res.data['bloodGroup'];
       _heightController.text = res.data['height'];
       _weightController.text = res.data['weight'];
       gender = res.data['gender'];
       patientRelationType;
+      bloodGroupType;
       _dob = res.data['dob'] != null ? DateTime.parse(res.data['dob']) : null;
+      _dobController.text =
+          _dob != null ? DateFormat('MMM d, yyyy').format(_dob) : null;
     });
   }
 
@@ -100,13 +124,15 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
         cancelText: 'Cancel',
         confirmText: 'Done',
         context: context,
-        initialDate: _dob ?? DateTime(2000),
+        initialDate: _dob ??
+            DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day),
         firstDate: DateTime(1900),
         lastDate: DateTime(2025));
     if (pickedDate != null && pickedDate != _dob)
       setState(() {
         _dob = pickedDate;
-        _dobController.text = DateFormat('EEEE MMM d, yyyy').format(_dob);
+        _dobController.text = DateFormat('MMM d, yyyy').format(_dob);
       });
   }
 
@@ -123,7 +149,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
         data: {
           "name": _patientNameController.text,
           "email": _patientEmailController.text,
-          "dob": _dobController.text,
+          "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
           "phone": _patientPhoneController.text,
           "bloodGroup": _bgController.text,
           "age": _patientAgeController.text,
@@ -277,6 +303,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                     flex: 2,
                                     child: FlutterFlowRadioButton(
                                       options: ['Male', 'Female'],
+                                      initialValue: gender,
                                       onChanged: (value) {
                                         setState(() {
                                           gender = value;
@@ -299,7 +326,8 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                       buttonPosition: RadioButtonPosition.left,
                                       direction: Axis.horizontal,
                                       radioButtonColor: Color(0xFF00A8A3),
-                                      inactiveRadioButtonColor: Colors.white,
+                                      inactiveRadioButtonColor:
+                                          Color(0x8A314A51),
                                       toggleable: false,
                                       horizontalAlignment: WrapAlignment.start,
                                       verticalAlignment:
@@ -554,8 +582,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                     child: TextFormField(
                                   controller: _heightController,
                                   validator: (String phone) {
-                                    if (phone.isEmpty)
-                                      return 'Height is Required';
+                                    if (phone.isEmpty) return 'Height*';
 
                                     return null;
                                   },
@@ -613,14 +640,13 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                     child: TextFormField(
                                   controller: _weightController,
                                   validator: (String phone) {
-                                    if (phone.isEmpty)
-                                      return 'Weight is required';
+                                    if (phone.isEmpty) return 'Weight*';
 
                                     return null;
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    suffix: Text("kg"),
+                                    suffix: Text("kgs"),
                                     labelText: 'Weight',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -668,102 +694,146 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                 SizedBox(
                                   width: 6,
                                 ),
-                                Expanded(
-                                    child: TextFormField(
-                                  controller: _bgController,
-                                  validator: (
-                                    String phone,
-                                  ) {
-                                    if (phone.isEmpty)
-                                      return 'Blood group is required';
 
-                                    return null;
-                                  },
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    labelText: 'Blood group',
-                                    labelStyle: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Open Sans',
-                                          color: Color(0xFF9A9A9A),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
+                                /*Expanded(
+                                  child: TextFormField(
+                                    controller: _bgController,
+                                    validator: (
+                                      String phone,
+                                    ) {
+                                      if (phone.isEmpty) return 'Blood group*';
+
+                                      return null;
+                                    },
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'Blood group',
+                                      labelStyle: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFF9A9A9A),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                      hintStyle: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFF606E87),
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0xFFC1C1C1),
+                                          width: 1,
                                         ),
-                                    hintStyle: FlutterFlowTheme.of(context)
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0xFFC1C1C1),
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                    ),
+                                    style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
                                           fontFamily: 'Open Sans',
                                           color: Color(0xFF606E87),
-                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0xFFC1C1C1),
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0xFFC1C1C1),
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.white,
+                                    textAlign: TextAlign.start,
+                                    keyboardType: TextInputType.text,
                                   ),
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Open Sans',
-                                        color: Color(0xFF606E87),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                  textAlign: TextAlign.start,
-                                  keyboardType: TextInputType.text,
-                                )),
+                                ),*/
                               ],
                             )
                           ],
                         ),
                       ),
                       SizedBox(
-                        height: 12,
-                      ),
-                      // relation dropdown,
-                      DropdownButtonFormField(
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                              borderRadius: const BorderRadius.all(
-                                const Radius.circular(26),
-                              ),
-                            ),
-                            filled: true,
-                            hintStyle: TextStyle(color: Color(0xFF606E87)),
-                            hintText: "Relation Type",
-                            fillColor: Colors.white),
-                        value: patientRelationType,
-                        items: _relationTypes
-                            .map((String type) => DropdownMenuItem(
-                                  child: Text(type),
-                                  value: type,
-                                ))
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            patientRelationType = value;
-                          });
-                        },
-                        iconEnabledColor: Color(0xFF606E87),
-                        iconDisabledColor: Color(0xFF606E87),
-                      ),
-                      SizedBox(
                         height: 8,
                       ),
+                      // relation dropdown,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red),
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(26),
+                                    ),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(
+                                    color: Color(0xFF9A9A9A),
+                                  ),
+                                  hintText: "Blood Group",
+                                  fillColor: Colors.white),
+                              value: bloodGroupType,
+                              items: _bloodGroupTypes
+                                  .map((type) => DropdownMenuItem(
+                                        child: Text(type),
+                                        value: type,
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  bloodGroupType = value;
+                                });
+                              },
+                              iconEnabledColor: Color(0xFF606E87),
+                              iconDisabledColor: Color(0xFF606E87),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Expanded(
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red),
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(26),
+                                    ),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(
+                                    color: Color(0xFF9A9A9A),
+                                  ),
+                                  hintText: "Relation Type",
+                                  fillColor: Colors.white),
+                              value: patientRelationType,
+                              items: _relationTypes
+                                  .map((String type) => DropdownMenuItem(
+                                        child: Text(type),
+                                        value: type,
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  patientRelationType = value;
+                                });
+                              },
+                              iconEnabledColor: Color(0xFF606E87),
+                              iconDisabledColor: Color(0xFF606E87),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                        ],
+                      ),
+
                       InkWell(
                         onTap: _selectDob,
                         child: IgnorePointer(

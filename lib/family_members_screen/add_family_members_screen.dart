@@ -20,9 +20,14 @@ class AddFamilyMembersScreenWidget extends StatefulWidget {
 
 class _AddFamilyMembersScreenWidgetState
     extends State<AddFamilyMembersScreenWidget> {
+  String valueChoose;
   final _formKey = GlobalKey<FormState>();
+
   String gender;
   String patientRelationType;
+  List<String> _relationTypes = [];
+  String bloodGroupType;
+  List<String> _bloodGroupTypes = [];
   TextEditingController _patientNameController;
   TextEditingController _patientAgeController;
   TextEditingController _patientPhoneController;
@@ -65,7 +70,22 @@ class _AddFamilyMembersScreenWidgetState
     _heightController = TextEditingController();
     _weightController = TextEditingController();
     _dobController = TextEditingController();
+    _getBloodGroup();
+
     _loadRelationTypeButton();
+  }
+
+  Future<void> _getBloodGroup() {
+    ([
+      'A+',
+      'B+',
+      'AB+',
+      'AB-',
+      'O+',
+      'O-',
+      'A-',
+      'B-',
+    ]).forEach((type) => _bloodGroupTypes.add(type));
   }
 
   void _selectDob() async {
@@ -74,13 +94,15 @@ class _AddFamilyMembersScreenWidgetState
         cancelText: 'Cancel',
         confirmText: 'Done',
         context: context,
-        initialDate: _dob ?? DateTime(2000),
+        initialDate: _dob ??
+            DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day),
         firstDate: DateTime(1900),
         lastDate: DateTime(2025));
     if (pickedDate != null && pickedDate != _dob)
       setState(() {
         _dob = pickedDate;
-        _dobController.text = DateFormat('EEEE MMM d, yyyy').format(_dob);
+        _dobController.text = DateFormat('MMM d, yyyy').format(_dob);
       });
   }
 
@@ -95,7 +117,7 @@ class _AddFamilyMembersScreenWidgetState
           "name": _patientNameController.text,
           "email": _patientEmailController.text,
           "phone": _patientPhoneController.text,
-          "dob": _dob.toString(),
+          "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
           "bloodGroup": _bgController.text,
           "age": _patientAgeController.text,
           "emergency_contact": _emergencyPhoneController.text,
@@ -184,7 +206,7 @@ class _AddFamilyMembersScreenWidgetState
                       TextFormField(
                         controller: _patientNameController,
                         validator: (String name) {
-                          if (name.isEmpty) return 'Name cannot be empty';
+                          if (name.isEmpty) return 'Name is Required';
                           return null;
                         },
                         obscureText: false,
@@ -281,7 +303,8 @@ class _AddFamilyMembersScreenWidgetState
                                       buttonPosition: RadioButtonPosition.left,
                                       direction: Axis.horizontal,
                                       radioButtonColor: Color(0xFF00A8A3),
-                                      inactiveRadioButtonColor: Colors.white,
+                                      inactiveRadioButtonColor:
+                                          Color(0x8A314A51),
                                       toggleable: false,
                                       horizontalAlignment: WrapAlignment.start,
                                       verticalAlignment:
@@ -292,7 +315,7 @@ class _AddFamilyMembersScreenWidgetState
                                     controller: _patientAgeController,
                                     validator: (String number) {
                                       if (number.isEmpty)
-                                        return 'Age cannot be empty';
+                                        return 'Age is Required';
                                       return null;
                                     },
                                     obscureText: false,
@@ -354,14 +377,13 @@ class _AddFamilyMembersScreenWidgetState
                                   controller: _emergencyPhoneController,
                                   validator: (String phone) {
                                     if (phone.isEmpty)
-                                      return 'Contact cannot be empty';
-                                    if (phone.length != 10)
+                                      return 'Contact is Required';
+                                    if (phone.length < 10 || phone.length > 11)
                                       return 'Must be a valid phone number';
                                     return null;
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    prefix: Text('+91  '),
                                     labelText: 'Emergency Contact',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -414,14 +436,13 @@ class _AddFamilyMembersScreenWidgetState
                                   controller: _patientPhoneController,
                                   validator: (String phone) {
                                     if (phone.isEmpty)
-                                      return 'Phone cannot be empty';
-                                    if (phone.length != 10)
+                                      return 'Phone is Required';
+                                    if (phone.length < 10 || phone.length > 11)
                                       return 'Must be a valid phone number';
                                     return null;
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    prefix: Text('+91  '),
                                     labelText: 'Phone',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -478,7 +499,7 @@ class _AddFamilyMembersScreenWidgetState
                                   controller: _patientEmailController,
                                   validator: (String email) {
                                     if (email.isEmpty)
-                                      return 'Email cannot be empty';
+                                      return 'Email is Required';
                                     return null;
                                   },
                                   obscureText: false,
@@ -538,13 +559,13 @@ class _AddFamilyMembersScreenWidgetState
                                     child: TextFormField(
                                   controller: _heightController,
                                   validator: (String phone) {
-                                    if (phone.isEmpty)
-                                      return 'Height cannot be empty';
+                                    if (phone.isEmpty) return 'Height*';
 
                                     return null;
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
+                                    suffix: Text("cms"),
                                     labelText: 'Height',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -596,13 +617,13 @@ class _AddFamilyMembersScreenWidgetState
                                     child: TextFormField(
                                   controller: _weightController,
                                   validator: (String phone) {
-                                    if (phone.isEmpty)
-                                      return 'Weight cannot be empty';
+                                    if (phone.isEmpty) return 'Weight*';
 
                                     return null;
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
+                                    suffix: Text('Kgs'),
                                     labelText: 'Weight',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -650,12 +671,11 @@ class _AddFamilyMembersScreenWidgetState
                                 SizedBox(
                                   width: 6,
                                 ),
-                                Expanded(
+                                /* Expanded(
                                     child: TextFormField(
                                   controller: _bgController,
                                   validator: (String phone) {
-                                    if (phone.isEmpty)
-                                      return 'Blood group cannot be empty';
+                                    if (phone.isEmpty) return 'Blood group*';
 
                                     return null;
                                   },
@@ -704,46 +724,89 @@ class _AddFamilyMembersScreenWidgetState
                                       ),
                                   textAlign: TextAlign.start,
                                   keyboardType: TextInputType.text,
-                                )),
+                                )),*/
                               ],
                             )
                           ],
                         ),
                       ),
                       SizedBox(
-                        height: 12,
-                      ),
-                      // relation dropdown,
-                      DropdownButtonFormField(
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                              borderRadius: const BorderRadius.all(
-                                const Radius.circular(26),
-                              ),
-                            ),
-                            filled: true,
-                            hintStyle: TextStyle(color: Color(0xFF606E87)),
-                            hintText: "Relation Type",
-                            fillColor: Colors.white),
-                        value: patientRelationType,
-                        items: relationList
-                            .map((String type) => DropdownMenuItem(
-                                  child: Text(type),
-                                  value: type,
-                                ))
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            patientRelationType = value;
-                          });
-                        },
-                        iconEnabledColor: Color(0xFF606E87),
-                        iconDisabledColor: Color(0xFF606E87),
-                      ),
-                      SizedBox(
                         height: 8,
                       ),
+                      // relation dropdown,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red),
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(26),
+                                    ),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(
+                                    color: Color(0xFF9A9A9A),
+                                  ),
+                                  hintText: "Blood Group",
+                                  fillColor: Colors.white),
+                              value: bloodGroupType,
+                              items: _bloodGroupTypes
+                                  .map((type) => DropdownMenuItem(
+                                        child: Text(type),
+                                        value: type,
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  bloodGroupType = value;
+                                });
+                              },
+                              iconEnabledColor: Color(0xFF606E87),
+                              iconDisabledColor: Color(0xFF606E87),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Expanded(
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.red),
+                                    borderRadius: const BorderRadius.all(
+                                      const Radius.circular(26),
+                                    ),
+                                  ),
+                                  filled: true,
+                                  hintStyle: TextStyle(
+                                    color: Color(0xFF9A9A9A),
+                                  ),
+                                  hintText: "Relation Type",
+                                  fillColor: Colors.white),
+                              value: patientRelationType,
+                              items: relationList
+                                  .map((String type) => DropdownMenuItem(
+                                        child: Text(type),
+                                        value: type,
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  patientRelationType = value;
+                                });
+                              },
+                              iconEnabledColor: Color(0xFF606E87),
+                              iconDisabledColor: Color(0xFF606E87),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                        ],
+                      ),
+
                       InkWell(
                         onTap: () {
                           _selectDob();
@@ -851,7 +914,7 @@ class _AddFamilyMembersScreenWidgetState
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
