@@ -31,9 +31,10 @@ class _VerificationScreenWidgetState
   void handleResendTimer({int minutes = 1}) {
     resendTimeoutTime = minutes * 60;
     Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        resendTimeoutTime = resendTimeoutTime - 1;
-      });
+      if (this.mounted)
+        setState(() {
+          resendTimeoutTime = resendTimeoutTime - 1;
+        });
       if (resendTimeoutTime == 0) timer.cancel();
     });
   }
@@ -41,7 +42,9 @@ class _VerificationScreenWidgetState
   @override
   void initState() {
     super.initState();
-    handleResendTimer();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) => handleResendTimer(),
+    );
   }
 
   @override
@@ -68,6 +71,7 @@ class _VerificationScreenWidgetState
       backgroundColor: Color(0xFFF3F4F4),
       body: SafeArea(
         child: GestureDetector(
+          
           onTap: () => FocusScope.of(context).unfocus(),
           child: Padding(
             padding: EdgeInsetsDirectional.fromSTEB(18, 0, 18, 0),
@@ -184,7 +188,9 @@ class _VerificationScreenWidgetState
                             .verifyLoginOtp(mobile: widget.mobile, otp: _otp);
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text(res)));
-                        if (res == 'success') {
+                        print('hai $res ');
+                        if (res == 'Logged in successfully') {
+                          print('hai');
                           await Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(

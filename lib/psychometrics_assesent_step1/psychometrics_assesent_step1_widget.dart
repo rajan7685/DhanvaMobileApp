@@ -357,7 +357,7 @@ class _PsychometricsAssesentStep1WidgetState
                               verticalAlignment: WrapCrossAlignment.start,
                             ),
                           ),
-                          Padding(
+                          /* Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                             child: Text(
@@ -402,7 +402,7 @@ class _PsychometricsAssesentStep1WidgetState
                               horizontalAlignment: WrapAlignment.start,
                               verticalAlignment: WrapCrossAlignment.start,
                             ),
-                          ),
+                          ),*/
                           Padding(
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),

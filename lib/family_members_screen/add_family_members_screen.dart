@@ -22,7 +22,6 @@ class _AddFamilyMembersScreenWidgetState
     extends State<AddFamilyMembersScreenWidget> {
   String valueChoose;
   final _formKey = GlobalKey<FormState>();
-
   String gender;
   String patientRelationType;
   List<String> _relationTypes = [];
@@ -37,11 +36,17 @@ class _AddFamilyMembersScreenWidgetState
   TextEditingController _weightController;
   TextEditingController _bgController, _dobController;
   DateTime _dob;
+  bool isApiLoading;
+
   List<String> relationList = [];
   String _patientRelationUpdateApi = 'http://api3.dhanva.icu/patient/update';
   String _patientRelationAddApi = 'http://api3.dhanva.icu/patient/add_relation';
   String _patientRelationConsts =
       'http://api3.dhanva.icu/patient/get_relation_constants';
+
+  Future<void> _getBloodGroup() {
+    _bloodGroupTypes = ['A+', 'B+', 'AB+', 'AB-', 'O+', 'O-', 'A-', 'B-'];
+  }
 
   Future<void> _loadRelationTypeButton() async {
     await SharedPreferenceService.init();
@@ -70,22 +75,22 @@ class _AddFamilyMembersScreenWidgetState
     _heightController = TextEditingController();
     _weightController = TextEditingController();
     _dobController = TextEditingController();
-    _getBloodGroup();
+    _relationTypes = [];
+    _bloodGroupTypes = [];
 
-    _loadRelationTypeButton();
+    isApiLoading = true;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) => apiCalls(),
+    );
   }
 
-  Future<void> _getBloodGroup() {
-    ([
-      'A+',
-      'B+',
-      'AB+',
-      'AB-',
-      'O+',
-      'O-',
-      'A-',
-      'B-',
-    ]).forEach((type) => _bloodGroupTypes.add(type));
+  void apiCalls() async {
+    await _getBloodGroup();
+    await _loadRelationTypeButton();
+
+    setState(() {
+      isApiLoading = false;
+    });
   }
 
   void _selectDob() async {
@@ -107,47 +112,54 @@ class _AddFamilyMembersScreenWidgetState
   }
 
   Future<void> _addMember() async {
-    await SharedPreferenceService.init();
-    Patient patient = Patient.fromJson(
-        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    print('Sending to $_patientRelationAddApi');
-    Response res = await ApiService.dio.post(_patientRelationAddApi,
-        data: {
-          //
-          "name": _patientNameController.text,
-          "email": _patientEmailController.text,
-          "phone": _patientPhoneController.text,
-          "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
-          "bloodGroup": _bgController.text,
-          "age": _patientAgeController.text,
-          "emergency_contact": _emergencyPhoneController.text,
-          "height": _heightController.text,
-          "weight": _weightController.text,
-          "relation_type": patientRelationType,
-          "gender": gender,
-          "parent": patient.id
-        },
-        options: Options(headers: {
-          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
-        }));
-    if (res.statusCode == 200) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Member has been added')));
-      _patientNameController.clear();
-      _patientAgeController.clear();
-      _patientPhoneController.clear();
-      _patientEmailController.clear();
-      _emergencyPhoneController.clear();
-      _bgController.clear();
-      _heightController.clear();
-      _weightController.clear();
-      _dobController.clear();
-      gender = patientRelationType = null;
-      setState(() {
-        // update data in ui
-      });
+    try {
+      await SharedPreferenceService.init();
+      Patient patient = Patient.fromJson(
+          jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+      print('Sending to $_patientRelationAddApi');
+      Response res = await ApiService.dio.post(_patientRelationAddApi,
+          data: {
+            //
+            "name": _patientNameController.text,
+            "email": _patientEmailController.text,
+            "phone": _patientPhoneController.text,
+            "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
+            "bloodGroup": bloodGroupType,
+            "age": _patientAgeController.text,
+            "emergency_contact": _emergencyPhoneController.text,
+            "height": _heightController.text,
+            "weight": _weightController.text,
+            "relation_type": patientRelationType,
+            "gender": gender,
+            "parent": patient.id
+          },
+          options: Options(headers: {
+            'Authorization':
+                SharedPreferenceService.loadString(key: AuthTokenKey)
+          }));
+
+      if (res.statusCode == 200) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Member has been added')));
+        _patientNameController.clear();
+        _patientAgeController.clear();
+        _patientPhoneController.clear();
+        _patientEmailController.clear();
+        _emergencyPhoneController.clear();
+        _bgController.clear();
+        _heightController.clear();
+        _weightController.clear();
+        _dobController.clear();
+        // gender =
+        patientRelationType = null;
+        setState(() {
+          // update data in ui
+        });
+      }
+      print(res.data);
+    } catch (e) {
+      print(e.toString());
     }
-    print(res.data);
   }
 
   @override
@@ -278,38 +290,35 @@ class _AddFamilyMembersScreenWidgetState
                             Row(
                               children: [
                                 Expanded(
-                                    flex: 2,
                                     child: FlutterFlowRadioButton(
-                                      options: ['Male', 'Female'],
-                                      onChanged: (value) {
-                                        setState(() {
-                                          gender = value;
-                                        });
-                                      },
-                                      optionHeight: 25,
-                                      textStyle: FlutterFlowTheme.of(context)
+                                  options: ['Male', 'Female'],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      gender = value;
+                                    });
+                                  },
+                                  optionHeight: 25,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Color(0xFF606E87),
+                                      ),
+                                  selectedTextStyle:
+                                      FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
                                             fontFamily: 'Open Sans',
                                             color: Color(0xFF606E87),
                                           ),
-                                      selectedTextStyle:
-                                          FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Open Sans',
-                                                color: Color(0xFF606E87),
-                                              ),
-                                      buttonPosition: RadioButtonPosition.left,
-                                      direction: Axis.horizontal,
-                                      radioButtonColor: Color(0xFF00A8A3),
-                                      inactiveRadioButtonColor:
-                                          Color(0x8A314A51),
-                                      toggleable: false,
-                                      horizontalAlignment: WrapAlignment.start,
-                                      verticalAlignment:
-                                          WrapCrossAlignment.start,
-                                    )),
+                                  buttonPosition: RadioButtonPosition.left,
+                                  direction: Axis.horizontal,
+                                  radioButtonColor: Color(0xFF00A8A3),
+                                  inactiveRadioButtonColor: Color(0x8A314A51),
+                                  toggleable: false,
+                                  horizontalAlignment: WrapAlignment.start,
+                                  verticalAlignment: WrapCrossAlignment.start,
+                                )),
                                 Expanded(
                                   child: TextFormField(
                                     controller: _patientAgeController,
@@ -500,6 +509,10 @@ class _AddFamilyMembersScreenWidgetState
                                   validator: (String email) {
                                     if (email.isEmpty)
                                       return 'Email is Required';
+                                    else if (!RegExp(
+                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                        .hasMatch(email))
+                                      return 'Please enter the valid email';
                                     return null;
                                   },
                                   obscureText: false,
@@ -565,7 +578,7 @@ class _AddFamilyMembersScreenWidgetState
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    suffix: Text("cms"),
+                                    suffix: Text("cm"),
                                     labelText: 'Height',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -623,7 +636,7 @@ class _AddFamilyMembersScreenWidgetState
                                   },
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    suffix: Text('Kgs'),
+                                    suffix: Text('kg'),
                                     labelText: 'Weight',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -738,6 +751,10 @@ class _AddFamilyMembersScreenWidgetState
                         children: [
                           Expanded(
                             child: DropdownButtonFormField(
+                              validator: (String type) {
+                                if (type == null) return 'Blood group Required';
+                                return null;
+                              },
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.red),
@@ -772,6 +789,11 @@ class _AddFamilyMembersScreenWidgetState
                           ),
                           Expanded(
                             child: DropdownButtonFormField(
+                              validator: (String type) {
+                                if (type == null)
+                                  return 'Relation Type Required';
+                                return null;
+                              },
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.red),
@@ -879,6 +901,7 @@ class _AddFamilyMembersScreenWidgetState
                                     SnackBar(
                                         content:
                                             Text('Please select your gender')));
+                              Navigator.pop(context);
                               // Add member call here
                               if (gender != null) {
                                 print('all OK');

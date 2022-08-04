@@ -57,6 +57,7 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> {
               height: 8,
             ),
             Padding(
+              
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text('About us decription...'),
             )

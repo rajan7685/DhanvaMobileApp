@@ -42,7 +42,7 @@ class FlutterFlowRadioButton extends StatefulWidget {
     this.inactiveRadioButtonColor,
     this.toggleable,
     this.horizontalAlignment,
-    this.verticalAlignment,
+    this.verticalAlignment, String Function(String gender) validator, TextEditingController controller,
   });
 
   final List<String> options;
@@ -71,7 +71,9 @@ class _FlutterFlowRadioButtonState extends State<FlutterFlowRadioButton> {
 
   @override
   void initState() {
+    print("Flow ${widget.initialValue}");
     groupValue = widget.initialValue;
+
     super.initState();
   }
 

@@ -131,14 +131,15 @@ class _MedicalRecordBottomSheetWidgetState
         cancelText: 'Cancel',
         confirmText: 'Done',
         context: context,
-        initialDate: _datetime ?? DateTime(2000),
+        initialDate: _datetime ??
+            DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day),
         firstDate: DateTime(1900),
         lastDate: DateTime(2025));
     if (pickedDate != null && pickedDate != _datetime)
       setState(() {
         _datetime = pickedDate;
-        reportDateController.text =
-            DateFormat('EEEE MMM d, yyyy').format(_datetime);
+        reportDateController.text = DateFormat('MMM d, yyyy').format(_datetime);
       });
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: missing_required_param
+
 import 'dart:math';
 
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
