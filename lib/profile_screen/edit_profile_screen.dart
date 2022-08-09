@@ -151,26 +151,30 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
     String patientId = Patient.fromJson(
             jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
         .id;
+    var d = {
+      "name": _patientNameController.text,
+      "email": _patientEmailController.text,
+      "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
+      "phone": _patientPhoneController.text,
+      "bloodGroup": bloodGroupType,
+      "age": _patientAgeController.text,
+      "emergency_contact": _emergencyPhoneController.text,
+      "height": _heightController.text,
+      "weight": _weightController.text,
+      "relation_type": patientRelationType,
+      "gender": gender,
+      // patient id
+      "id": patientId,
+    };
+    print("MY RESPONSE: ${d}");
     Response res = await ApiService.dio.post(_uri,
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
-        data: {
-          "name": _patientNameController.text,
-          "email": _patientEmailController.text,
-          "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
-          "phone": _patientPhoneController.text,
-          "bloodGroup": bloodGroupType,
-          "age": _patientAgeController.text,
-          "emergency_contact": _emergencyPhoneController.text,
-          "height": _heightController.text,
-          "weight": _weightController.text,
-          "relation_type": patientRelationType,
-          "gender": gender,
-          // patient id
-          "id": patientId,
-        });
+        data: d);
     print('update response : ${res.data}');
+    print('age : ${_patientAgeController.text}');
+    print('relation_type : ${patientRelationType}');
     SharedPreferenceService.saveString(
         key: PatientKey, value: jsonEncode(res.data));
     return res.data;
@@ -441,9 +445,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                           if (phone.length < 10 ||
                                               phone.length > 11)
                                             return 'Enter valid phone number';
-                                          else if (RegExp(r"^[0-9]{11}")
-                                              .hasMatch(phone))
-                                            return 'Please enter the valid Phone number';
+
                                           return null;
                                         },
                                         obscureText: false,

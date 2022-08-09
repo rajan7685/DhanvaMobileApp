@@ -59,11 +59,13 @@ class _MedicalRecordBottomSheetWidgetState
       child: Text(patient.name),
       value: patient.id,
     ));
+//response get
     Response res = await ApiService.dio.get(
         'http://api2.dhanva.icu/patient/getPatientRelations/$pid',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
+
     _relations =
         (res.data as List).map((e) => PatientRelation.fromJson(e)).toList();
     for (PatientRelation relation in _relations) {
@@ -174,6 +176,7 @@ class _MedicalRecordBottomSheetWidgetState
         "file1": await MultipartFile.fromFile(filePath,
             filename: filePath.split('/').last)
       });
+
       Response res = await ApiService.dio.post(fileUploadUri,
           options: Options(headers: {
             'Authorization':
@@ -200,6 +203,7 @@ class _MedicalRecordBottomSheetWidgetState
       "file_name": file.name,
       "file1": await MultipartFile.fromFile(file.path, filename: file.name)
     });
+    print("sentData $_formData");
     Response res = await ApiService.dio.post(fileUploadUri,
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
@@ -236,15 +240,16 @@ class _MedicalRecordBottomSheetWidgetState
     if (autopop) Navigator.pop(context);
     // print(res.data);
   }
-
+//initialize
   @override
   void initState() {
     super.initState();
     _loadPatientInformation();
-    patientNameController =
-        TextEditingController(text: widget.newRecord ? '' : '');
+    // print(widget.medicalRecord);
+    patientNameController = TextEditingController(
+        text: widget.newRecord ? '' : widget.medicalRecord.fileName);
     reportTypeController =
-        TextEditingController(text: widget.newRecord ? '' : 'Document');
+        TextEditingController(text: widget.newRecord ? '' : '');
     doctorNameController =
         TextEditingController(text: widget.newRecord ? '' : '');
 
