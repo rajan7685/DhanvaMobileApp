@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
 import 'package:dhanva_mobile_app/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,10 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+
 
 ChangeNotifierProvider<AuthenticationProvider> _authProvider =
     ChangeNotifierProvider((ref) => AuthenticationProvider.instance);
@@ -45,7 +50,72 @@ class _VerificationScreenWidgetState
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) => handleResendTimer(),
     );
+    getConnectivity();
+    super.initState();
   }
+
+  StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
+  Future<void> _checkNetworkConnectivity() async {
+    ConnectivityResult connectivityResult =
+        await Connectivity().checkConnectivity();
+    print(connectivityResult.name);
+    print(connectivityResult.name);
+    if (connectivityResult == ConnectivityResult.mobile) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text('You are connected to a mobile network')));
+      // // I am connected to a mobile network.
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text('You are connected to a wifi network')));
+      // // I am connected to a wifi network.
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('You are not connected to internet')));
+    }
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+  showDialogBox() => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connection'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+
+       @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
