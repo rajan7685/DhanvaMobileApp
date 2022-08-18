@@ -10,6 +10,7 @@ import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:timeago/timeago.dart';
 
 class EditProfileScreenWidget extends StatefulWidget {
   const EditProfileScreenWidget({Key key}) : super(key: key);
@@ -109,13 +110,17 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
     print('API response : ${res.data}');
     setState(() {
       _patientNameController.text = res.data['name'];
-      _patientAgeController.text = res.data['age'];
+      // _patientAgeController.text = res.data['age'];
       _patientPhoneController.text = res.data['phone'].toString();
       _patientEmailController.text = res.data['email'];
       _emergencyPhoneController.text = res.data['emergency_contact'];
       _bgController.text = res.data['bloodGroup'];
       _heightController.text = res.data['height'];
       _weightController.text = res.data['weight'];
+      _patientAgeController.text = res.data['dob'] != null
+          ? (DateTime.now().year - DateTime.parse(res.data['dob']).year)
+              .toString()
+          : "";
       gender = res.data['gender'];
       patientRelationType;
       bloodGroupType = res.data['bloodGroup'] != null
@@ -124,6 +129,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
       _dob = res.data['dob'] != null ? DateTime.parse(res.data['dob']) : null;
       _dobController.text =
           _dob != null ? DateFormat('MMM d, yyyy').format(_dob) : null;
+      print('DOB response : ${DateTime.parse(res.data['dob']).year}');
     });
   }
 
@@ -142,6 +148,8 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
       setState(() {
         _dob = pickedDate;
         _dobController.text = DateFormat('MMM d, yyyy').format(_dob);
+        _patientAgeController.text =
+            (DateTime.now().year - pickedDate.year).toString();
       });
   }
 
@@ -368,6 +376,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                       Expanded(
                                         child: TextFormField(
                                           controller: _patientAgeController,
+                                          enabled: false,
                                           validator: (String number) {
                                             if (number.isEmpty)
                                               return 'Age is Required';

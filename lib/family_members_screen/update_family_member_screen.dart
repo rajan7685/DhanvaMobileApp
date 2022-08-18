@@ -63,6 +63,10 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
     _dobController.text = memberDetails['dob'] != null
         ? DateFormat('MMM d, yyyy').format(DateTime.parse(memberDetails['dob']))
         : '';
+    _patientAgeController.text = memberDetails['dob'] != null
+        ? (DateTime.now().year - DateTime.parse(memberDetails['dob']).year)
+            .toString()
+        : "";
     gender = memberDetails['gender'];
     setState(() {
       // update the values
@@ -178,6 +182,8 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
       setState(() {
         _dob = pickedDate;
         _dobController.text = DateFormat('MMM d, yyyy').format(_dob);
+        _patientAgeController.text =
+            (DateTime.now().year - pickedDate.year).toString();
       });
   }
 
@@ -343,6 +349,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                   Expanded(
                                     child: TextFormField(
                                       controller: _patientAgeController,
+                                      enabled: false,
                                       validator: (String number) {
                                         if (number.isEmpty)
                                           return 'Age is required';
@@ -533,7 +540,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     controller: _patientEmailController,
                                     validator: (String email) {
                                       if (email.isEmpty)
-                                        return 'Email is required';
+                                        return 'Email is Required';
                                       else if (!RegExp(
                                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                           .hasMatch(email))
@@ -921,11 +928,26 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                           padding: const EdgeInsets.symmetric(horizontal: 28),
                           child: InkWell(
                             onTap: () async {
-                              _updateMemberDetails();
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Data updated')));
-                              Navigator.pop(context);
+                              if (_formKey.currentState.validate()) {
+                                if (gender == null)
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Please select your gender')));
+                                Navigator.pop(context);
+                                // Add member call here
+                                if (gender != null) {
+                                  print('all OK');
+                                  _updateMemberDetails();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('Data updated')));
+                                  Navigator.pop(context);
+                                }
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        'Please fill all the fields properly')));
+                              }
                             },
                             child: Container(
                               decoration: BoxDecoration(

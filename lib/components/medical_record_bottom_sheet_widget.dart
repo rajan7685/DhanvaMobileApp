@@ -240,12 +240,12 @@ class _MedicalRecordBottomSheetWidgetState
     if (autopop) Navigator.pop(context);
     // print(res.data);
   }
+
 //initialize
   @override
   void initState() {
     super.initState();
     _loadPatientInformation();
-    // print(widget.medicalRecord);
     patientNameController = TextEditingController(
         text: widget.newRecord ? '' : widget.medicalRecord.fileName);
     reportTypeController =
@@ -261,6 +261,7 @@ class _MedicalRecordBottomSheetWidgetState
         text: widget.newRecord
             ? ''
             : DateFormat('h:mma').format(widget.medicalRecord.createdAt));
+    print('mera response ${patientNameController}');
   }
 
   Future<dynamic> _downloadFileAndPreview({bool autopreview = true}) async {

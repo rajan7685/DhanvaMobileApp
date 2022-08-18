@@ -10,6 +10,8 @@ import 'package:dhanva_mobile_app/offline_consultation_screen/services_by_hospit
 import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class OfflineConsultationScreen extends StatefulWidget {
   const OfflineConsultationScreen({Key key}) : super(key: key);
@@ -24,6 +26,25 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   bool isDataLoading = true;
   List<dynamic> _hospitalJsonList;
   String _hospitalListApi = 'http://api2.dhanva.icu/hospital/get_all';
+
+  // Future<void> _checkNetworkConnectivity() async {
+  //   ConnectivityResult connectivityResult =
+  //       await Connectivity().checkConnectivity();
+  //   print(connectivityResult.name);
+  //   print(connectivityResult.name);
+  //   if (connectivityResult == ConnectivityResult.mobile) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //     SnackBar(content: Text('You are connected to a mobile network')));
+  //     // // I am connected to a mobile network.
+  //   } else if (connectivityResult == ConnectivityResult.wifi) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //     SnackBar(content: Text('You are connected to a wifi network')));
+  //     // // I am connected to a wifi network.
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('You are not connected to internet')));
+  //   }
+  // }
 
   // ignore: unused_field
   Map<String, dynamic> _hospitalListData;
@@ -48,6 +69,7 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   void initState() {
     super.initState();
     _loadHospitalData();
+    // _checkNetworkConnectivity();
   }
 
   @override

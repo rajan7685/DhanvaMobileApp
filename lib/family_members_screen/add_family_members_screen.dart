@@ -108,6 +108,8 @@ class _AddFamilyMembersScreenWidgetState
       setState(() {
         _dob = pickedDate;
         _dobController.text = DateFormat('MMM d, yyyy').format(_dob);
+        _patientAgeController.text =
+            (DateTime.now().year - pickedDate.year).toString();
       });
   }
 
@@ -117,22 +119,24 @@ class _AddFamilyMembersScreenWidgetState
       Patient patient = Patient.fromJson(
           jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
       print('Sending to $_patientRelationAddApi');
+      var d = {
+        //
+        "name": _patientNameController.text,
+        "email": _patientEmailController.text,
+        "phone": _patientPhoneController.text,
+        "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
+        "bloodGroup": bloodGroupType,
+        "age": _patientAgeController.text,
+        "emergency_contact": _emergencyPhoneController.text,
+        "height": _heightController.text,
+        "weight": _weightController.text,
+        "relation_type": patientRelationType,
+        "gender": gender,
+        "parent": patient.id
+      };
+      print("MY RESPONSE: ${d}");
       Response res = await ApiService.dio.post(_patientRelationAddApi,
-          data: {
-            //
-            "name": _patientNameController.text,
-            "email": _patientEmailController.text,
-            "phone": _patientPhoneController.text,
-            "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
-            "bloodGroup": bloodGroupType,
-            "age": _patientAgeController.text,
-            "emergency_contact": _emergencyPhoneController.text,
-            "height": _heightController.text,
-            "weight": _weightController.text,
-            "relation_type": patientRelationType,
-            "gender": gender,
-            "parent": patient.id
-          },
+          data: d,
           options: Options(headers: {
             'Authorization':
                 SharedPreferenceService.loadString(key: AuthTokenKey)
@@ -156,9 +160,9 @@ class _AddFamilyMembersScreenWidgetState
           // update data in ui
         });
       }
-      print(res.data);
+      print('_patientRelationAddApi ${res.data}');
     } catch (e) {
-      print(e.toString());
+      print('_patientRelationAddApi ${e.toString()}');
     }
   }
 
@@ -322,6 +326,7 @@ class _AddFamilyMembersScreenWidgetState
                                 Expanded(
                                   child: TextFormField(
                                     controller: _patientAgeController,
+                                    enabled: false,
                                     validator: (String number) {
                                       if (number.isEmpty)
                                         return 'Age is Required';
