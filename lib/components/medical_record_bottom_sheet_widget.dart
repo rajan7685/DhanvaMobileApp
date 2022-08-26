@@ -391,63 +391,65 @@ class _MedicalRecordBottomSheetWidgetState
               //         fontWeight: FontWeight.w500,
               //       ),
               // ),
-              DropdownButtonHideUnderline(
-                child: DropdownButtonFormField(
-                  items: patientNames,
-                  value: _selectedPatientId,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedPatientId = value;
-                    });
-                    int idx = _relations.indexWhere(
-                        (element) => _selectedPatientId == element.patientId);
-                    patientRelationType =
-                        idx == -1 ? "Self" : _relations[idx].type;
-                    // print(patientRelationType);
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color(0x00000000),
-                    labelText: 'Patient Name',
-                    // border:
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                child: TextFormField(
-                  controller: reportTypeController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Type of scan or test',
-                    labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFF9A9A9A),
-                        ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFFC1C1C1),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFFC1C1C1),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Open Sans',
-                        color: Color(0xFF485163),
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
-              ),
+              // DropdownButtonHideUnderline(
+              //   child: DropdownButtonFormField(
+              //     items: patientNames,
+              //     value: _selectedPatientId,
+
+              //     onChanged: (value) {
+              //       setState(() {
+              //         _selectedPatientId = value;
+              //       });
+              //       int idx = _relations.indexWhere(
+              //           (element) => _selectedPatientId == element.patientId);
+              //       patientRelationType =
+              //           idx == -1 ? "Self" : _relations[idx].type;
+              //       // print(patientRelationType);
+              //     },
+              //     decoration: InputDecoration(
+              //       filled: true,
+              //       fillColor: Color(0x00000000),
+              //       labelText: 'Patient Name',
+              //       // border:
+              //     ),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+              //   child: TextFormField(
+              //     controller: reportTypeController,
+              //     enabled: false,
+              //     obscureText: false,
+              //     decoration: InputDecoration(
+              //       labelText: 'Type of scan or test',
+              //       labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+              //             fontFamily: 'Open Sans',
+              //             color: Color(0xFF9A9A9A),
+              //           ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: Color(0xFFC1C1C1),
+              //           width: 1,
+              //         ),
+              //         borderRadius: BorderRadius.circular(12),
+              //       ),
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: Color(0xFFC1C1C1),
+              //           width: 1,
+              //         ),
+              //         borderRadius: BorderRadius.circular(12),
+              //       ),
+              //       filled: true,
+              //       fillColor: Colors.white,
+              //     ),
+              //     style: FlutterFlowTheme.of(context).bodyText1.override(
+              //           fontFamily: 'Open Sans',
+              //           color: Color(0xFF485163),
+              //           fontWeight: FontWeight.w500,
+              //         ),
+              //   ),
+              // ),
               // Padding(
               //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
               //   child: TextFormField(
@@ -535,53 +537,54 @@ class _MedicalRecordBottomSheetWidgetState
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: InkWell(
-                          onTap: _selectReportTime,
-                          child: IgnorePointer(
-                            child: TextFormField(
-                              controller: reportTimeController,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                enabled: true,
-                                labelText: 'Report Time',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFF9A9A9A),
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFC1C1C1),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFC1C1C1),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF485163),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: Padding(
+                    //     padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                    //     child: InkWell(
+                    //       onTap: _selectReportTime,
+                    //       child: IgnorePointer(
+                    //         child: TextFormField(
+                    //           controller: reportTimeController,
+                    //           enabled: false,
+                    //           obscureText: false,
+                    //           decoration: InputDecoration(
+                    //             enabled: true,
+                    //             labelText: 'Report Time',
+                    //             labelStyle: FlutterFlowTheme.of(context)
+                    //                 .bodyText1
+                    //                 .override(
+                    //                   fontFamily: 'Open Sans',
+                    //                   color: Color(0xFF9A9A9A),
+                    //                 ),
+                    //             enabledBorder: OutlineInputBorder(
+                    //               borderSide: BorderSide(
+                    //                 color: Color(0xFFC1C1C1),
+                    //                 width: 1,
+                    //               ),
+                    //               borderRadius: BorderRadius.circular(12),
+                    //             ),
+                    //             focusedBorder: OutlineInputBorder(
+                    //               borderSide: BorderSide(
+                    //                 color: Color(0xFFC1C1C1),
+                    //                 width: 1,
+                    //               ),
+                    //               borderRadius: BorderRadius.circular(12),
+                    //             ),
+                    //             filled: true,
+                    //             fillColor: Colors.white,
+                    //           ),
+                    //           style: FlutterFlowTheme.of(context)
+                    //               .bodyText1
+                    //               .override(
+                    //                 fontFamily: 'Open Sans',
+                    //                 color: Color(0xFF485163),
+                    //                 fontWeight: FontWeight.w500,
+                    //               ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

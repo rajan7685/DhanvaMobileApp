@@ -1,6 +1,9 @@
+import 'package:dhanva_mobile_app/psychometrics_assesent_step3/psychometrics_assesent_step3_widget.dart';
+
 import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow/flutter_flow_widgets.dart';
 import '../psychometric_assesent_result_screen/psychometric_assesent_result_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -236,7 +239,7 @@ class _PsychometricsAssesentStep4WidgetState
                             child: FlutterFlowRadioButton(
                               options: [
                                 'YEP! THAT IS ME',
-                                'I HAVE NO IDEA',
+                                'I AM REALLY INBETWEEN',
                                 'NOPE THAT CAN\'T BE ME'
                               ],
                               onChanged: (value) {
@@ -282,7 +285,7 @@ class _PsychometricsAssesentStep4WidgetState
                             child: FlutterFlowRadioButton(
                               options: [
                                 'YEP! THAT IS ME',
-                                'I HAVE NO IDEA',
+                                'I AM REALLY INBETWEEN',
                                 'NOPE THAT CAN\'T BE ME'
                               ],
                               onChanged: (value) {
@@ -328,7 +331,7 @@ class _PsychometricsAssesentStep4WidgetState
                             child: FlutterFlowRadioButton(
                               options: [
                                 'YEP! THAT IS ME',
-                                'I HAVE NO IDEA',
+                                'I AM REALLY INBETWEEN',
                                 'NOPE THAT CAN\'T BE ME'
                               ],
                               onChanged: (value) {
@@ -374,7 +377,7 @@ class _PsychometricsAssesentStep4WidgetState
                             child: FlutterFlowRadioButton(
                               options: [
                                 'YEP! THAT IS ME',
-                                'I HAVE NO IDEA',
+                                'I AM REALLY INBETWEEN',
                                 'NOPE THAT CAN\'T BE ME'
                               ],
                               onChanged: (value) {
@@ -402,57 +405,192 @@ class _PsychometricsAssesentStep4WidgetState
                               verticalAlignment: WrapCrossAlignment.start,
                             ),
                           ),
-                          Align(
-                            alignment: AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
-                              child: InkWell(
-                                onTap: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          PsychometricAssesentResultScreenWidget(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  height: 55,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF00A8A3),
-                                    borderRadius: BorderRadius.circular(22),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Finish',
-                                        style: FlutterFlowTheme.of(context)
-                                            .title1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Colors.white,
-                                            ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12, 0, 0, 0),
-                                        child: Image.asset(
-                                          'assets/images/Layer_2.png',
-                                          width: 35,
-                                          height: 35,
-                                          fit: BoxFit.cover,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Align(
+                                alignment: AlignmentDirectional(0, 0),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 24, 0, 0),
+                                  child: FFButtonWidget(
+                                    onPressed: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PsychometricsAssesentStep3Widget(),
                                         ),
+                                      );
+                                    },
+                                    text: 'Back',
+                                    options: FFButtonOptions(
+                                      width: 130,
+                                      height: 40,
+                                      color: Color(0xFF00A8A3),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Colors.white,
+                                          ),
+                                      borderSide: BorderSide(
+                                        color: Colors.transparent,
+                                        width: 1,
                                       ),
-                                    ],
+                                      borderRadius: 12,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(
+                                width: 50.0,
+                              ),
+                              Align(
+                                alignment: AlignmentDirectional(0, 0),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 24, 0, 0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PsychometricAssesentResultScreenWidget(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 130,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF00A8A3),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Row(
+                                        // mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Finish',
+                                            style: FlutterFlowTheme.of(context)
+                                                .subtitle2
+                                                .override(
+                                                  fontFamily: 'Open Sans',
+                                                  color: Colors.white,
+                                                ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    12, 0, 0, 0),
+                                            child: Image.asset(
+                                              'assets/images/Layer_2.png',
+                                              width: 25,
+                                              height: 25,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // Align(
+                              //   alignment: AlignmentDirectional(0, 0),
+                              //   child: Padding(
+                              //     padding: EdgeInsetsDirectional.fromSTEB(
+                              //         0, 24, 0, 0),
+                              //     child: InkWell(
+                              //       onTap: () async {
+                              //         await Navigator.push(
+                              //           context,
+                              //           MaterialPageRoute(
+                              //             builder: (context) =>
+                              //                 PsychometricAssesentResultScreenWidget(),
+                              //           ),
+                              //         );
+                              //       },
+                              //       child: Container(
+                              //         width: MediaQuery.of(context).size.width *
+                              //             0.7,
+                              //         height: 55,
+                              //         decoration: BoxDecoration(
+                              //           color: Color(0xFF00A8A3),
+                              //           borderRadius: BorderRadius.circular(22),
+                              //         ),
+                              //         child: Row(
+                              //           // mainAxisSize: MainAxisSize.max,
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.center,
+                              //           children: [
+                              //             Text(
+                              //               'Finish',
+                              //               style: FlutterFlowTheme.of(context)
+                              //                   .title1
+                              //                   .override(
+                              //                     fontFamily: 'Open Sans',
+                              //                     color: Colors.white,
+                              //                   ),
+                              //             ),
+                              //             Padding(
+                              //               padding:
+                              //                   EdgeInsetsDirectional.fromSTEB(
+                              //                       12, 0, 0, 0),
+                              //               child: Image.asset(
+                              //                 'assets/images/Layer_2.png',
+                              //                 width: 35,
+                              //                 height: 35,
+                              //                 fit: BoxFit.cover,
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+
+                              //   Align(
+                              //     alignment: AlignmentDirectional(0, 0),
+                              //     child: Padding(
+                              //       padding: EdgeInsetsDirectional.fromSTEB(
+                              //           0, 24, 0, 0),
+                              //       child: FFButtonWidget(
+                              //         onPressed: () async {
+                              //           await Navigator.push(
+                              //             context,
+                              //             MaterialPageRoute(
+                              //               builder: (context) =>
+                              //                   PsychometricAssesentResultScreenWidget(),
+                              //             ),
+                              //           );
+                              //         },
+                              //         text: 'Finish',
+                              //         options: FFButtonOptions(
+                              //           width: 130,
+                              //           height: 40,
+                              //           color: Color(0xFF00A8A3),
+                              //           textStyle: FlutterFlowTheme.of(context)
+                              //               .subtitle2
+                              //               .override(
+                              //                 fontFamily: 'Poppins',
+                              //                 color: Colors.white,
+                              //               ),
+                              //           borderSide: BorderSide(
+                              //             color: Colors.transparent,
+                              //             width: 1,
+                              //           ),
+                              //           borderRadius: 12,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                            ],
                           ),
                         ],
                       ),

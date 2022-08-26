@@ -8,6 +8,7 @@ import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
 import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
+import 'package:dhanva_mobile_app/psychometrics_assesent_step1/psychometrics_assesent_step1_widget.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/models/psychometrics_assesment_question.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesment_screen/psychometrics_assesment_screen.dart';
 import 'package:dhanva_mobile_app/start_booking_screen/start_booking_screen_widget.dart';
@@ -31,20 +32,32 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 // ChangeNotifierProvider((ref) => HomeServicesProvider());
 
 // mock data
-final List<PsychometricsAssesmentQuestion> _questions = [
-  PsychometricsAssesmentQuestion(
-      question: 'I am task oriented to achieve certain goals.',
-      options: ['YEP! THAT IS ME', 'I HAVE NO IDEA', 'NOPE THAT CAN\'T BE ME']),
-  PsychometricsAssesmentQuestion(
-      question: 'I get bored easily when discussing abstract things.',
-      options: ['YEP! THAT IS ME', 'I HAVE NO IDEA', 'NOPE THAT CAN\'T BE ME']),
-  PsychometricsAssesmentQuestion(
-      question: 'I like to try things out myself.',
-      options: ['YEP! THAT IS ME', 'I HAVE NO IDEA', 'NOPE THAT CAN\'T BE ME']),
-  PsychometricsAssesmentQuestion(
-      question: 'I like to know where I\'m going before leaving my house.',
-      options: ['YEP! THAT IS ME', 'I HAVE NO IDEA', 'NOPE THAT CAN\'T BE ME']),
-];
+// final List<PsychometricsAssesmentQuestion> _questions = [
+//   PsychometricsAssesmentQuestion(
+//       question: 'I am task oriented to achieve certain goals.',
+//       options: [
+//         'YEP! THAT IS ME',
+//         'I AM REALLY INBETWEEN',
+//         'NOPE THAT CAN\'T BE ME'
+//       ]),
+//   PsychometricsAssesmentQuestion(
+//       question: 'I get bored easily when discussing abstract things.',
+//       options: [
+//         'YEP! THAT IS ME',
+//         'I AM REALLY INBETWEEN',
+//         'NOPE THAT CAN\'T BE ME'
+//       ]),
+// PsychometricsAssesmentQuestion(
+  // question: 'I like to try things out myself.',
+  // options: ['YEP! THAT IS ME', 'I AM REALLY INBETWEEN', 'NOPE THAT CAN\'T BE ME']),
+//   PsychometricsAssesmentQuestion(
+//       question: 'I like to know where I\'m going before leaving my house.',
+//       options: [
+//         'YEP! THAT IS ME',
+//         'I AM REALLY INBETWEEN',
+//         'NOPE THAT CAN\'T BE ME'
+//       ]),
+// ];
 
 class HomeScreenWidget extends ConsumerStatefulWidget {
   const HomeScreenWidget({Key key}) : super(key: key);
@@ -321,11 +334,11 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
                                             await Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    PsychometricsAssesmentScreen(
-                                                  questions: _questions,
-                                                ),
-                                              ),
+                                                  builder: (context) =>
+                                                      //     PsychometricsAssesmentScreen(
+                                                      //   questions: _questions,
+                                                      // ),
+                                                      PsychometricsAssesentStep1Widget()),
                                             );
                                           },
                                           child: ClipRRect(

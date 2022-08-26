@@ -56,6 +56,7 @@ dependencies:
   overlay_support: ^2.0.1
   google_sign_in: ^5.4.1
   connectivity_plus: ^2.3.6+1
+  webview_flutter: ^3.0.4
  
 
 dev_dependencies:
