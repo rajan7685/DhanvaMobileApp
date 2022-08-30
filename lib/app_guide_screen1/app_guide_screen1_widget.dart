@@ -69,7 +69,7 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: Image.asset(
-                                      'assets/images/Group_615.png',
+                                      'assets/images/Group_613.png',
                                     ).image,
                                   ),
                                   shape: BoxShape.rectangle,
@@ -118,7 +118,7 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       16, 0, 0, 0),
                                   child: Text(
-                                    'uses food for therupetic prposes, thus prescribed eating by physician.',
+                                    'Uses food for therupetic purposes, thus prescribed eating by physician.',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -146,7 +146,7 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: Image.asset(
-                                      'assets/images/Group_613.png',
+                                      'assets/images/Group_615.png',
                                     ).image,
                                   ),
                                 ),
@@ -156,7 +156,7 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       16, 0, 0, 0),
                                   child: Text(
-                                    'Involves the modification of dietary lifestyle',
+                                    'Involves the modification of dietary lifestyle to promote optimum health',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(

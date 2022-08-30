@@ -59,11 +59,13 @@ class _MedicalRecordBottomSheetWidgetState
       child: Text(patient.name),
       value: patient.id,
     ));
+//response get
     Response res = await ApiService.dio.get(
         'http://api2.dhanva.icu/patient/getPatientRelations/$pid',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
+
     _relations =
         (res.data as List).map((e) => PatientRelation.fromJson(e)).toList();
     for (PatientRelation relation in _relations) {
@@ -131,14 +133,15 @@ class _MedicalRecordBottomSheetWidgetState
         cancelText: 'Cancel',
         confirmText: 'Done',
         context: context,
-        initialDate: _datetime ?? DateTime(2000),
+        initialDate: _datetime ??
+            DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day),
         firstDate: DateTime(1900),
         lastDate: DateTime(2025));
     if (pickedDate != null && pickedDate != _datetime)
       setState(() {
         _datetime = pickedDate;
-        reportDateController.text =
-            DateFormat('EEEE MMM d, yyyy').format(_datetime);
+        reportDateController.text = DateFormat('MMM d, yyyy').format(_datetime);
       });
   }
 
@@ -173,6 +176,7 @@ class _MedicalRecordBottomSheetWidgetState
         "file1": await MultipartFile.fromFile(filePath,
             filename: filePath.split('/').last)
       });
+
       Response res = await ApiService.dio.post(fileUploadUri,
           options: Options(headers: {
             'Authorization':
@@ -199,6 +203,7 @@ class _MedicalRecordBottomSheetWidgetState
       "file_name": file.name,
       "file1": await MultipartFile.fromFile(file.path, filename: file.name)
     });
+    print("sentData $_formData");
     Response res = await ApiService.dio.post(fileUploadUri,
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
@@ -236,14 +241,15 @@ class _MedicalRecordBottomSheetWidgetState
     // print(res.data);
   }
 
+//initialize
   @override
   void initState() {
     super.initState();
     _loadPatientInformation();
-    patientNameController =
-        TextEditingController(text: widget.newRecord ? '' : '');
+    patientNameController = TextEditingController(
+        text: widget.newRecord ? '' : widget.medicalRecord.fileName);
     reportTypeController =
-        TextEditingController(text: widget.newRecord ? '' : 'Document');
+        TextEditingController(text: widget.newRecord ? '' : '');
     doctorNameController =
         TextEditingController(text: widget.newRecord ? '' : '');
 
@@ -255,6 +261,7 @@ class _MedicalRecordBottomSheetWidgetState
         text: widget.newRecord
             ? ''
             : DateFormat('h:mma').format(widget.medicalRecord.createdAt));
+    print('mera response ${patientNameController}');
   }
 
   Future<dynamic> _downloadFileAndPreview({bool autopreview = true}) async {
@@ -384,63 +391,65 @@ class _MedicalRecordBottomSheetWidgetState
               //         fontWeight: FontWeight.w500,
               //       ),
               // ),
-              DropdownButtonHideUnderline(
-                child: DropdownButtonFormField(
-                  items: patientNames,
-                  value: _selectedPatientId,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedPatientId = value;
-                    });
-                    int idx = _relations.indexWhere(
-                        (element) => _selectedPatientId == element.patientId);
-                    patientRelationType =
-                        idx == -1 ? "Self" : _relations[idx].type;
-                    // print(patientRelationType);
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color(0x00000000),
-                    labelText: 'Patient Name',
-                    // border:
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                child: TextFormField(
-                  controller: reportTypeController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Type of scan or test',
-                    labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFF9A9A9A),
-                        ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFFC1C1C1),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFFC1C1C1),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Open Sans',
-                        color: Color(0xFF485163),
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
-              ),
+              // DropdownButtonHideUnderline(
+              //   child: DropdownButtonFormField(
+              //     items: patientNames,
+              //     value: _selectedPatientId,
+
+              //     onChanged: (value) {
+              //       setState(() {
+              //         _selectedPatientId = value;
+              //       });
+              //       int idx = _relations.indexWhere(
+              //           (element) => _selectedPatientId == element.patientId);
+              //       patientRelationType =
+              //           idx == -1 ? "Self" : _relations[idx].type;
+              //       // print(patientRelationType);
+              //     },
+              //     decoration: InputDecoration(
+              //       filled: true,
+              //       fillColor: Color(0x00000000),
+              //       labelText: 'Patient Name',
+              //       // border:
+              //     ),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+              //   child: TextFormField(
+              //     controller: reportTypeController,
+              //     enabled: false,
+              //     obscureText: false,
+              //     decoration: InputDecoration(
+              //       labelText: 'Type of scan or test',
+              //       labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+              //             fontFamily: 'Open Sans',
+              //             color: Color(0xFF9A9A9A),
+              //           ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: Color(0xFFC1C1C1),
+              //           width: 1,
+              //         ),
+              //         borderRadius: BorderRadius.circular(12),
+              //       ),
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: Color(0xFFC1C1C1),
+              //           width: 1,
+              //         ),
+              //         borderRadius: BorderRadius.circular(12),
+              //       ),
+              //       filled: true,
+              //       fillColor: Colors.white,
+              //     ),
+              //     style: FlutterFlowTheme.of(context).bodyText1.override(
+              //           fontFamily: 'Open Sans',
+              //           color: Color(0xFF485163),
+              //           fontWeight: FontWeight.w500,
+              //         ),
+              //   ),
+              // ),
               // Padding(
               //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
               //   child: TextFormField(
@@ -528,53 +537,54 @@ class _MedicalRecordBottomSheetWidgetState
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                        child: InkWell(
-                          onTap: _selectReportTime,
-                          child: IgnorePointer(
-                            child: TextFormField(
-                              controller: reportTimeController,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                enabled: true,
-                                labelText: 'Report Time',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFF9A9A9A),
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFC1C1C1),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFC1C1C1),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF485163),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: Padding(
+                    //     padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                    //     child: InkWell(
+                    //       onTap: _selectReportTime,
+                    //       child: IgnorePointer(
+                    //         child: TextFormField(
+                    //           controller: reportTimeController,
+                    //           enabled: false,
+                    //           obscureText: false,
+                    //           decoration: InputDecoration(
+                    //             enabled: true,
+                    //             labelText: 'Report Time',
+                    //             labelStyle: FlutterFlowTheme.of(context)
+                    //                 .bodyText1
+                    //                 .override(
+                    //                   fontFamily: 'Open Sans',
+                    //                   color: Color(0xFF9A9A9A),
+                    //                 ),
+                    //             enabledBorder: OutlineInputBorder(
+                    //               borderSide: BorderSide(
+                    //                 color: Color(0xFFC1C1C1),
+                    //                 width: 1,
+                    //               ),
+                    //               borderRadius: BorderRadius.circular(12),
+                    //             ),
+                    //             focusedBorder: OutlineInputBorder(
+                    //               borderSide: BorderSide(
+                    //                 color: Color(0xFFC1C1C1),
+                    //                 width: 1,
+                    //               ),
+                    //               borderRadius: BorderRadius.circular(12),
+                    //             ),
+                    //             filled: true,
+                    //             fillColor: Colors.white,
+                    //           ),
+                    //           style: FlutterFlowTheme.of(context)
+                    //               .bodyText1
+                    //               .override(
+                    //                 fontFamily: 'Open Sans',
+                    //                 color: Color(0xFF485163),
+                    //                 fontWeight: FontWeight.w500,
+                    //               ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

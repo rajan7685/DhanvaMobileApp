@@ -20,6 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class ProfileScreenWidget extends StatefulWidget {
   const ProfileScreenWidget({Key key}) : super(key: key);
@@ -36,10 +38,30 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
     await SharedPreferenceService.init();
   }
 
+  // Future<void> _checkNetworkConnectivity() async {
+  //   ConnectivityResult connectivityResult =
+  //       await Connectivity().checkConnectivity();
+  //   print(connectivityResult.name);
+  //   print(connectivityResult.name);
+  //   if (connectivityResult == ConnectivityResult.mobile) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //     SnackBar(content: Text('You are connected to a mobile network')));
+  //     // // I am connected to a mobile network.
+  //   } else if (connectivityResult == ConnectivityResult.wifi) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //     SnackBar(content: Text('You are connected to a wifi network')));
+  //     // // I am connected to a wifi network.
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('You are not connected to internet')));
+  //   }
+  // }
+
   @override
   void initState() {
     super.initState();
     initSharedService();
+    // _checkNetworkConnectivity();
   }
 
   @override

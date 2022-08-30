@@ -1,4 +1,6 @@
 // Automatic FlutterFlow imports
+import 'package:flutter/services.dart';
+
 import '../../flutter_flow/flutter_flow_theme.dart';
 import '../../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -81,14 +83,19 @@ class _OTPWidgetState extends State<OTPWidget> {
           child: TextField(
             style: TextStyle(color: widget.textColor),
             textAlign: TextAlign.center,
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(1),
+              FilteringTextInputFormatter.singleLineFormatter,
+            ],
             textAlignVertical: TextAlignVertical.center,
             keyboardType: TextInputType.number,
             controller: _controllers[i],
-            autofocus: false,
+            autofocus: true,
             onChanged: (String val) {
               // handle the text
               if (val.isNotEmpty) {
                 _feedOtp(val, i);
+                Duration(milliseconds: 1000);
                 _controllers[i].text = _filledCirleUnicode;
               }
 

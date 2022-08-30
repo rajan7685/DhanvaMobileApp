@@ -82,10 +82,10 @@ class AuthenticationProvider extends ChangeNotifier {
       SharedPreferenceService.saveString(
           key: PatientKey, value: jsonEncode(jsonData['patient']));
       _patient = Patient.fromJson(jsonData['patient']);
-      return 'success';
+      return 'Logged in successfully';
     } on DioError catch (error) {
       print('error authprov : ${error.toString()}');
-      return 'incorrect otp';
+      return 'Incorrect OTP';
     } catch (e, s) {
       print('error authprov : ${e.toString()} $s');
       return 'An unexpected error occured';

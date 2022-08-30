@@ -43,6 +43,7 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
     setState(() {
       isDataLoading = false;
     });
+    print("get response $resData.sort((a, b)");
   }
 
   @override

@@ -309,6 +309,10 @@ class _StartBookingScreen2WidgetState
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                           child: TextFormField(
+                            validator: (String textController2) {
+                              if (textController2.length < 50)
+                                return 'Must be a valid Text';
+                            },
                             controller: textController2,
                             obscureText: false,
                             decoration: InputDecoration(

@@ -44,7 +44,7 @@ class FFButtonWidget extends StatefulWidget {
     this.icon,
     this.iconData,
     @required this.options,
-    this.showLoadingIndicator = true,
+    this.showLoadingIndicator = true, Row child,
   }) : super(key: key);
 
   final String text;
