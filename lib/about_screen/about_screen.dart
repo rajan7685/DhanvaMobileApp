@@ -58,7 +58,7 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> {
             ),
             Expanded(
               child: WebView(
-                initialUrl: 'https://flutter.dev',
+                initialUrl: 'https://dhanva.icu/',
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   _controller = webViewController;
