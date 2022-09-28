@@ -13,7 +13,7 @@ class ApiService {
   /// files/docs/{PatientId}
   static const String medicalRecordsApi = 'files/docs/';
   static const String upcomingMedicalAppointmentsApi =
-      'appointment/upcoming/patient/';
+      'appointment/patient/all/';
 
   /// +@hospitalId/+@serviceId required to work
   static const String allDoctorsApi = 'employee/doctors/';

@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/h_v_t_new_screens/hvt_screen1.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../h_v_t_assestment_screen/h_v_t_assestment_screen_widget.dart';
@@ -487,16 +489,24 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      'Start Booking',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Color(0xFFFBFAFA),
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (_) =>
+                                                    HvtScreen1Widget()));
+                                      },
+                                      child: Text(
+                                        'Start Booking',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyText1
+                                            .override(
+                                              fontFamily: 'Open Sans',
+                                              color: Color(0xFFFBFAFA),
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                      ),
                                     ),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(

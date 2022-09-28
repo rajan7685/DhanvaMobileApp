@@ -35,7 +35,7 @@ class _AppointmentsBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
-
+    print("appointment ${widget.appointmentJson['doctor']}");
     if (widget.appointmentJson['hasConsultation']) _loadConsultaionNotes();
   }
 

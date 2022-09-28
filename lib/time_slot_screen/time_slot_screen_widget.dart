@@ -330,7 +330,7 @@ class DoctorTimeSlotList extends StatefulWidget {
 class _DoctorTimeSlotListState extends State<DoctorTimeSlotList> {
   @override
   Widget build(BuildContext context) {
-    print('main list len ${widget.slots.length}');
+    print("time list${widget.slots}");
     return SizedBox(
       width: double.maxFinite,
       child: Row(

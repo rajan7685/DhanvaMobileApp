@@ -142,6 +142,8 @@ class _AppointmentBookedScreenWidgetState
     _rzPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _rzPay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _rzPay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    print("raw date ${widget.date.toString()}");
+    print("Formatted date ${widget.date.toString().split(' ')[0]}");
   }
 
   @override

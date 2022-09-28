@@ -129,7 +129,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
       _dob = res.data['dob'] != null ? DateTime.parse(res.data['dob']) : null;
       _dobController.text =
           _dob != null ? DateFormat('MMM d, yyyy').format(_dob) : null;
-      print('DOB response : ${DateTime.parse(res.data['dob']).year}');
+      //print('DOB response : ${DateTime.parse(res.data['dob']).year}');
     });
   }
 
@@ -171,10 +171,11 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
       "weight": _weightController.text,
       "relation_type": patientRelationType,
       "gender": gender,
+      // "hospital": hospitalId,
       // patient id
       "id": patientId,
     };
-    print("MY RESPONSE: ${d}");
+    // print("MY RESPONSE: ${d}");
     Response res = await ApiService.dio.post(_uri,
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)

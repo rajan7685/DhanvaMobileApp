@@ -48,8 +48,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 //         'NOPE THAT CAN\'T BE ME'
 //       ]),
 // PsychometricsAssesmentQuestion(
-  // question: 'I like to try things out myself.',
-  // options: ['YEP! THAT IS ME', 'I AM REALLY INBETWEEN', 'NOPE THAT CAN\'T BE ME']),
+// question: 'I like to try things out myself.',
+// options: ['YEP! THAT IS ME', 'I AM REALLY INBETWEEN', 'NOPE THAT CAN\'T BE ME']),
 //   PsychometricsAssesmentQuestion(
 //       question: 'I like to know where I\'m going before leaving my house.',
 //       options: [

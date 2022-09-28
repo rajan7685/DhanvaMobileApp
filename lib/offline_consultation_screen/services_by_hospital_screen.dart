@@ -38,7 +38,7 @@ class _ServicesByHospitalScreenState
         }));
 
     _servicesList = res.data;
-    // print(_servicesList);
+    print("online services:${_loadServicesData}");
     setState(() {
       _isDataLoading = false;
     });
