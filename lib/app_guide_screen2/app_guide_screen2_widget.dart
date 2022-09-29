@@ -157,6 +157,50 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                               ],
                             ),
                           ),
+                          // Padding(
+                          //   padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                          //   child: Row(
+                          //     mainAxisSize: MainAxisSize.max,
+                          //     children: [
+                          //       Container(
+                          //         width: 55,
+                          //         height: 55,
+                          //         decoration: BoxDecoration(
+                          //           color: Color(0xFF09BFDF),
+                          //           shape: BoxShape.circle,
+                          //         ),
+                          //         child: Align(
+                          //           alignment: AlignmentDirectional(0, 0),
+                          //           child: Text(
+                          //             '3',
+                          //             style: FlutterFlowTheme.of(context)
+                          //                 .bodyText1
+                          //                 .override(
+                          //                   fontFamily: 'Open Sans',
+                          //                   color: Colors.white,
+                          //                   fontSize: 35,
+                          //                 ),
+                          //           ),
+                          //         ),
+                          //       ),
+                          //       Padding(
+                          //         padding: EdgeInsetsDirectional.fromSTEB(
+                          //             16, 0, 0, 0),
+                          //         child: Text(
+                          //           'Psychometric assessment using \nJungian psychology',
+                          //           style: FlutterFlowTheme.of(context)
+                          //               .bodyText1
+                          //               .override(
+                          //                 fontFamily: 'Open Sans',
+                          //                 color: Colors.black,
+                          //                 fontSize: 16,
+                          //                 fontWeight: FontWeight.w600,
+                          //               ),
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                             child: Row(
@@ -187,7 +231,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       16, 0, 0, 0),
                                   child: Text(
-                                    'Psychometric assessment using \nJungian psychology',
+                                    'Detailed History assessment by our \nphysician',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -231,7 +275,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       16, 0, 0, 0),
                                   child: Text(
-                                    'Detailed History assessment by \nour physician',
+                                    'Laboratory assessment, if needed',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -275,7 +319,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       16, 0, 0, 0),
                                   child: Text(
-                                    'Laboratory assessment, if needed',
+                                    'HVT Initiation',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -319,7 +363,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       16, 0, 0, 0),
                                   child: Text(
-                                    'HVT Initiation',
+                                    'Counseling and education',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -363,50 +407,6 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       16, 0, 0, 0),
                                   child: Text(
-                                    'Counseling and education',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Open Sans',
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Container(
-                                  width: 55,
-                                  height: 55,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF09BFDF),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(0, 0),
-                                    child: Text(
-                                      '8',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Colors.white,
-                                            fontSize: 35,
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      16, 0, 0, 0),
-                                  child: Text(
                                     'Regular follow-ups',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
@@ -436,7 +436,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   child: Align(
                                     alignment: AlignmentDirectional(0, 0),
                                     child: Text(
-                                      '9',
+                                      '8',
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
