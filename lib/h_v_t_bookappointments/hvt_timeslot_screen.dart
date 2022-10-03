@@ -6,7 +6,7 @@ import 'package:dhanva_mobile_app/global/models/date_time_slot.dart';
 import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/providers/time_slot_provider.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
-import 'package:dhanva_mobile_app/h_v_t_new_screens/hvt_screen2.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,7 +42,7 @@ ChangeNotifierProvider<TimeSlotProvider> _timeSotProvider =
     ChangeNotifierProvider((ref) => TimeSlotProvider());
 
 // ignore: camel_case_types
-class hvtTimeslot extends ConsumerStatefulWidget {
+class hvtTimeSlot extends ConsumerStatefulWidget {
   final bool isUniversalTimeSlot;
   final QuickServiceUiModel service;
   final Doctor doctor;
@@ -52,7 +52,7 @@ class hvtTimeslot extends ConsumerStatefulWidget {
   final bool isOnline;
   final String hospitalId;
 
-  const hvtTimeslot(
+  const hvtTimeSlot(
       {Key key,
       @required this.patientId,
       @required this.patientRelationType,
@@ -65,23 +65,23 @@ class hvtTimeslot extends ConsumerStatefulWidget {
       : super(key: key);
 
   @override
-  ConsumerState<hvtTimeslot> createState() => _TimeSlotScreenWidgetState();
+  ConsumerState<hvtTimeSlot> createState() => _TimeSlotScreenWidgetState();
 }
 
-class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeslot> {
+class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
   @override
   void initState() {
     super.initState();
-    if (widget.isUniversalTimeSlot) {
-      ref.read(_timeSotProvider).fetchAllTimeSlotData(init: true);
-    } else {
-      print(widget.doctor.name);
-      _selectedDoctorId = widget.doctor.id;
-      _selectedDoctorName = widget.doctor.name;
-      ref.read(_timeSotProvider).fetchTimeSlotByDoctor(
-          widget.hospitalId, widget.doctor.id,
-          init: true);
-    }
+    // if (widget.isUniversalTimeSlot) {
+    //   ref.read(_timeSotProvider).fetchAllTimeSlotData(init: true);
+    // } else {
+    //   print(widget.doctor.name);
+    //   _selectedDoctorId = widget.doctor.id;
+    //   _selectedDoctorName = widget.doctor.name;
+    //   ref.read(_timeSotProvider).fetchTimeSlotByDoctor(
+    //       widget.hospitalId, widget.doctor.id,
+    //       init: true);
+    // }
   }
 
   @override
@@ -153,7 +153,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeslot> {
               child: Consumer(
                 builder: (context, ref, child) {
                   TimeSlotProvider slotProv = ref.watch(_timeSotProvider);
-                  if (slotProv.isTimeSlotDataLoading) {
+                  if (false) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
@@ -163,7 +163,16 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeslot> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         child: UniversalTimeSlotList(
-                            timeSlots: slotProv.universalTimeSlots),
+                            timeSlots: <UniversalDateTimeSlot>[
+                              UniversalDateTimeSlot(
+                                  date: DateTime.now(),
+                                  availableTimeSlots: <GlobalAvailableTimeSlot>[
+                                    GlobalAvailableTimeSlot(
+                                        docIds: ['asd'],
+                                        docNames: ['abc'],
+                                        availableTimeSlot: '10:00 AM')
+                                  ]),
+                            ]),
                       );
                     } else {
                       return Padding(
@@ -180,10 +189,10 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeslot> {
               onTap: () {
                 print(_dateTimeSelectedId.split(',')[0]);
                 Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => hvtScreen2Widget(),
-                                    ),
-                                  );
+                  MaterialPageRoute(
+                    builder: (_) => hvtLogsInvestigationWidget(),
+                  ),
+                );
               },
               child: Container(
                   width: 225,

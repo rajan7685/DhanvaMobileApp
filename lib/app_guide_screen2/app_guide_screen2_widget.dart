@@ -1,4 +1,4 @@
-import 'package:dhanva_mobile_app/h_v_t_new_screens/hvt_screen1.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_start_appointment.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -494,7 +494,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (_) =>
-                                                    HvtScreen1Widget()));
+                                                    HvtStartAppointmentWidget()));
                                       },
                                       child: Text(
                                         'Start Booking',

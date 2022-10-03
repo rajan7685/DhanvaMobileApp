@@ -86,7 +86,7 @@ class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
                           borderRadius: BorderRadius.circular(300),
                         ),
                         filled: true,
-                        fillColor: Color(0xFFF3F4F4),
+                        fillColor: Colors.white,
                       ),
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
@@ -143,7 +143,7 @@ class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
                           borderRadius: BorderRadius.circular(300),
                         ),
                         filled: true,
-                        fillColor: Colors.green,
+                        fillColor: Colors.white,
                         suffixIcon: Icon(
                           Icons.date_range_sharp,
                           color: Colors.black,
@@ -154,7 +154,6 @@ class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
                             fontFamily: 'Open Sans',
                             fontWeight: FontWeight.normal,
                           ),
-                      keyboardType: TextInputType.datetime,
                     ),
                   ),
                 ),
@@ -176,25 +175,15 @@ class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
               ],
             ),
           ),
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
-            child: Row(
-              children: [
-                FlutterFlowIconButton(
-                  borderColor: Colors.transparent,
-                  borderRadius: 30,
-                  borderWidth: 1,
-                  buttonSize: 50,
-                  icon: Icon(
-                    Icons.note_add_rounded,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    print('IconButton pressed ...');
-                  },
-                ),
-              ],
+          Align(
+            alignment: AlignmentDirectional(-0.75, -1),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+              child: Icon(
+                Icons.upload_file,
+                color: Colors.black,
+                size: 40,
+              ),
             ),
           ),
           Row(
@@ -202,7 +191,7 @@ class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
             children: [
               Expanded(
                 child: Align(
-                  alignment: AlignmentDirectional(0, 0),
+                  alignment: AlignmentDirectional(0.05, 0.25),
                   child: FFButtonWidget(
                     onPressed: () {
                       print('Button pressed ...');
@@ -216,13 +205,13 @@ class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
                           FlutterFlowTheme.of(context).subtitle2.override(
                                 fontFamily: 'Open Sans',
                                 color: Colors.white,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.bold,
                               ),
                       borderSide: BorderSide(
                         color: Colors.transparent,
                         width: 1,
                       ),
-                      borderRadius: 75,
+                      borderRadius: 8,
                     ),
                   ),
                 ),
@@ -233,13 +222,13 @@ class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
       ),
     );
   }
-
-  FlutterFlowIconButton(
-      {Color borderColor,
-      int borderRadius,
-      int borderWidth,
-      int buttonSize,
-      Icon icon,
-      Null Function(),
-      onPressed}) {}
 }
+
+FlutterFlowIconButton(
+    {Color borderColor,
+    int borderRadius,
+    int borderWidth,
+    int buttonSize,
+    Icon icon,
+    Null Function(),
+    onPressed}) {}

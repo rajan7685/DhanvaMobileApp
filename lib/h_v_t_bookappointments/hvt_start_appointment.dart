@@ -9,21 +9,40 @@ import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 
 import 'hvt_bookdoctor_screen.dart';
 
-class HvtScreen1Widget extends StatefulWidget {
-  const HvtScreen1Widget({Key key}) : super(key: key);
+class HvtStartAppointmentWidget extends StatefulWidget {
+  const HvtStartAppointmentWidget({Key key}) : super(key: key);
 
   @override
-  _HvtScreen1WidgetState createState() => _HvtScreen1WidgetState();
+  _HvtStartAppointmentWidgetState createState() =>
+      _HvtStartAppointmentWidgetState();
 }
 
-class _HvtScreen1WidgetState extends State<HvtScreen1Widget> {
+class MyCustomClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(size.width * 0.5, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.lineTo(size.width * 0.5, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper oldClipper) {
+    return false;
+  }
+}
+
+class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
   String dropDownValue;
   String radioButtonValue1;
   String planType;
   List<String> _planTypes = [
     '30 days  ₹599',
     '60 days  ₹1299',
-    '60 days  ₹1299',
+    '90 days  ₹2199',
   ];
   TextEditingController textController1;
   String radioButtonValue2;
@@ -33,7 +52,7 @@ class _HvtScreen1WidgetState extends State<HvtScreen1Widget> {
   @override
   void initState() {
     super.initState();
-    textController1 = TextEditingController();
+    textController1 = TextEditingController(text: '  JAMES HEMSWORTH');
     textController2 = TextEditingController();
   }
 
@@ -125,7 +144,8 @@ class _HvtScreen1WidgetState extends State<HvtScreen1Widget> {
               ),
             ),
             Align(
-              alignment: AlignmentDirectional(0, 1),
+                alignment: AlignmentDirectional(0, 1),
+             // alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,
@@ -161,7 +181,6 @@ class _HvtScreen1WidgetState extends State<HvtScreen1Widget> {
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     labelText: 'Patient Name',
-                                    hintText: '  Enter patient Name',
                                     hintStyle:
                                         FlutterFlowTheme.of(context).bodyText2,
                                     enabledBorder: OutlineInputBorder(
@@ -207,7 +226,7 @@ class _HvtScreen1WidgetState extends State<HvtScreen1Widget> {
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(5, 2, 0, 0),
                             child: Text(
-                              'Pre Assessment Questinnarie',
+                              'HVT Pre Assessment',
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -230,34 +249,103 @@ class _HvtScreen1WidgetState extends State<HvtScreen1Widget> {
                                   ),
                             ),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Align(
-                                alignment: AlignmentDirectional(0, 0),
-                                child: Image.asset(
-                                  'assets/images/circle-removebg-preview.png',
-                                  width: 75,
-                                  height: 75,
-                                  fit: BoxFit.cover,
+                          // Row(
+                          //   mainAxisSize: MainAxisSize.max,
+                          //   children: [
+                          //     Align(
+                          //       alignment: AlignmentDirectional(0, 0),
+                          //       child: Image.asset(
+                          //         'assets/images/circle-removebg-preview.png',
+                          //         width: 75,
+                          //         height: 75,
+                          //         fit: BoxFit.cover,
+                          //       ),
+                          //     ),
+                          //     Image.asset(
+                          //       'assets/images/triangle-removebg-preview.png',
+                          //       width: 75,
+                          //       height: 75,
+                          //       fit: BoxFit.cover,
+                          //     ),
+                          //     Image.asset(
+                          //       'assets/images/square-removebg-preview.png',
+                          //       width: 75,
+                          //       height: 75,
+                          //       fit: BoxFit.cover,
+                          //     ),
+                          //   ],
+                          // ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(60, 8, 5, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      5, 0, 5, 0),
+                                  child: GestureDetector(
+                                    child: Container(
+                                      width: 60,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF00A8A3),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        shape: BoxShape.rectangle,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      print('Clicked Circle');
+                                    },
+                                  ),
                                 ),
-                              ),
-                              Image.asset(
-                                'assets/images/triangle-removebg-preview.png',
-                                width: 75,
-                                height: 75,
-                                fit: BoxFit.cover,
-                              ),
-                              Image.asset(
-                                'assets/images/square-removebg-preview.png',
-                                width: 75,
-                                height: 75,
-                                fit: BoxFit.cover,
-                              ),
-                            ],
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 5, 0),
+                                  child: ClipPath(
+                                    clipper: MyCustomClipper(),
+                                    child: GestureDetector(
+                                      child: Container(
+                                        width: 70,
+                                        height: 60,
+                                        constraints: BoxConstraints(
+                                          maxWidth: 300,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xFF00A8A3),
+                                          shape: BoxShape.rectangle,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        print('Clicked Triangle');
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      10, 0, 5, 0),
+                                  child: GestureDetector(
+                                    child: Container(
+                                      width: 60,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF00A8A3),
+                                        borderRadius: BorderRadius.circular(0),
+                                        shape: BoxShape.rectangle,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      print('Clicked Square');
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                            padding: EdgeInsetsDirectional.fromSTEB(5, 5, 0, 0),
                             child: Text(
                               '1. How healthy do you consider yourself on a scale of 1 to 10?',
                               style: FlutterFlowTheme.of(context)
@@ -439,27 +527,27 @@ class _HvtScreen1WidgetState extends State<HvtScreen1Widget> {
                               alignment: AlignmentDirectional(-0.85, 0),
                               child: Padding(
                                 padding:
-                                    EdgeInsetsDirectional.fromSTEB(5, 2, 0, 0),
+                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 0),
                                 child: DropdownButtonFormField(
                                   validator: (String type) {
-                                    if (type == null)
+                                    if (type.isEmpty || type == null)
                                       return 'plan type Required';
                                     return null;
                                   },
                                   decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.red),
-                                        borderRadius: const BorderRadius.all(
-                                          const Radius.circular(26),
-                                        ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.red),
+                                      borderRadius: const BorderRadius.all(
+                                        const Radius.circular(20),
                                       ),
-                                      filled: true,
-                                      hintStyle: TextStyle(
-                                        color: Color(0xFF9A9A9A),
-                                      ),
-                                      hintText: "Select the plan type",
-                                      fillColor: Colors.white),
+                                    ),
+                                    filled: true,
+                                    hintStyle: TextStyle(
+                                      color: Color(0xFF9A9A9A),
+                                    ),
+                                    hintText: "Select the plan type",
+                                    fillColor: Color(0xFFEDF3F3),
+                                  ),
                                   value: planType,
                                   items: _planTypes
                                       .map((type) => DropdownMenuItem(
@@ -516,14 +604,42 @@ class _HvtScreen1WidgetState extends State<HvtScreen1Widget> {
                             alignment: AlignmentDirectional(-0.05, 0),
                             child: Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 20, 0, 20),
+                                  EdgeInsetsDirectional.fromSTEB(0, 20, 0, 50),
                               child: FFButtonWidget(
                                 onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => hvt_bookdoctor_screen(),
-                                    ),
-                                  );
+                                  if (radioButtonValue1 == null ||
+                                      radioButtonValue1.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Please Fill all fields')));
+                                  } else if (radioButtonValue2 == null ||
+                                      radioButtonValue2.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Please Fill all fields')));
+                                    // }
+                                    //else if (radioButtonValue == 'Yes' &&
+                                    //     _selectedDoctor == null) {
+                                    //   ScaffoldMessenger.of(context).showSnackBar(
+                                    //       SnackBar(
+                                    //           content: Text(
+                                    //               'Please select a doctor')));
+                                  } else if (planType == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Please Fill all fields')));
+                                    // }
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              hvt_bookdoctor_screen(),
+                                        ));
+                                  }
                                 },
                                 text: 'Next',
                                 options: FFButtonOptions(

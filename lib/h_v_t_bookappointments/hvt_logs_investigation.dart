@@ -7,14 +7,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 
-class hvtScreen2Widget extends StatefulWidget {
-  const hvtScreen2Widget({Key key}) : super(key: key);
+class hvtLogsInvestigationWidget extends StatefulWidget {
+  const hvtLogsInvestigationWidget({Key key}) : super(key: key);
 
   @override
-  _hvtScreen2WidgetState createState() => _hvtScreen2WidgetState();
+  _hvtLogsInvestigationWidgetState createState() =>
+      _hvtLogsInvestigationWidgetState();
 }
 
-class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
+class _hvtLogsInvestigationWidgetState
+    extends State<hvtLogsInvestigationWidget> {
   TextEditingController textController10;
   TextEditingController textController9;
   TextEditingController textController11;
@@ -30,7 +32,9 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
   TextEditingController textController7;
   TextEditingController textController8;
   TextEditingController textController1;
+  TextEditingController textController16;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  int tabIndex;
 
   @override
   void initState() {
@@ -56,6 +60,8 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
     textController6 = TextEditingController(text: 'Blood report.pdf');
     textController7 = TextEditingController(text: 'Okay! Use insulin');
     textController8 = TextEditingController(text: 'Thanks Doc');
+    // textController16 = TextEditingController(text: 'Type your message...');
+    tabIndex = 0;
   }
 
   @override
@@ -67,12 +73,14 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
     textController13?.dispose();
     textController14?.dispose();
     textController15?.dispose();
+    textController16?.dispose();
     textController2?.dispose();
     textController3?.dispose();
     textController4?.dispose();
     textController5?.dispose();
     textController6?.dispose();
     textController7?.dispose();
+
     textController8?.dispose();
     textController1?.dispose();
     super.dispose();
@@ -83,31 +91,33 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF00A8A3),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await showModalBottomSheet(
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            context: context,
-            builder: (context) {
-              return Padding(
-                padding: MediaQuery.of(context).viewInsets,
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: HvtBottomsheetWidget(),
-                ),
-              );
-            },
-          ).then((value) => setState(() {}));
-        },
-        backgroundColor: Color(0xFF00A8A3),
-        elevation: 8,
-        child: Icon(
-          Icons.add,
-          color: Color(0xFFF3F4F4),
-          size: 30,
-        ),
-      ),
+      floatingActionButton: tabIndex == 1
+          ? FloatingActionButton(
+              onPressed: () async {
+                await showModalBottomSheet(
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return Padding(
+                      padding: MediaQuery.of(context).viewInsets,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: HvtBottomsheetWidget(),
+                      ),
+                    );
+                  },
+                ).then((value) => setState(() {}));
+              },
+              backgroundColor: Color(0xFF00A8A3),
+              elevation: 8,
+              child: Icon(
+                Icons.add,
+                color: Color(0xFFF3F4F4),
+                size: 30,
+              ),
+            )
+          : null,
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -180,15 +190,15 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
                           fontWeight: FontWeight.w300,
                         ),
                   ),
-                  Text(
-                    'Subscription Plan',
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Open Sans',
-                          color: Color(0xFFF3F4F4),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w300,
-                        ),
-                  ),
+                  // // Text(
+                  // //   'Subscription Plan',
+                  // //   style: FlutterFlowTheme.of(context).bodyText1.override(
+                  // //         fontFamily: 'Open Sans',
+                  // //         color: Color(0xFFF3F4F4),
+                  // //         fontSize: 16,
+                  // //         fontWeight: FontWeight.w300,
+                  // //       ),
+                  // ),
                 ],
               ),
             ),
@@ -262,7 +272,8 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
             //   ],
             // ),
             Align(
-              alignment: AlignmentDirectional(0, 1),
+             alignment: AlignmentDirectional(0, 1),
+               // alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,
@@ -287,8 +298,13 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
                           child: Column(
                             children: [
                               TabBar(
+                                onTap: (int value) {
+                                  setState(() {
+                                    tabIndex = value;
+                                  });
+                                },
                                 isScrollable: true,
-                                labelColor: Color(0xFF00A8A3),
+                                labelColor: Color.fromARGB(255, 0, 168, 162),
                                 labelStyle: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -297,7 +313,7 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                 indicatorColor:
-                                    FlutterFlowTheme.of(context).secondaryColor,
+                                    Color.fromARGB(255, 0, 168, 162),
                                 indicatorWeight: 2,
                                 tabs: [
                                   Tab(
@@ -1068,7 +1084,7 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
                                           Expanded(
                                             child: Padding(
                                               padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0, 130, 0, 0),
+                                                  .fromSTEB(0, 50, 0, 30),
                                               child: Container(
                                                 width: double.infinity,
                                                 height: 100,
@@ -1082,74 +1098,109 @@ class _hvtScreen2WidgetState extends State<hvtScreen2Widget> {
                                                     mainAxisSize:
                                                         MainAxisSize.max,
                                                     children: [
-                                                      Text(
-                                                        'Type your message...',
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsetsDirectional
+                                                                  .fromSTEB(5,
+                                                                      0, 0, 0),
+                                                          child: TextFormField(
+                                                            controller:
+                                                                textController16,
+                                                            autofocus: true,
+                                                            obscureText: false,
+                                                            decoration:
+                                                                InputDecoration(
+                                                              hintText:
+                                                                  'Type your message...',
+                                                              hintStyle:
+                                                                  FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyText2,
+                                                              enabledBorder:
+                                                                  UnderlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Color(
+                                                                      0x00000000),
+                                                                  width: 1,
+                                                                ),
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          4.0),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          4.0),
+                                                                ),
+                                                              ),
+                                                              focusedBorder:
+                                                                  UnderlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Color(
+                                                                      0x00000000),
+                                                                  width: 1,
+                                                                ),
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          4.0),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          4.0),
+                                                                ),
+                                                              ),
+                                                              errorBorder:
+                                                                  UnderlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Color(
+                                                                      0x00000000),
+                                                                  width: 1,
+                                                                ),
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          4.0),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          4.0),
+                                                                ),
+                                                              ),
+                                                              focusedErrorBorder:
+                                                                  UnderlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide(
+                                                                  color: Color(
+                                                                      0x00000000),
+                                                                  width: 1,
+                                                                ),
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          4.0),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          4.0),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
                                                                 .bodyText1
                                                                 .override(
                                                                   fontFamily:
                                                                       'Open Sans',
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
                                                                 ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 14,
-                                                        child: Align(
-                                                          alignment:
-                                                              AlignmentDirectional(
-                                                                  1, 0),
-                                                          child:
-                                                              FlutterFlowIconButton(
-                                                            borderColor: Colors
-                                                                .transparent,
-                                                            borderRadius: 30,
-                                                            borderWidth: 1,
-                                                            buttonSize: 60,
-                                                            icon: Icon(
-                                                              Icons
-                                                                  .attach_file_sharp,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .primaryText,
-                                                              size: 25,
-                                                            ),
-                                                            onPressed: () {
-                                                              print(
-                                                                  'IconButton pressed ...');
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 3,
-                                                        child: Align(
-                                                          alignment:
-                                                              AlignmentDirectional(
-                                                                  1, 0),
-                                                          child:
-                                                              FlutterFlowIconButton(
-                                                            borderColor: Colors
-                                                                .transparent,
-                                                            borderRadius: 30,
-                                                            borderWidth: 1,
-                                                            buttonSize: 60,
-                                                            icon: Icon(
-                                                              Icons.send_sharp,
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .primaryText,
-                                                              size: 25,
-                                                            ),
-                                                            onPressed: () {
-                                                              print(
-                                                                  'IconButton pressed ...');
-                                                            },
                                                           ),
                                                         ),
                                                       ),

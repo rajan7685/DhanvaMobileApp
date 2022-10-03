@@ -1,5 +1,6 @@
-import 'package:dhanva_mobile_app/h_v_t_new_screens/hvt_screen2.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
 
+import '../components/next_icon_button_widget.dart';
 import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -116,7 +117,8 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
               ),
             ),
             Align(
-              alignment: AlignmentDirectional(0, 1),
+                alignment: AlignmentDirectional(0, 1),
+             // alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,
@@ -148,7 +150,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                                     .bodyText1
                                     .override(
                                       fontFamily: 'Open Sans',
-                                      color: Color(0xFF070000),
+                                      color: Color(0xFF606E87),
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -167,6 +169,10 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
                                 child: TextFormField(
+                                  validator: (String textController) {
+                                    if (textController.length < 50)
+                                      return 'Must be a valid Text';
+                                  },
                                   controller: textController,
                                   autofocus: true,
                                   obscureText: false,
@@ -246,10 +252,19 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             FlutterFlowRadioButton(
-                              options: ['Yes', 'Help me with available doctor']
-                                  .toList(),
+                              options: [
+                                'Yes',
+                                'Help me with available doctor',
+                              ].toList(),
                               onChanged: (value) {
                                 setState(() => radioButtonValue = value);
+                                if (radioButtonValue == 'Yes') {
+                                  // ref
+                                  //     .read(_doctorsProvider)
+                                  //     .fetchAllDoctors(
+                                  //         hospitalId: widget.hospitalId,
+                                  //         serviceId: widget.service.id);
+                                }
                               },
                               optionHeight: 25,
                               textStyle: FlutterFlowTheme.of(context)
@@ -268,7 +283,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                               buttonPosition: RadioButtonPosition.left,
                               direction: Axis.vertical,
                               radioButtonColor: Color(0xFF00A8A3),
-                              inactiveRadioButtonColor: Colors.black,
+                              inactiveRadioButtonColor: Color(0xFF00A8A3),
                               toggleable: false,
                               horizontalAlignment: WrapAlignment.start,
                               verticalAlignment: WrapCrossAlignment.start,
@@ -276,21 +291,129 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                           ],
                         ),
                       ),
+                      // if (radioButtonValue == 'Yes')
+                      //     Expanded(
+                      //       child: Consumer(
+                      //         builder: (context, ref, child) {
+                      //           DoctorRecordProvider _docRecords =
+                      //               ref.watch(_doctorsProvider);
+                      //           if (_docRecords.isLoading) {
+                      //             return Center(
+                      //               child: CircularProgressIndicator(),
+                      //             );
+                      //           } else {
+                      //             return DoctorCardListView(
+                      //               doctors: _docRecords.doctors,
+                      //             );
+                      //           }
+                      //         },
+                      //       ),
+                      //     ),
+                      //   if (radioButtonValue != 'Yes') Spacer(),
+                      //   Padding(
+                      //     padding: const EdgeInsets.only(bottom: 18),
+                      //     child: Container(
+                      //       width: MediaQuery.of(context).size.width * 0.7,
+                      //       height: 55,
+                      //       // padding: EdgeInsets.only(bottom: 12),
+                      //       decoration: BoxDecoration(
+                      //         color: Color(0xFF00A8A3),
+                      //         borderRadius: BorderRadius.circular(18),
+                      //       );
                       Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Expanded(
+                            // child: Align(
+                            //   alignment: AlignmentDirectional(0.05, 0),
+                            //   child: Padding(
+                            //     padding: EdgeInsetsDirectional.fromSTEB(
+                            //         0, 300, 0, 0),
+                            //     child: FFButtonWidget(
+                            //       onPressed: () {
+                            //         Navigator.of(context)
+                            //             .push(MaterialPageRoute(
+                            //           builder: (_) => hvtScreen2Widget(),
+                            //         ));
+                            //       },
+                            //       text: 'Next',
+                            //       options: FFButtonOptions(
+                            //         width: 130,
+                            //         height: 40,
+                            //         color: Color(0xFF00A8A3),
+                            //         textStyle: FlutterFlowTheme.of(context)
+                            //             .subtitle2
+                            //             .override(
+                            //               fontFamily: 'Open Sans',
+                            //               color: Colors.white,
+                            //               fontSize: 18,
+                            //             ),
+                            //         borderSide: BorderSide(
+                            //           color: Colors.transparent,
+                            //           width: 1,
+                            //         ),
+                            //         borderRadius: 15,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                            // child: InkWell(
+                            //   onTap: () {
+                            //     if (textController.text.isEmpty) {
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //           SnackBar(
+                            //               content:
+                            //                   Text('Please enter the Goal')));
+                            //     } else if (radioButtonValue == null) {
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //           SnackBar(
+                            //               content: Text(
+                            //                   'Please select a doctor option')));
+                            //       // } else if (radioButtonValue == 'Yes' &&
+                            //       //     _selectedDoctor == null) {
+                            //       //   ScaffoldMessenger.of(context).showSnackBar(
+                            //       //       SnackBar(
+                            //       //           content: Text(
+                            //       //               'Please select a doctor')));
+                            //     } else {
+                            //       Navigator.push(
+                            //           context,
+                            //           MaterialPageRoute(
+                            //               builder: (context) =>
+                            //                   hvtScreen2Widget()));
+                            //     }
+                            //   },
                             child: Align(
                               alignment: AlignmentDirectional(0.05, 0),
                               child: Padding(
                                 padding: EdgeInsetsDirectional.fromSTEB(
-                                    0, 300, 0, 0),
+                                    0, 20, 0, 50),
                                 child: FFButtonWidget(
                                   onPressed: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (_) => hvtTimeslot(),
-                                    ));
+                                    if (textController.text.isEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Please enter the Goal')));
+                                    } else if (radioButtonValue == null) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Please select a doctor')));
+                                      // } else if (radioButtonValue == 'Yes' &&
+                                      //     _selectedDoctor == null) {
+                                      //   ScaffoldMessenger.of(context).showSnackBar(
+                                      //       SnackBar(
+                                      //           content: Text(
+                                      //               'Please select a doctor')));
+                                    } else {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => hvtTimeSlot(
+                                                    isUniversalTimeSlot: true,
+                                                  )));
+                                    }
                                   },
                                   text: 'Next',
                                   options: FFButtonOptions(
