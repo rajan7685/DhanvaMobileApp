@@ -1,3 +1,8 @@
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_bookdoctor_screen.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_payment_screen.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_timeslot_screen.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
@@ -6,16 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class BookingSuccessScreenWidget extends StatefulWidget {
-  const BookingSuccessScreenWidget({Key key}) : super(key: key);
+class hvtSuccessScreenWidget extends StatefulWidget {
+  const hvtSuccessScreenWidget({Key key}) : super(key: key);
 
   @override
-  _BookingSuccessScreenWidgetState createState() =>
-      _BookingSuccessScreenWidgetState();
+  _hvtSuccessScreenWidgetState createState() => _hvtSuccessScreenWidgetState();
 }
 
-class _BookingSuccessScreenWidgetState
-    extends State<BookingSuccessScreenWidget> {
+class _hvtSuccessScreenWidgetState extends State<hvtSuccessScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -42,6 +45,24 @@ class _BookingSuccessScreenWidgetState
                   height: 350,
                   fit: BoxFit.fitWidth,
                 ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(10, 10, 12, 0),
+                child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.arrow_back_rounded,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                      ),
+                    ]),
               ),
               Align(
                 alignment: AlignmentDirectional(0, 1),
@@ -75,7 +96,7 @@ class _BookingSuccessScreenWidgetState
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
                         child: Text(
-                          'Your Appointment has been Scheduled',
+                          'Your HVT Appointment has been Scheduled',
                           style:
                               FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Open Sans',
@@ -92,7 +113,7 @@ class _BookingSuccessScreenWidgetState
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    NavBarPage(initialPage: 'HomeScreen'),
+                                    hvtLogsInvestigationWidget(),
                               ),
                             );
                           },

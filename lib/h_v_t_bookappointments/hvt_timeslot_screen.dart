@@ -7,6 +7,8 @@ import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/providers/time_slot_provider.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_payment_screen.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_success_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -168,9 +170,313 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
                                   date: DateTime.now(),
                                   availableTimeSlots: <GlobalAvailableTimeSlot>[
                                     GlobalAvailableTimeSlot(
-                                        docIds: ['asd'],
-                                        docNames: ['abc'],
-                                        availableTimeSlot: '10:00 AM')
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                  ]),
+                              UniversalDateTimeSlot(
+                                  date: DateTime.now(),
+                                  availableTimeSlots: <GlobalAvailableTimeSlot>[
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                  ]),
+                              UniversalDateTimeSlot(
+                                  date: DateTime.now(),
+                                  availableTimeSlots: <GlobalAvailableTimeSlot>[
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '10:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:00 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '11:30 AM',
+                                    ),
+                                    GlobalAvailableTimeSlot(
+                                      docIds: ['asd'],
+                                      docNames: ['abc'],
+                                      availableTimeSlot: '12:00 AM',
+                                    ),
                                   ]),
                             ]),
                       );
@@ -190,7 +496,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
                 print(_dateTimeSelectedId.split(',')[0]);
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => hvtLogsInvestigationWidget(),
+                    builder: (_) => hvtPaymentScreenWidget(),
                   ),
                 );
               },

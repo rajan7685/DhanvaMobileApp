@@ -90,8 +90,8 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
       //     SnackBar(content: Text('You are connected to a wifi network')));
       // // I am connected to a wifi network.
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('You are not connected to internet')));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text('You are not connected to internet')));
     }
   }
 

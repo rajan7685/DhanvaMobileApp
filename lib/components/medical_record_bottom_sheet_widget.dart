@@ -261,7 +261,7 @@ class _MedicalRecordBottomSheetWidgetState
         text: widget.newRecord
             ? ''
             : DateFormat('h:mma').format(widget.medicalRecord.createdAt));
-    print('mera response ${patientNameController}');
+    // print('mera response ${patientNameController}');
   }
 
   Future<dynamic> _downloadFileAndPreview({bool autopreview = true}) async {

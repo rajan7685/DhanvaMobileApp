@@ -7,6 +7,7 @@ import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/doctors_details_service.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_success_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dio/dio.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -18,19 +19,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AppointmentBookedScreenWidget extends StatefulWidget {
-  final String doctorId;
-  final String hospitalId;
-  final String doctorName;
-  final DateTime date;
-  final String timeString;
-  final String symtopms;
-  final String patientId;
-  final String patientRelationType;
-  final QuickServiceUiModel service;
-  final bool isOnline;
+class hvtPaymentScreenWidget extends StatefulWidget {
+  String doctorId;
+  String hospitalId;
+  String doctorName;
+  DateTime date;
+  String timeString;
+  String symtopms;
+  String patientId;
+  String patientRelationType;
+  QuickServiceUiModel service;
+  bool isOnline;
 
-  const AppointmentBookedScreenWidget(
+  hvtPaymentScreenWidget(
       {Key key,
       @required this.date,
       @required this.hospitalId,
@@ -45,12 +46,10 @@ class AppointmentBookedScreenWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AppointmentBookedScreenWidgetState createState() =>
-      _AppointmentBookedScreenWidgetState();
+  _hvtPaymentScreenWidgetState createState() => _hvtPaymentScreenWidgetState();
 }
 
-class _AppointmentBookedScreenWidgetState
-    extends State<AppointmentBookedScreenWidget> {
+class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Razorpay _rzPay;
   String _paymentValueType;
@@ -97,7 +96,7 @@ class _AppointmentBookedScreenWidgetState
           "serviceId": widget.service.id,
           "hospital_id": widget.hospitalId
         });
-    print('Booking response > ${bookingRes.data}');
+    // print('Booking response > ${bookingRes.data}');
   }
 
   Future<void> _makePayment() async {
@@ -119,7 +118,7 @@ class _AppointmentBookedScreenWidgetState
     print('Payment success : $response');
     await _bookAppointment(transactionId: response.paymentId);
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => BookingSuccessScreenWidget()));
+        .push(MaterialPageRoute(builder: (_) => hvtSuccessScreenWidget()));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) async {
@@ -138,18 +137,37 @@ class _AppointmentBookedScreenWidgetState
   void initState() {
     super.initState();
     print(widget.timeString);
+    widget.doctorId = "123";
+    widget.hospitalId = "321";
+    widget.doctorName = "Esskay";
+    widget.date = DateTime.now();
+    widget.timeString = DateTime.now().toString();
+    widget.symtopms = "To get more healthy";
+    widget.patientId = "12345678";
+    widget.patientRelationType = "son";
+    widget.service = QuickServiceUiModel(
+        departments: ["departments"],
+        amount: 100,
+        id: "yjhbx",
+        name: "service name",
+        enabled: true,
+        createdDateTime: DateTime.now(),
+        v: 0,
+        iconLink: "",
+        updatedDateTime: DateTime.now(),
+        paymentType: 1);
+
     _rzPay = Razorpay();
     _rzPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _rzPay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _rzPay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-    print("raw date ${widget.date.toString()}");
-    print("Formatted date ${widget.date.toString().split(' ')[0]}");
+    //print("raw date ${widget.date.toString()}");
+    //print("Formatted date ${widget.date.toString().split(' ')[0]}");
   }
 
   @override
   void dispose() {
     super.dispose();
-    //
   }
 
   @override
@@ -160,6 +178,7 @@ class _AppointmentBookedScreenWidgetState
       appBar: AppBar(
         backgroundColor: Color(0xFFEDF3F3),
         iconTheme: IconThemeData(color: Color(0xFF00A8A3)),
+        //iconTheme: IconThemeData(color: Colors.black),
         automaticallyImplyLeading: true,
         actions: [],
         centerTitle: true,
@@ -179,10 +198,10 @@ class _AppointmentBookedScreenWidgetState
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                     child: Text(
-                      'Your Appointment',
+                      'Your HVT Appointment',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
-                            color: Color(0xFF282828),
+                            color: Color(0xFF606E87),
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                           ),
@@ -197,7 +216,7 @@ class _AppointmentBookedScreenWidgetState
                       'Will be booked with',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
-                            color: Color(0xFF282828),
+                            color: Color(0xFF606E87),
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -310,7 +329,7 @@ class _AppointmentBookedScreenWidgetState
                           padding:
                               EdgeInsetsDirectional.fromSTEB(12, 12, 12, 0),
                           child: Text(
-                            'Symptoms',
+                            'HVT Goal',
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',
@@ -405,7 +424,7 @@ class _AppointmentBookedScreenWidgetState
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BookingSuccessScreenWidget(),
+                          builder: (context) => hvtSuccessScreenWidget(),
                         ),
                       );
                     },
@@ -422,28 +441,32 @@ class _AppointmentBookedScreenWidgetState
                       ),
                       child: InkWell(
                         onTap: () async {
-                          if (_paymentValueType == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    'Please select a payment mode to proceed')));
-                          } else {
-                            if (_paymentValueType == 'Free' ||
-                                _paymentValueType == 'Cash (Offline)') {
-                              await _bookAppointment(
-                                  transactionId: DateTime.now()
-                                      .millisecondsSinceEpoch
-                                      .toString());
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Booked')),
-                              );
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) =>
-                                      BookingSuccessScreenWidget()));
-                            } else {
-                              // through UPI/Debit
-                              _makePayment();
-                            }
-                          }
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => hvtSuccessScreenWidget(),
+                              ));
+                          // if (_paymentValueType == null) {
+                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          //       content: Text(
+                          //           'Please select a payment mode to proceed')));
+                          // } else {
+                          //   if (_paymentValueType == 'Free' ||
+                          //       _paymentValueType == 'Cash (Offline)') {
+                          //     await _bookAppointment(
+                          //         transactionId: DateTime.now()
+                          //             .millisecondsSinceEpoch
+                          //             .toString());
+                          //     ScaffoldMessenger.of(context).showSnackBar(
+                          //       SnackBar(content: Text('Booked')),
+                          //     );
+                          //     Navigator.of(context).push(MaterialPageRoute(
+                          //         builder: (_) => hvtSuccessScreenWidget()));
+                          //   } else {
+                          //     // through UPI/Debit
+                          //     _makePayment();
+                          //   }
+                          // }
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.max,

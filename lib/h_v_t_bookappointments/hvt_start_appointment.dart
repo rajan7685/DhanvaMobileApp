@@ -144,8 +144,8 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
               ),
             ),
             Align(
-                alignment: AlignmentDirectional(0, 1),
-             // alignment: AlignmentDirectional(0, 2),
+             // alignment: AlignmentDirectional(0, 1),
+               alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,
@@ -284,7 +284,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       5, 0, 5, 0),
-                                  child: GestureDetector(
+                                  child: InkWell(
                                     child: Container(
                                       width: 60,
                                       height: 60,
