@@ -241,9 +241,9 @@ class _hvtLogsInvestigationWidgetState
                           ));
                     },
                     child: Icon(
-                      Icons.arrow_back_rounded,
+                      Icons.home_outlined,
                       color: Colors.white,
-                      size: 34,
+                      size: 40,
                     ),
                   ),
                   Expanded(
@@ -367,8 +367,8 @@ class _hvtLogsInvestigationWidgetState
             //   ],
             // ),
             Align(
-             // alignment: AlignmentDirectional(0, 1),
-               alignment: AlignmentDirectional(0, 2),
+              alignment: AlignmentDirectional(0, 1),
+              // alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,
@@ -388,7 +388,7 @@ class _hvtLogsInvestigationWidgetState
                     children: [
                       Expanded(
                         child: DefaultTabController(
-                          length: 2,
+                          length: 3,
                           initialIndex: 0,
                           child: Column(
                             children: [
@@ -416,6 +416,9 @@ class _hvtLogsInvestigationWidgetState
                                   ),
                                   Tab(
                                     text: 'Investigation',
+                                  ),
+                                  Tab(
+                                    text: 'Observation',
                                   ),
                                 ],
                               ),
@@ -580,6 +583,12 @@ class _hvtLogsInvestigationWidgetState
                                           ),
                                         )
                                       ],
+                                    ),
+                                    ListView.builder(
+                                      itemBuilder: ((context, index) =>
+                                          chatWidget(index, me: false)),
+                                      itemCount: _chats.length,
+                                      shrinkWrap: true,
                                     ),
                                     ListView.builder(
                                       itemBuilder: ((context, index) =>

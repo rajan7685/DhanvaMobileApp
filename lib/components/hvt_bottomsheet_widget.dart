@@ -289,6 +289,23 @@ class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
               ],
             ),
           ),
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                  'Upload your Report',
+                  style: FlutterFlowTheme.of(context).bodyText1.override(
+                        fontFamily: 'Open Sans',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color:  Color(0xFF606E87),
+                      ),
+                ),
+              ],
+            ),
+          ),
           Align(
             alignment: AlignmentDirectional(-0.75, -1),
             child: Padding(

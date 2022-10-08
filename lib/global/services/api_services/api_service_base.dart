@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class ApiService {
   ApiService._();
 
-  static const String protocol = 'http://';
+  static const String protocol = 'https://';
   static const String baseUrl = 'api2.dhanva.icu/';
   static const String loginApi = 'otp/otpLogin/';
   static const String otpVerificationApi = 'otp/otpVerify/';

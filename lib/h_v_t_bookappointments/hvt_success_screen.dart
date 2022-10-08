@@ -46,24 +46,24 @@ class _hvtSuccessScreenWidgetState extends State<hvtSuccessScreenWidget> {
                   fit: BoxFit.fitWidth,
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 10, 12, 0),
-                child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.arrow_back_rounded,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                      ),
-                    ]),
-              ),
+              // Padding(
+              //   padding: EdgeInsetsDirectional.fromSTEB(10, 10, 12, 0),
+              //   child: Row(
+              //       mainAxisSize: MainAxisSize.max,
+              //       mainAxisAlignment: MainAxisAlignment.start,
+              //       children: [
+              //         InkWell(
+              //           onTap: () async {
+              //             Navigator.pop(context);
+              //           },
+              //           child: Icon(
+              //             Icons.arrow_back_rounded,
+              //             color: Colors.white,
+              //             size: 40,
+              //           ),
+              //         ),
+              //       ]),
+              // ),
               Align(
                 alignment: AlignmentDirectional(0, 1),
                 child: Container(

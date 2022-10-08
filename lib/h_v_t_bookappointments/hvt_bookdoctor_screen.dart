@@ -117,8 +117,8 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
               ),
             ),
             Align(
-               // alignment: AlignmentDirectional(0, 1),
-             alignment: AlignmentDirectional(0, 2),
+                alignment: AlignmentDirectional(0, 1),
+           // alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,
