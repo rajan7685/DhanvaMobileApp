@@ -34,7 +34,7 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
 
   Future<void> _loadServicesData() async {
     Response res = await ApiService.dio.get(
-        'http://api2.dhanva.icu/services/get_online',
+        '${ApiService.protocol}api2.dhanva.icu/services/get_online',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));

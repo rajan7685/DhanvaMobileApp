@@ -61,7 +61,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
 
   Future<void> _bookAppointment({@required String transactionId}) async {
     Response res = await ApiService.dio.post(
-        'http://api2.dhanva.icu/payment/add',
+        '${ApiService.protocol}api2.dhanva.icu/payment/add',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
@@ -79,9 +79,9 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
           "is_online": widget.isOnline,
           "status": 0
         });
-    //http://ae7a-49-204-130-5.ngrok.io
+    //${ApiService.protocol}ae7a-49-204-130-5.ngrok.io
     Response bookingRes = await ApiService.dio.post(
-        'http://api2.dhanva.icu/appointment/book',
+        '${ApiService.protocol}api2.dhanva.icu/appointment/book',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),

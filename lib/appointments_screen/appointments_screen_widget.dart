@@ -80,7 +80,7 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
       //     // final res = await FilePicker.platform.pickFiles(allowMultiple: false);
       //     // await OpenFile.open(res.files.first.path);
       //     final String _prescriptionDownloadUri =
-      //         'http://api2.dhanva.icu/files/download/';
+      //         '${ApiService.protocol}api2.dhanva.icu/files/download/';
       //     Directory path = await getApplicationDocumentsDirectory();
 
       //     print(path.uri);

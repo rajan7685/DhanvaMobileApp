@@ -31,7 +31,7 @@ class _ServicesByHospitalScreenState
   Future<void> _loadServicesData() async {
     print(widget.hospitalDetails["_id"]);
     Response res = await ApiService.dio.post(
-        'http://api2.dhanva.icu/hospital/get_services',
+        '${ApiService.protocol}api2.dhanva.icu/hospital/get_services',
         data: {"id": widget.hospitalDetails["_id"]},
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)

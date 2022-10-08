@@ -32,7 +32,7 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
     patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
     Response res = await ApiService.dio.get(
-        "http://api3.dhanva.icu/patient/getPatientRelations/${patient.id}",
+        "${ApiService.protocol}api3.dhanva.icu/patient/getPatientRelations/${patient.id}",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));

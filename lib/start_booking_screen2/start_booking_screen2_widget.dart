@@ -64,7 +64,7 @@ class _StartBookingScreen2WidgetState
             jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
         .id;
     Response res = await ApiService.dio.get(
-        'http://api2.dhanva.icu/patient/getPatientRelations/$pid',
+        '${ApiService.protocol}api2.dhanva.icu/patient/getPatientRelations/$pid',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));

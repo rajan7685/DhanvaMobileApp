@@ -149,7 +149,8 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
     setState(() {
       isDataLoaded = false;
     });
-    String _servicesApi = 'http://api2.dhanva.icu/services/get_online';
+    String _servicesApi =
+        '${ApiService.protocol}api2.dhanva.icu/services/get_online';
     await SharedPreferenceService.init();
     Response res = await ApiService.dio.get(_servicesApi,
         options: Options(headers: {
@@ -171,7 +172,7 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
   //   await SharedPreferenceService.init();
   //   try {
   //     Response res = await ApiService.dio.get(
-  //         'http://api2.dhanva.icu/hospital/get_all',
+  //         '${ApiService.protocol}api2.dhanva.icu/hospital/get_all',
   //         options: Options(headers: {
   //           'Authorization':
   //               SharedPreferenceService.loadString(key: AuthTokenKey)
