@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_bookdoctor_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/home_screen_widget.dart';
 import 'package:file_picker/file_picker.dart';
@@ -234,14 +235,17 @@ class _hvtLogsInvestigationWidgetState
                 children: [
                   InkWell(
                     onTap: () async {
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HomeScreenWidget(),
-                          ));
+                            builder: (context) => HvtAppointmentsScreenWidget(
+                              shouldPopNormally: false,
+                            ),
+                          ),
+                          ((route) => false));
                     },
                     child: Icon(
-                      Icons.home_outlined,
+                      Icons.arrow_back_rounded,
                       color: Colors.white,
                       size: 40,
                     ),
@@ -367,8 +371,8 @@ class _hvtLogsInvestigationWidgetState
             //   ],
             // ),
             Align(
-              alignment: AlignmentDirectional(0, 1),
-              // alignment: AlignmentDirectional(0, 2),
+               alignment: AlignmentDirectional(0, 1),
+              //alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,

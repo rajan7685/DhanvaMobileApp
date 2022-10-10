@@ -466,8 +466,8 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
                           //   ),
                           // ),
                           InkWell(
-                            onTap: () async {
-                              await Navigator.push(
+                            onTap: () {
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AppGuideScreen1Widget(),

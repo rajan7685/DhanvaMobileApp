@@ -1,11 +1,15 @@
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_start_appointment.dart';
 
+import '../app_guide_screen1/app_guide_screen1_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../h_v_t_assestment_screen/h_v_t_assestment_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../h_v_t_bookappointments/hvt_check_screen.dart';
 
 class AppGuideScreen2Widget extends StatefulWidget {
   const AppGuideScreen2Widget({Key key}) : super(key: key);
@@ -474,7 +478,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        HVTAssestmentScreenWidget(),
+                                        HvtAppointmentsScreenWidget(),
                                   ),
                                 );
                               },
@@ -494,7 +498,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (_) =>
-                                                    HvtStartAppointmentWidget()));
+                                                    HvtAppointmentsScreenWidget()));
                                       },
                                       child: Text(
                                         'Start Booking',

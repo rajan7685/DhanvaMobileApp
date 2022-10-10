@@ -182,8 +182,8 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: InkWell(
-                              onTap: () async {
-                                await Navigator.push(
+                              onTap: () {
+                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>

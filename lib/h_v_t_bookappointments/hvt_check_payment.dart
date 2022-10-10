@@ -7,6 +7,7 @@ import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/doctors_details_service.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_success_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dio/dio.dart';
@@ -19,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class hvtPaymentScreenWidget extends StatefulWidget {
+class hvtCheckPaymentScreenWidget extends StatefulWidget {
   String doctorId;
   String hospitalId;
   String doctorName;
@@ -31,7 +32,7 @@ class hvtPaymentScreenWidget extends StatefulWidget {
   QuickServiceUiModel service;
   bool isOnline;
 
-  hvtPaymentScreenWidget(
+  hvtCheckPaymentScreenWidget(
       {Key key,
       @required this.date,
       @required this.hospitalId,
@@ -46,10 +47,12 @@ class hvtPaymentScreenWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _hvtPaymentScreenWidgetState createState() => _hvtPaymentScreenWidgetState();
+  _hvtCheckPaymentScreenWidgetState createState() =>
+      _hvtCheckPaymentScreenWidgetState();
 }
 
-class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
+class _hvtCheckPaymentScreenWidgetState
+    extends State<hvtCheckPaymentScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Razorpay _rzPay;
   String _paymentValueType;
@@ -424,7 +427,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => hvtSuccessScreenWidget(),
+                          builder: (context) => hvtLogsInvestigationWidget(),
                         ),
                       );
                     },
@@ -441,10 +444,12 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                       ),
                       child: InkWell(
                         onTap: () async {
+                          print("pay100");
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => hvtSuccessScreenWidget(),
+                                builder: (context) =>
+                                    hvtLogsInvestigationWidget(),
                               ));
                           // if (_paymentValueType == null) {
                           //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(

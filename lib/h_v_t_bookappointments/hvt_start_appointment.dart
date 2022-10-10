@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+
 import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -6,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
-
+import 'package:dio/dio.dart';
+import '../global/services/shared_preference_service.dart';
 import 'hvt_bookdoctor_screen.dart';
 
 class HvtStartAppointmentWidget extends StatefulWidget {
@@ -38,12 +41,14 @@ class MyCustomClipper extends CustomClipper<Path> {
 class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
   String dropDownValue;
   String radioButtonValue1;
-  String planType;
-  List<String> _planTypes = [
-    '30 days  ₹599',
-    '60 days  ₹1299',
-    '90 days  ₹2199',
-  ];
+  // String planType;
+  // List<String> _planTypes = [
+  //   '30 days  ₹599',
+  //   '60 days  ₹1299',
+  //   '90 days  ₹2199',
+  // ];
+  List<String> _intervals = [];
+
   TextEditingController textController1;
   String radioButtonValue2;
   TextEditingController textController2;
@@ -54,6 +59,44 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
     super.initState();
     textController1 = TextEditingController(text: '  JAMES HEMSWORTH');
     textController2 = TextEditingController();
+    // _sendAppointmentDetails();
+    _loadIntervals();
+  }
+
+  Future<void> _sendAppointmentDetails() async {
+    Response res = await ApiService.dio.post(
+        "${ApiService.protocol}${ApiService.baseUrl2}/hvt/shapes",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }),
+        data: {
+          "goal": "Losing Weight",
+          "shape": "Triangle",
+          "appointmentDate": "2022-10-07T00:00:00.000+0000",
+          "healthRating": "10",
+          "checkupFrequency": radioButtonValue2,
+          "patient_id": "632d49fdcccd9077d445cafc",
+          "name": "Anand",
+          "time_slot": "05:00 pm",
+          "payment_info": "633ad06fa8d2093e24ee131f",
+          "doctor": "63342eedec31536598cbf7b9",
+          "service_id": "633e7fbb000b2619dbbf84f4"
+        });
+  }
+
+  Future<void> _loadIntervals() async {
+    //print("${ApiService.protocol}${ApiService.baseUrl2}hvt/checkup-intervals");
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/checkup-intervals",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    (res.data as List).forEach(
+      (element) => _intervals.add(element),
+    );
+    setState(() {
+      //
+    });
   }
 
   @override
@@ -144,8 +187,8 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
               ),
             ),
             Align(
-              alignment: AlignmentDirectional(0, 1),
-              //  alignment: AlignmentDirectional(0, 2),
+                alignment: AlignmentDirectional(0, 1),
+            //  alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,
@@ -416,13 +459,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                             ),
                           ),
                           FlutterFlowRadioButton(
-                            options: [
-                              'Once in Months',
-                              'Once a year',
-                              'On when needed',
-                              'Never get it done',
-                              'Other'
-                            ],
+                            options: _intervals,
                             onChanged: (value) {
                               setState(() => radioButtonValue2 = value);
                             },
@@ -510,62 +547,62 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                           //     ),
                           //   ),
                           // ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(5, 12, 0, 0),
-                            child: Text(
-                              '3. Please select your subscription period ',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF070000),
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                            ),
-                          ),
-                          Align(
-                              alignment: AlignmentDirectional(-0.85, 0),
-                              child: Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(5, 5, 5, 0),
-                                child: DropdownButtonFormField(
-                                  validator: (String type) {
-                                    if (type.isEmpty || type == null)
-                                      return 'plan type Required';
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.red),
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(20),
-                                      ),
-                                    ),
-                                    filled: true,
-                                    hintStyle: TextStyle(
-                                      color: Color(0xFF9A9A9A),
-                                    ),
-                                    hintText: "Select the plan type",
-                                    fillColor: Color(0xFFEDF3F3),
-                                  ),
-                                  value: planType,
-                                  items: _planTypes
-                                      .map((type) => DropdownMenuItem(
-                                            child: Text(type),
-                                            value: type,
-                                          ))
-                                      .toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      planType = value;
-                                      print("Plan type on select: $planType");
-                                    });
-                                  },
-                                  iconEnabledColor: Color(0xFF606E87),
-                                  iconDisabledColor: Color(0xFF606E87),
-                                ),
-                              )),
+                          // Padding(
+                          //   padding:
+                          //       EdgeInsetsDirectional.fromSTEB(5, 12, 0, 0),
+                          //   child: Text(
+                          //     '3. Please select your subscription period ',
+                          //     style: FlutterFlowTheme.of(context)
+                          //         .bodyText1
+                          //         .override(
+                          //           fontFamily: 'Open Sans',
+                          //           color: Color(0xFF070000),
+                          //           fontWeight: FontWeight.normal,
+                          //         ),
+                          //   ),
+                          // ),
+                          // Align(
+                          //     alignment: AlignmentDirectional(-0.85, 0),
+                          //     child: Padding(
+                          //       padding:
+                          //           EdgeInsetsDirectional.fromSTEB(5, 5, 5, 0),
+                          //       child: DropdownButtonFormField(
+                          //         validator: (String type) {
+                          //           if (type.isEmpty || type == null)
+                          //             return 'plan type Required';
+                          //           return null;
+                          //         },
+                          //         decoration: InputDecoration(
+                          //           border: OutlineInputBorder(
+                          //             borderSide: BorderSide(color: Colors.red),
+                          //             borderRadius: const BorderRadius.all(
+                          //               const Radius.circular(20),
+                          //             ),
+                          //           ),
+                          //           filled: true,
+                          //           hintStyle: TextStyle(
+                          //             color: Color(0xFF9A9A9A),
+                          //           ),
+                          //           hintText: "Select the plan type",
+                          //           fillColor: Color(0xFFEDF3F3),
+                          //         ),
+                          //         value: planType,
+                          //         items: _planTypes
+                          //             .map((type) => DropdownMenuItem(
+                          //                   child: Text(type),
+                          //                   value: type,
+                          //                 ))
+                          //             .toList(),
+                          //         onChanged: (value) {
+                          //           setState(() {
+                          //             planType = value;
+                          //             print("Plan type on select: $planType");
+                          //           });
+                          //         },
+                          //         iconEnabledColor: Color(0xFF606E87),
+                          //         iconDisabledColor: Color(0xFF606E87),
+                          //       ),
+                          //     )),
 
                           // Align(
                           //   alignment: AlignmentDirectional(-0.85, 0),
@@ -627,11 +664,11 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                                     //       SnackBar(
                                     //           content: Text(
                                     //               'Please select a doctor')));
-                                  } else if (planType == null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text(
-                                                'Please Fill all fields')));
+                                    // } else if (planType == null) {
+                                    //   ScaffoldMessenger.of(context).showSnackBar(
+                                    //       SnackBar(
+                                    //           content: Text(
+                                    //               'Please Fill all fields')));
                                     // }
                                   } else {
                                     Navigator.push(

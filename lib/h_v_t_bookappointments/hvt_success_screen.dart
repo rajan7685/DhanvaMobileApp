@@ -1,3 +1,4 @@
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_bookdoctor_screen.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_payment_screen.dart';
@@ -113,7 +114,7 @@ class _hvtSuccessScreenWidgetState extends State<hvtSuccessScreenWidget> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    hvtLogsInvestigationWidget(),
+                                    HvtAppointmentsScreenWidget(),
                               ),
                             );
                           },
