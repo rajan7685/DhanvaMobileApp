@@ -1,4 +1,10 @@
+import 'dart:ffi';
+
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../app_guide_screen2/app_guide_screen2_widget.dart';
 
 import '../components/next_icon_button_widget.dart';
 import '../flutter_flow/flutter_flow_radio_button.dart';
@@ -10,10 +16,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 
+import '../global/models/doctor.dart';
+import '../global/providers/doctor_record_provider.dart';
+import '../global/services/api_services/api_service_base.dart';
+
+import '../start_booking_screen2/start_booking_screen2_widget.dart';
 import 'hvt_timeslot_screen.dart';
 
+Doctor _selectedDoctor;
+ChangeNotifierProvider<DoctorRecordProvider> _doctorsProvider =
+    ChangeNotifierProvider((ref) => DoctorRecordProvider());
+
 class hvt_bookdoctor_screen extends StatefulWidget {
-  const hvt_bookdoctor_screen({Key key}) : super(key: key);
+  final Map<String, dynamic> data;
+  const hvt_bookdoctor_screen({Key key, @required this.data}) : super(key: key);
 
   @override
   _hvt_bookdoctor_screenState createState() => _hvt_bookdoctor_screenState();
@@ -23,11 +39,46 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
   String radioButtonValue;
   TextEditingController textController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isDoctorsDataLoading = false;
+
+  List<Doctor> doctors = [];
+  Doctor _selectedDoctor;
 
   @override
   void initState() {
     super.initState();
+    print(SharedPreferenceService.loadString(key: AuthTokenKey));
     textController = TextEditingController();
+  }
+
+  Future<void> _sendDoctorBookDetails() async {
+    Response res = await ApiService.dio.post(
+        "${ApiService.protocol}${ApiService.baseUrl2}/hvt/get_doctors",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }),
+        data: {
+          "goal": textController,
+        });
+  }
+
+  Future<void> _getDoctorDetails() async {
+    doctors = [];
+    setState(() {
+      _isDoctorsDataLoading = true;
+    });
+    Response res = await ApiService.dio.get(
+      "${ApiService.protocol}${ApiService.baseUrl2}hvt/get_doctors",
+      options: Options(headers: {
+        'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+      }),
+    );
+    (res.data as List).forEach((element) {
+      doctors.add(Doctor.fromJson(element));
+    });
+    setState(() {
+      _isDoctorsDataLoading = false;
+    });
   }
 
   @override
@@ -40,7 +91,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Color(0xFF00A8A3),
+      backgroundColor: Color.fromARGB(255, 0, 168, 162),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -117,8 +168,8 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
               ),
             ),
             Align(
-                alignment: AlignmentDirectional(0, 1),
-          // alignment: AlignmentDirectional(0, 2),
+              alignment: AlignmentDirectional(0, 1),
+              // alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,
@@ -258,13 +309,8 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                               ].toList(),
                               onChanged: (value) {
                                 setState(() => radioButtonValue = value);
-                                if (radioButtonValue == 'Yes') {
-                                  // ref
-                                  //     .read(_doctorsProvider)
-                                  //     .fetchAllDoctors(
-                                  //         hospitalId: widget.hospitalId,
-                                  //         serviceId: widget.service.id);
-                                }
+                                if (radioButtonValue == 'Yes')
+                                  _getDoctorDetails();
                               },
                               optionHeight: 25,
                               textStyle: FlutterFlowTheme.of(context)
@@ -291,24 +337,20 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                           ],
                         ),
                       ),
-                      // if (radioButtonValue == 'Yes')
-                      //     Expanded(
-                      //       child: Consumer(
-                      //         builder: (context, ref, child) {
-                      //           DoctorRecordProvider _docRecords =
-                      //               ref.watch(_doctorsProvider);
-                      //           if (_docRecords.isLoading) {
-                      //             return Center(
-                      //               child: CircularProgressIndicator(),
-                      //             );
-                      //           } else {
-                      //             return DoctorCardListView(
-                      //               doctors: _docRecords.doctors,
-                      //             );
-                      //           }
-                      //         },
-                      //       ),
-                      //     ),
+
+                      if (radioButtonValue == 'Yes')
+                        Expanded(
+                          child: _isDoctorsDataLoading
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : DoctorCardListView(
+                                  onTap: (Doctor d) {
+                                    _selectedDoctor = d;
+                                  },
+                                  doctors: doctors,
+                                ),
+                        ),
                       //   if (radioButtonValue != 'Yes') Spacer(),
                       //   Padding(
                       //     padding: const EdgeInsets.only(bottom: 18),
@@ -411,7 +453,16 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => hvtTimeSlot(
-                                                    isUniversalTimeSlot: true,
+                                                    isUniversalTimeSlot:
+                                                        _selectedDoctor == null
+                                                            ? false
+                                                            : true,
+                                                    doctor: _selectedDoctor,
+                                                    data: {
+                                                      "goal":
+                                                          textController.text,
+                                                      ...widget.data,
+                                                    },
                                                   )));
                                     }
                                   },

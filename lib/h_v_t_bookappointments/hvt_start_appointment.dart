@@ -1,5 +1,13 @@
-import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'dart:convert';
 
+import 'package:dhanva_mobile_app/global/models/doctor.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/models/patient_relation.dart';
+
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
+import 'package:flutter_svg/svg.dart';
+
+import '../app_guide_screen2/app_guide_screen2_widget.dart';
 import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -9,6 +17,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dio/dio.dart';
+import '../global/models/patient.dart';
+import '../global/models/patient_relation.dart';
 import '../global/services/shared_preference_service.dart';
 import 'hvt_bookdoctor_screen.dart';
 
@@ -24,7 +34,7 @@ class MyCustomClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();
-    path.lineTo(size.width * 0.5, 0);
+    path.moveTo(size.width * 0.5, 0);
     path.lineTo(size.width, size.height);
     path.lineTo(0, size.height);
     path.lineTo(size.width * 0.5, 0);
@@ -41,18 +51,24 @@ class MyCustomClipper extends CustomClipper<Path> {
 class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
   String dropDownValue;
   String radioButtonValue1;
+  String shapes;
+  List<String> _intervals = [];
+  List<DropdownMenuItem<String>> patientNames = [];
+  String _selectedPatientId;
+  List<PatientRelation> _relations = [];
+  String patientRelationType = "Self";
+  Patient patient;
+  TextEditingController textController1;
+  String radioButtonValue2;
+  TextEditingController textController2;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   // String planType;
   // List<String> _planTypes = [
   //   '30 days  ₹599',
   //   '60 days  ₹1299',
   //   '90 days  ₹2199',
   // ];
-  List<String> _intervals = [];
-
-  TextEditingController textController1;
-  String radioButtonValue2;
-  TextEditingController textController2;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  Map<String, dynamic> data = {};
 
   @override
   void initState() {
@@ -60,29 +76,31 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
     textController1 = TextEditingController(text: '  JAMES HEMSWORTH');
     textController2 = TextEditingController();
     // _sendAppointmentDetails();
+    patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    patientNames.add(DropdownMenuItem(
+      child: Text(patient.name),
+      value: patient.id,
+    ));
+    _selectedPatientId = patient.id;
     _loadIntervals();
+    _loadRelations();
   }
 
-  Future<void> _sendAppointmentDetails() async {
-    Response res = await ApiService.dio.post(
-        "${ApiService.protocol}${ApiService.baseUrl2}/hvt/shapes",
-        options: Options(headers: {
-          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
-        }),
-        data: {
-          "goal": "Losing Weight",
-          "shape": "Triangle",
-          "appointmentDate": "2022-10-07T00:00:00.000+0000",
-          "healthRating": "10",
-          "checkupFrequency": radioButtonValue2,
-          "patient_id": "632d49fdcccd9077d445cafc",
-          "name": "Anand",
-          "time_slot": "05:00 pm",
-          "payment_info": "633ad06fa8d2093e24ee131f",
-          "doctor": "63342eedec31536598cbf7b9",
-          "service_id": "633e7fbb000b2619dbbf84f4"
-        });
-  }
+  // Future<void> _sendAppointmentDetails() async {
+  //   Response res = await ApiService.dio.post(
+  //       "${ApiService.protocol}${ApiService.baseUrl2}/hvt/shapes",
+  //       options: Options(headers: {
+  //         'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+  //       }),
+  //       data: {
+  //         "shape": shapes,
+  //         "healthRating": radioButtonValue1,
+  //         "checkupFrequency": radioButtonValue2,
+  //         "patient_id": patient.id,
+  //         "name": patient.name,
+  //       });
+  // }
 
   Future<void> _loadIntervals() async {
     //print("${ApiService.protocol}${ApiService.baseUrl2}hvt/checkup-intervals");
@@ -96,6 +114,30 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
     );
     setState(() {
       //
+    });
+  }
+
+  void _loadRelations() async {
+    String pid = Patient.fromJson(
+            jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
+        .id;
+    Response res = await ApiService.dio.get(
+        '${ApiService.protocol}${ApiService.baseUrl2}patient/getPatientRelations/$pid',
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    print(res.data);
+    _relations =
+        (res.data as List).map((e) => PatientRelation.fromJson(e)).toList();
+    // print(relations);
+    for (PatientRelation relation in _relations) {
+      patientNames.add(DropdownMenuItem(
+        child: Text(relation.patientName),
+        value: relation.patientId,
+      ));
+    }
+    setState(() {
+      // updateUI
     });
   }
 
@@ -187,8 +229,8 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
               ),
             ),
             Align(
-                alignment: AlignmentDirectional(0, 1),
-            //  alignment: AlignmentDirectional(0, 2),
+              alignment: AlignmentDirectional(0, 1),
+              //  alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.77,
@@ -211,61 +253,86 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Align(
-                            alignment: AlignmentDirectional(-0.35, 1),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(5, 38, 5, 0),
-                              child: Container(
-                                width: double.infinity,
-                                child: TextFormField(
-                                  controller: textController1,
-                                  autofocus: true,
-                                  obscureText: false,
-                                  decoration: InputDecoration(
-                                    labelText: 'Patient Name',
-                                    hintStyle:
-                                        FlutterFlowTheme.of(context).bodyText2,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0xFFC1C1C1),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0xFFC1C1C1),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Color(0x00000000),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                  ),
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Open Sans',
-                                        color: Color(0xFF606E87),
-                                      ),
-                                  textAlign: TextAlign.start,
-                                ),
+                          DropdownButtonHideUnderline(
+                            child: DropdownButtonFormField(
+                              items: patientNames,
+                              value: _selectedPatientId,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedPatientId = value;
+                                });
+                                Map<String, dynamic> _patientJson = jsonDecode(
+                                    SharedPreferenceService.loadString(
+                                        key: PatientKey));
+                                int idx = _relations.indexWhere((element) =>
+                                    _selectedPatientId == element.patientId);
+                                patientRelationType =
+                                    idx == -1 ? "Self" : _relations[idx].type;
+                                print(patientRelationType);
+                              },
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Color(0x00000000),
+                                labelText: 'Patient Name',
+                                // border:
                               ),
                             ),
                           ),
+                          // Align(
+                          //   alignment: AlignmentDirectional(-0.35, 1),
+                          //   child: Padding(
+                          //     padding:
+                          //         EdgeInsetsDirectional.fromSTEB(5, 38, 5, 0),
+                          //     child: Container(
+                          //       width: double.infinity,
+                          //       child: TextFormField(
+                          //         controller: textController1,
+                          //         autofocus: true,
+                          //         obscureText: false,
+                          //         decoration: InputDecoration(
+                          //           labelText: 'Patient Name',
+                          //           hintStyle:
+                          //               FlutterFlowTheme.of(context).bodyText2,
+                          //           enabledBorder: OutlineInputBorder(
+                          //             borderSide: BorderSide(
+                          //               color: Color(0xFFC1C1C1),
+                          //               width: 2,
+                          //             ),
+                          //             borderRadius: BorderRadius.circular(15),
+                          //           ),
+                          //           focusedBorder: OutlineInputBorder(
+                          //             borderSide: BorderSide(
+                          //               color: Color(0xFFC1C1C1),
+                          //               width: 2,
+                          //             ),
+                          //             borderRadius: BorderRadius.circular(15),
+                          //           ),
+                          //           errorBorder: OutlineInputBorder(
+                          //             borderSide: BorderSide(
+                          //               color: Color(0x00000000),
+                          //               width: 2,
+                          //             ),
+                          //             borderRadius: BorderRadius.circular(15),
+                          //           ),
+                          //           focusedErrorBorder: OutlineInputBorder(
+                          //             borderSide: BorderSide(
+                          //               color: Color(0x00000000),
+                          //               width: 2,
+                          //             ),
+                          //             borderRadius: BorderRadius.circular(15),
+                          //           ),
+                          //         ),
+                          //         style: FlutterFlowTheme.of(context)
+                          //             .bodyText1
+                          //             .override(
+                          //               fontFamily: 'Open Sans',
+                          //               color: Color(0xFF606E87),
+                          //             ),
+                          //         textAlign: TextAlign.start,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(5, 2, 0, 0),
                             child: Text(
@@ -333,37 +400,43 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                                       width: 60,
                                       height: 60,
                                       decoration: BoxDecoration(
-                                        color: Color(0xFF00A8A3),
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        shape: BoxShape.rectangle,
-                                      ),
+                                          color: shapes == "Ellipse"
+                                              ? Colors.transparent
+                                              : Color(0xFF00A8A3),
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          shape: BoxShape.rectangle,
+                                          border: Border.all(
+                                            color: shapes == "Ellipse"
+                                                ? Color(0xFF00A8A3)
+                                                : Colors.transparent,
+                                            width: 2,
+                                          )),
                                     ),
                                     onTap: () {
-                                      print('Clicked Circle');
+                                      data["shapes"] = "Ellipse";
+                                      setState(() {
+                                        shapes = "Ellipse";
+                                      });
                                     },
                                   ),
                                 ),
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 0, 5, 0),
-                                  child: ClipPath(
-                                    clipper: MyCustomClipper(),
-                                    child: GestureDetector(
-                                      child: Container(
-                                        width: 70,
-                                        height: 60,
-                                        constraints: BoxConstraints(
-                                          maxWidth: 300,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Color(0xFF00A8A3),
-                                          shape: BoxShape.rectangle,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        print('Clicked Triangle');
-                                      },
+                                  child: InkWell(
+                                    onTap: () {
+                                      data["shapes"] = "Triangle";
+                                      setState(() {
+                                        shapes = "Triangle";
+                                      });
+                                    },
+                                    child: SvgPicture.asset(
+                                      shapes == "Triangle"
+                                          ? "assets/images/triangleborder.svg"
+                                          : "assets/images/trianglefilled.svg",
+                                      width: 70,
+                                      height: 60,
                                     ),
                                   ),
                                 ),
@@ -375,13 +448,24 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                                       width: 60,
                                       height: 60,
                                       decoration: BoxDecoration(
-                                        color: Color(0xFF00A8A3),
+                                        color: shapes == "Rectangle"
+                                            ? Colors.transparent
+                                            : Color(0xFF00A8A3),
                                         borderRadius: BorderRadius.circular(0),
                                         shape: BoxShape.rectangle,
+                                        border: Border.all(
+                                          color: shapes == "Rectangle"
+                                              ? Color(0xFF00A8A3)
+                                              : Colors.transparent,
+                                          width: 2,
+                                        ),
                                       ),
                                     ),
                                     onTap: () {
-                                      print('Clicked Square');
+                                      data["shapes"] = "Rectangle";
+                                      setState(() {
+                                        shapes = "Rectangle";
+                                      });
                                     },
                                   ),
                                 ),
@@ -417,6 +501,8 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                                 '10',
                               ],
                               onChanged: (value) {
+                                data["healthRating"] = value;
+
                                 setState(() => radioButtonValue1 = value);
                               },
                               optionHeight: 25,
@@ -461,6 +547,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                           FlutterFlowRadioButton(
                             options: _intervals,
                             onChanged: (value) {
+                              data["checkupFrequency"] = value;
                               setState(() => radioButtonValue2 = value);
                             },
                             optionHeight: 35,
@@ -656,26 +743,28 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
-                                                'Please Fill all fields')));
+                                                'Please select the intervals')));
                                     // }
-                                    //else if (radioButtonValue == 'Yes' &&
+                                    // else if (radioButtonValue == 'Yes' &&
                                     //     _selectedDoctor == null) {
                                     //   ScaffoldMessenger.of(context).showSnackBar(
                                     //       SnackBar(
                                     //           content: Text(
                                     //               'Please select a doctor')));
-                                    // } else if (planType == null) {
-                                    //   ScaffoldMessenger.of(context).showSnackBar(
-                                    //       SnackBar(
-                                    //           content: Text(
-                                    //               'Please Fill all fields')));
+                                  } else if (shapes == null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text('Please choose a shape')));
                                     // }
                                   } else {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              hvt_bookdoctor_screen(),
+                                              hvt_bookdoctor_screen(
+                                            data: data,
+                                          ),
                                         ));
                                   }
                                 },

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dhanva_mobile_app/appointment_booked_screen/appointment_booked_screen_widget.dart';
 import 'package:dhanva_mobile_app/components/next_icon_button_widget.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_theme.dart';
@@ -6,9 +8,6 @@ import 'package:dhanva_mobile_app/global/models/date_time_slot.dart';
 import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/providers/time_slot_provider.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_payment_screen.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_success_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,26 +42,15 @@ String _to24HourTime(String time) {
 ChangeNotifierProvider<TimeSlotProvider> _timeSotProvider =
     ChangeNotifierProvider((ref) => TimeSlotProvider());
 
-// ignore: camel_case_types
 class hvtTimeSlot extends ConsumerStatefulWidget {
   final bool isUniversalTimeSlot;
-  final QuickServiceUiModel service;
   final Doctor doctor;
-  final String patientId;
-  final String patientRelationType;
-  final String symptopms;
-  final bool isOnline;
-  final String hospitalId;
+  final Map<String, dynamic> data;
 
   const hvtTimeSlot(
       {Key key,
-      @required this.patientId,
-      @required this.patientRelationType,
-      @required this.hospitalId,
-      @required this.symptopms,
-      @required this.service,
+      @required this.data,
       @required this.isUniversalTimeSlot,
-      this.isOnline = true,
       this.doctor})
       : super(key: key);
 
@@ -73,17 +61,11 @@ class hvtTimeSlot extends ConsumerStatefulWidget {
 class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
   @override
   void initState() {
+    print("time slot check");
+    print(widget.data);
+
+    print(widget.doctor.name);
     super.initState();
-    // if (widget.isUniversalTimeSlot) {
-    //   ref.read(_timeSotProvider).fetchAllTimeSlotData(init: true);
-    // } else {
-    //   print(widget.doctor.name);
-    //   _selectedDoctorId = widget.doctor.id;
-    //   _selectedDoctorName = widget.doctor.name;
-    //   ref.read(_timeSotProvider).fetchTimeSlotByDoctor(
-    //       widget.hospitalId, widget.doctor.id,
-    //       init: true);
-    // }
   }
 
   @override
@@ -155,7 +137,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
               child: Consumer(
                 builder: (context, ref, child) {
                   TimeSlotProvider slotProv = ref.watch(_timeSotProvider);
-                  if (false) {
+                  if (slotProv.isTimeSlotDataLoading) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
@@ -165,320 +147,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         child: UniversalTimeSlotList(
-                            timeSlots: <UniversalDateTimeSlot>[
-                              UniversalDateTimeSlot(
-                                  date: DateTime.now(),
-                                  availableTimeSlots: <GlobalAvailableTimeSlot>[
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                  ]),
-                              UniversalDateTimeSlot(
-                                  date: DateTime.now(),
-                                  availableTimeSlots: <GlobalAvailableTimeSlot>[
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                  ]),
-                              UniversalDateTimeSlot(
-                                  date: DateTime.now(),
-                                  availableTimeSlots: <GlobalAvailableTimeSlot>[
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '10:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:00 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '11:30 AM',
-                                    ),
-                                    GlobalAvailableTimeSlot(
-                                      docIds: ['asd'],
-                                      docNames: ['abc'],
-                                      availableTimeSlot: '12:00 AM',
-                                    ),
-                                  ]),
-                            ]),
+                            timeSlots: slotProv.universalTimeSlots),
                       );
                     } else {
                       return Padding(
@@ -494,11 +163,17 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
             InkWell(
               onTap: () {
                 print(_dateTimeSelectedId.split(',')[0]);
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => hvtPaymentScreenWidget(),
-                  ),
-                );
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AppointmentBookedScreenWidget(
+                        patientRelationType: "ksk",
+                        hospitalId: "sss",
+                        isOnline: true,
+                        symtopms: "",
+                        timeString: _dateTimeSelectedString,
+                        patientId: "",
+                        date: DateTime.parse(_dateTimeSelectedId.split(',')[0]),
+                        doctorName: _selectedDoctorName,
+                        doctorId: _selectedDoctorId)));
               },
               child: Container(
                   width: 225,

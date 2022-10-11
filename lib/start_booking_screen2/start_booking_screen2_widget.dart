@@ -490,7 +490,9 @@ class _StartBookingScreen2WidgetState
 
 class DoctorCardListView extends StatefulWidget {
   final List<Doctor> doctors;
-  const DoctorCardListView({Key key, @required this.doctors}) : super(key: key);
+  Function(Doctor) onTap;
+  DoctorCardListView({Key key, @required this.doctors, this.onTap})
+      : super(key: key);
 
   @override
   State<DoctorCardListView> createState() => _DoctorCardListViewState();
@@ -511,6 +513,7 @@ class _DoctorCardListViewState extends State<DoctorCardListView> {
                   _selectedIndex = index;
                   _selectedDoctor = widget.doctors[index];
                 });
+                widget.onTap(widget.doctors[index]);
               },
               child: DoctorCard(
                 isSelected: _selectedIndex == index,
@@ -595,8 +598,3 @@ class DoctorCard extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

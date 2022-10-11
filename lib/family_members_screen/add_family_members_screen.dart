@@ -126,7 +126,7 @@ class _AddFamilyMembersScreenWidgetState
         "name": _patientNameController.text,
         "email": _patientEmailController.text,
         "phone": _patientPhoneController.text,
-        "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
+        "dob": _dob.toUtc().toString(),
         "bloodGroup": bloodGroupType,
         "age": _patientAgeController.text,
         "emergency_contact": _emergencyPhoneController.text,
