@@ -41,7 +41,8 @@ class AppointmentBookedScreenWidget extends StatefulWidget {
       @required this.doctorName,
       @required this.doctorId,
       @required this.service,
-      this.isOnline = true})
+      this.isOnline = true,
+      Map<String, dynamic> data})
       : super(key: key);
 
   @override

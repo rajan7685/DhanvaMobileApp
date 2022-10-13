@@ -8,9 +8,12 @@ import 'package:dhanva_mobile_app/global/models/date_time_slot.dart';
 import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/providers/time_slot_provider.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_payment_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../global/services/api_services/api_service_base.dart';
 import '../time_slot_screen/time_slot_screen_widget.dart';
 
 String _dateTimeSelectedId = '';
@@ -59,13 +62,49 @@ class hvtTimeSlot extends ConsumerStatefulWidget {
 }
 
 class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
+  List<UniversalDateTimeSlot> universalTimeSlots = [];
+  List<DateTimeSlot> doctorTimeSlots = [];
+  bool _isTimeSlotDataLoading = true;
+
   @override
   void initState() {
     print("time slot check");
-    print(widget.data);
-
-    print(widget.doctor.name);
+    if (widget.isUniversalTimeSlot) {
+      _loadAllTimeSlots();
+    } else {
+      _loadDoctorTimeSlots();
+    }
     super.initState();
+  }
+
+  Future<void> _loadAllTimeSlots() async {
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/time-slots/available/63401e150ee969214e9d305a",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    (res.data as Map).entries.forEach(
+          (slot) => universalTimeSlots
+              .add(UniversalDateTimeSlot.fromAllTimeSlotData(slot)),
+        );
+    setState(() {
+      _isTimeSlotDataLoading = false;
+    });
+  }
+
+  Future<void> _loadDoctorTimeSlots() async {
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/time-slots/${widget.doctor.id}",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    (res.data as Map).entries.forEach(
+          (slot) =>
+              doctorTimeSlots.add(DateTimeSlot.fromSlotDataByDoctor(slot)),
+        );
+    setState(() {
+      _isTimeSlotDataLoading = false;
+    });
   }
 
   @override
@@ -134,46 +173,28 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
               height: 12,
             ),
             Expanded(
-              child: Consumer(
-                builder: (context, ref, child) {
-                  TimeSlotProvider slotProv = ref.watch(_timeSotProvider);
-                  if (slotProv.isTimeSlotDataLoading) {
-                    return Center(
+              child: _isTimeSlotDataLoading
+                  ? Center(
                       child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    if (widget.isUniversalTimeSlot) {
-                      return Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        child: UniversalTimeSlotList(
-                            timeSlots: slotProv.universalTimeSlots),
-                      );
-                    } else {
-                      return Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                          child: DoctorTimeSlotList(slots: slotProv.timeSlots));
-                    }
-                  }
-                },
-              ),
+                    )
+                  : (widget.isUniversalTimeSlot
+                      ? UniversalTimeSlotList(timeSlots: universalTimeSlots)
+                      : DoctorTimeSlotList(slots: doctorTimeSlots)),
             ),
 
             InkWell(
               onTap: () {
                 print(_dateTimeSelectedId.split(',')[0]);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AppointmentBookedScreenWidget(
-                        patientRelationType: "ksk",
-                        hospitalId: "sss",
-                        isOnline: true,
-                        symtopms: "",
-                        timeString: _dateTimeSelectedString,
-                        patientId: "",
-                        date: DateTime.parse(_dateTimeSelectedId.split(',')[0]),
-                        doctorName: _selectedDoctorName,
-                        doctorId: _selectedDoctorId)));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => hvtPaymentScreenWidget(
+                        // goal: widget.data["goal"],
+                        data: {
+                          "time_slot": _dateTimeSelectedId,
+                          ...widget.data,
+                        }),
+                  ),
+                );
               },
               child: Container(
                   width: 225,
@@ -290,6 +311,7 @@ class _DoctorTimeSlotListRendererState
                 // _selectedDoctorName =
                 //       widget.availableTimeSlots[index].docNames[0];
                 widget.updateUI();
+                
               },
               child: TimeSLotButton(
                   dateId:
@@ -380,6 +402,8 @@ class _GlobalTimeSlotRendererState extends State<GlobalTimeSlotRenderer> {
                 widget.availableTimeSlots[index].availableTimeSlot);
             return InkWell(
               onTap: () {
+               
+                
                 setState(() {
                   _dateTimeSelectedId =
                       '${widget.date.toString().split(' ')[0]} $formattedTime, ${widget.parentIndex}:$index';

@@ -20,30 +20,34 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class hvtPaymentScreenWidget extends StatefulWidget {
-  String doctorId;
-  String hospitalId;
-  String doctorName;
-  DateTime date;
-  String timeString;
-  String symtopms;
-  String patientId;
-  String patientRelationType;
-  QuickServiceUiModel service;
-  bool isOnline;
+  Map<String, dynamic> data = {};
 
-  hvtPaymentScreenWidget(
-      {Key key,
-      @required this.date,
-      @required this.hospitalId,
-      @required this.patientRelationType,
-      @required this.symtopms,
-      @required this.patientId,
-      @required this.timeString,
-      @required this.doctorName,
-      @required this.doctorId,
-      @required this.service,
-      this.isOnline = true})
-      : super(key: key);
+  // String goal;
+  // String shape;
+  // String appointmentDate;
+  // String healthRating;
+  // String checkupFrequency;
+  // String patient_id;
+  // String time_slot;
+  // String payment_info;
+  // String doctor;
+  // String service_id;
+  // DateTime date;
+  // String timeString;
+
+  hvtPaymentScreenWidget({Key key, @required this.data}) : super(key: key);
+  // @required this.goal,
+  // @required this.shape,
+  // @required this.appointmentDate,
+  // @required this.healthRating,
+  // @required this.checkupFrequency,
+  // @required this.patient_id,
+  // @required this.time_slot,
+  // @required this.payment_info,
+  // @required this.doctor,
+  // @required this.service_id,
+  // @required this.doctor,
+  // this.isOnline = true
 
   @override
   _hvtPaymentScreenWidgetState createState() => _hvtPaymentScreenWidgetState();
@@ -66,17 +70,17 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
         data: {
-          "amount": widget.service.amount,
+          //  "amount": widget.service.amount,
           "transaction_id": transactionId,
           // two params (more) ->
           "meta_info": {
             "payment_type": _paymentValueType,
-            "booking_type": widget.isOnline ? "Online" : "Offline",
-            "relation_type": widget.patientRelationType
+            //"booking_type": widget.isOnline ? "Online" : "Offline",
+            //  "relation_type": widget.patientRelationType
           },
           "payment_status_string": "Success",
-          "patient_id": widget.patientId,
-          "is_online": widget.isOnline,
+          // "patient_id": widget.patient_id,
+          // "is_online": widget.isOnline,
           "status": 0
         });
     //${ApiService.protocol}ae7a-49-204-130-5.ngrok.io
@@ -86,15 +90,15 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
         data: {
-          "symptoms": widget.symtopms,
-          "appointmentDate": widget.date.toString().split(' ')[0],
-          "patient_id": widget.patientId,
-          "name": widget.doctorName,
-          "time_slot": widget.timeString,
-          "payment_info": res.data['_id'],
-          "doctor": widget.doctorId,
-          "serviceId": widget.service.id,
-          "hospital_id": widget.hospitalId
+          // "goal": widget.goal,
+          // "appointmentDate": widget.date.toString().split(' ')[0],
+          // "patient_id": widget.patient_id,
+          // "name": widget.doctor,
+          // "time_slot": widget.timeString,
+          // "payment_info": res.data['_id'],
+          // "doctor": widget.doctor,
+          // "service_id": widget.service_id,
+          // "hospital_id": widget.hospitalId
         });
     // print('Booking response > ${bookingRes.data}');
   }
@@ -102,8 +106,8 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
   Future<void> _makePayment() async {
     var options = {
       'key': 'rzp_test_xbbqVc7yVFG9f6',
-      'amount': widget.service.amount * 100,
-      'name': widget.service.name,
+      // 'amount': widget.service.amount * 100,
+      // 'name': widget.service.name,
       'description': 'Service',
       'prefill': {'contact': p.phone, 'email': p.email}
     };
@@ -136,26 +140,27 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
   @override
   void initState() {
     super.initState();
-    print(widget.timeString);
-    widget.doctorId = "123";
-    widget.hospitalId = "321";
-    widget.doctorName = "Esskay";
-    widget.date = DateTime.now();
-    widget.timeString = DateTime.now().toString();
-    widget.symtopms = "To get more healthy";
-    widget.patientId = "12345678";
-    widget.patientRelationType = "son";
-    widget.service = QuickServiceUiModel(
-        departments: ["departments"],
-        amount: 100,
-        id: "yjhbx",
-        name: "service name",
-        enabled: true,
-        createdDateTime: DateTime.now(),
-        v: 0,
-        iconLink: "",
-        updatedDateTime: DateTime.now(),
-        paymentType: 1);
+    // print(widget.timeString);
+    // widget.doctor = "123";
+    // // widget.hospital_id = "321";
+    // widget.doctor = "Esskay";
+    // widget.date = DateTime.now();
+    // widget.timeString = DateTime.now().toString();
+    // widget.goal = "To get more healthy";
+    // widget.patient_id = "12345678";
+    //widget.patientRelationType = "son";
+    // widget.service = QuickServiceUiModel(
+    //     departments: ["departments"],
+    //     amount: 100,
+    //     id: "yjhbx",
+    //     name: "service name",
+    //     enabled: true,
+    //     createdDateTime: DateTime.now(),
+    //     v: 0,
+    //     iconLink: "",
+    //     updatedDateTime: DateTime.now(),
+    //     paymentType: 1);
+    print("final data${widget.data}");
 
     _rzPay = Razorpay();
     _rzPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -172,7 +177,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.isOnline);
+    // print(widget.isOnline);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -255,7 +260,8 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      widget.doctorName,
+                                      "hellow",
+                                      //  "widget.doctor",
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -300,7 +306,9 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(8, 0, 0, 0),
                                               child: Text(
-                                                '${DateFormat('MMM d, yyyy h:mma').format(widget.date)}',
+                                                'hai',
+
+                                                //  '${DateFormat('MMM d, yyyy h:mma').format(widget.date)}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1
@@ -382,13 +390,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                   alignment: Alignment.centerLeft,
                   child: FlutterFlowRadioButton(
                     options: [
-                      if (widget.service.paymentType == 0) 'Free',
-                      if (widget.service.paymentType == 1 ||
-                          widget.service.paymentType == 3)
-                        'Online Payment',
-                      if (widget.service.paymentType == 2 ||
-                          widget.service.paymentType == 3)
-                        'Cash (Offline)',
+                      'Online Payment',
                     ],
                     onChanged: (value) {
                       setState(() {
@@ -473,7 +475,8 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Pay \u20B9${widget.service.amount.toInt()}',
+                              'Pay \u20B9',
+                              //${widget.service.amount.toInt()}',
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(

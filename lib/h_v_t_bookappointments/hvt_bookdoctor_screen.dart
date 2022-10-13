@@ -455,8 +455,8 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                                               builder: (context) => hvtTimeSlot(
                                                     isUniversalTimeSlot:
                                                         _selectedDoctor == null
-                                                            ? false
-                                                            : true,
+                                                            ? true
+                                                            : false,
                                                     doctor: _selectedDoctor,
                                                     data: {
                                                       "goal":

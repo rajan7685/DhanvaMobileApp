@@ -10,9 +10,9 @@ class LoginApiService {
       '${ApiService.protocol}${ApiService.baseUrl}${ApiService.otpVerificationApi}';
 
   static Future<Map<String, dynamic>> attemptLogin(
-      {String mobile = '8016291431'}) async {
+      {String mobile = '8016291431', String fcm}) async {
     Response res =
-        await ApiService.dio.post(_loginUri, data: {'phone': mobile});
+        await ApiService.dio.post(_loginUri, data: {'phone': mobile, if(fcm != null) "fcm_token" : fcm});
     // Map<String, dynamic> jsonData = jsonDecode(res.data);
     // print('$jsonData ${jsonData.runtimeType}');
     return res.data;

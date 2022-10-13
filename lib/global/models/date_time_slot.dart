@@ -29,6 +29,8 @@ class UniversalDateTimeSlot {
     @required this.availableTimeSlots,
   });
 
+  
+
   factory UniversalDateTimeSlot.fromAllTimeSlotData(
       MapEntry<String, dynamic> json) {
     List<GlobalAvailableTimeSlot> slots = [];

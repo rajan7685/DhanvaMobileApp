@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
+import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -284,7 +285,7 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           await ref.read(_authProvider).attemptLogin(
-                              mobile: mobileNumberController.text);
+                              mobile: mobileNumberController.text, fcm : SharedPreferenceService.loadString(key: FcmTokenKey));
                           await Navigator.push(
                             context,
                             MaterialPageRoute(

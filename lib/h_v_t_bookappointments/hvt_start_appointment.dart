@@ -258,6 +258,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                               items: patientNames,
                               value: _selectedPatientId,
                               onChanged: (value) {
+                                data["patient_id"] = _selectedPatientId;
                                 setState(() {
                                   _selectedPatientId = value;
                                 });
@@ -268,7 +269,18 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                                     _selectedPatientId == element.patientId);
                                 patientRelationType =
                                     idx == -1 ? "Self" : _relations[idx].type;
-                                print(patientRelationType);
+                                // if (_selectedPatientId == patient.id) {
+                                //   data["patient_name"] = patient.name;
+                                // } else {
+                                //   data["patient_name"] = _relations
+                                //       .firstWhere((element) =>
+                                //           _selectedPatientId == element.id)
+                                //       .patientName;
+                                // }
+
+                                // print(patientRelationType);
+                                // print(data["patient_name"]);
+                                // print(_selectedPatientId);
                               },
                               decoration: InputDecoration(
                                 filled: true,

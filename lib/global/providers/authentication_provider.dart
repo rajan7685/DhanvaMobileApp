@@ -66,8 +66,8 @@ class AuthenticationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> attemptLogin({@required String mobile}) async {
-    await LoginApiService.attemptLogin(mobile: mobile);
+  Future<void> attemptLogin({@required String mobile, @required String fcm}) async {
+    await LoginApiService.attemptLogin(mobile: mobile, fcm : fcm);
   }
 
   Future<String> verifyLoginOtp(

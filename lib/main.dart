@@ -2,6 +2,8 @@ import 'package:dhanva_mobile_app/components/bottom_navigation_bar.dart';
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/offline_consultation_screen/offline_consultation_screen_widget.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
@@ -35,6 +37,19 @@ class _MyAppState extends State<MyApp> {
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
       });
+
+  @override
+  void initState() {
+    super.initState();
+    _getFCMToken();
+  }
+
+  Future<void> _getFCMToken() async {
+    await Firebase.initializeApp();
+    String fcmToken = await FirebaseMessaging.instance.getToken();
+
+    SharedPreferenceService.saveString(key: FcmTokenKey, value: fcmToken);
+  }
 
   @override
   Widget build(BuildContext context) {
