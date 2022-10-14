@@ -21,6 +21,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class hvtPaymentScreenWidget extends StatefulWidget {
   Map<String, dynamic> data = {};
+  String doctorId;
+  String doctorName;
 
   // String goal;
   // String shape;
@@ -35,7 +37,12 @@ class hvtPaymentScreenWidget extends StatefulWidget {
   // DateTime date;
   // String timeString;
 
-  hvtPaymentScreenWidget({Key key, @required this.data}) : super(key: key);
+  hvtPaymentScreenWidget(
+      {Key key,
+      @required this.data,
+      @required this.doctorId,
+      @required this.doctorName})
+      : super(key: key);
   // @required this.goal,
   // @required this.shape,
   // @required this.appointmentDate,
@@ -56,7 +63,9 @@ class hvtPaymentScreenWidget extends StatefulWidget {
 class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Razorpay _rzPay;
-  String _paymentValueType;
+  String _paymentValueType = "Online Payment";
+
+  String paymentId;
 
   Patient p = Patient.fromJson(
       jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
@@ -90,7 +99,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
         data: {
-          // "goal": widget.goal,
+          // "goal": widget.data["goal"],
           // "appointmentDate": widget.date.toString().split(' ')[0],
           // "patient_id": widget.patient_id,
           // "name": widget.doctor,
@@ -106,8 +115,8 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
   Future<void> _makePayment() async {
     var options = {
       'key': 'rzp_test_xbbqVc7yVFG9f6',
-      // 'amount': widget.service.amount * 100,
-      // 'name': widget.service.name,
+      'amount': int.parse(widget.data["amount"]) * 100,
+      'name': widget.data["name"],
       'description': 'Service',
       'prefill': {'contact': p.phone, 'email': p.email}
     };
@@ -120,17 +129,20 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     print('Payment success : $response');
-    await _bookAppointment(transactionId: response.paymentId);
+
+    paymentId = response.paymentId;
+    _sendAllDetails();
+    //await _bookAppointment(transactionId: );
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => hvtSuccessScreenWidget()));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) async {
     print('Payment Failure : ${response.code} ${response.message}');
-    Map<String, dynamic> res = jsonDecode(response.message);
+
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-            "Payment failed : ${res['error']['description']}\nPlease try again")));
+        content:
+            Text("Payment failed : ${response.message}\nPlease try again")));
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) async {
@@ -160,7 +172,6 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
     //     iconLink: "",
     //     updatedDateTime: DateTime.now(),
     //     paymentType: 1);
-    print("final data${widget.data}");
 
     _rzPay = Razorpay();
     _rzPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -168,6 +179,45 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
     _rzPay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     //print("raw date ${widget.date.toString()}");
     //print("Formatted date ${widget.date.toString().split(' ')[0]}");
+
+    print("final all data to be send ${widget.data}");
+  }
+
+  Future<void> _sendAllDetails() async {
+    print("""
+      booking req body
+        "shape": ${widget.data["shapes"]},
+        "goal": ${widget.data["goal"]},
+        "healthRating": ${widget.data["healthRating"]},
+        "checkupFrequency": ${widget.data["checkupFrequency"]},
+        "patient_id": ${widget.data["patient_id"]},
+        // "name": widget.data["name"],
+        "appointmentDate": ${widget.data["time_slot"].split(' ')[0]},
+        "time_slot": ${widget.data["time_slot"].split(' ')[1]},
+        "payment_info": $paymentId,
+        "doctor": ${widget.doctorId},
+        "service_id": "633e7fbb000b2619dbbf84f4"
+      """);
+
+    Response res = await ApiService.dio.post(
+      "${ApiService.protocol}${ApiService.baseUrl2}hvt/book",
+      options: Options(headers: {
+        'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+      }),
+      data: {
+        "shape": widget.data["shapes"],
+        "goal": widget.data["goal"],
+        "healthRating": widget.data["healthRating"],
+        "checkupFrequency": widget.data["checkupFrequency"],
+        "patient_id": widget.data["patient_id"],
+        // "name": widget.data["name"],
+        "appointmentDate": widget.data["time_slot"].split(' ')[0],
+        "time_slot": widget.data["time_slot"].split(' ')[1],
+        "payment_info": paymentId,
+        "doctor": widget.doctorId,
+        "service_id": "633e7fbb000b2619dbbf84f4"
+      },
+    );
   }
 
   @override
@@ -260,8 +310,8 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "hellow",
-                                      //  "widget.doctor",
+                                      //"Esskay",
+                                      "${widget.doctorName}",
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
@@ -271,16 +321,16 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                                             fontWeight: FontWeight.w600,
                                           ),
                                     ),
-                                    Text(
-                                      '',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Open Sans',
-                                            color: Color(0xFF606E87),
-                                            fontSize: 12,
-                                          ),
-                                    ),
+                                    // Text(
+                                    //   'gallonhubb',
+                                    //   style: FlutterFlowTheme.of(context)
+                                    //       .bodyText1
+                                    //       .override(
+                                    //         fontFamily: 'Open Sans',
+                                    //         color: Color(0xFF606E87),
+                                    //         fontSize: 12,
+                                    //       ),
+                                    //),
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
                                           0, 12, 0, 0),
@@ -306,9 +356,9 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                                               padding: EdgeInsetsDirectional
                                                   .fromSTEB(8, 0, 0, 0),
                                               child: Text(
-                                                'hai',
+                                                // 'hai',
 
-                                                //  '${DateFormat('MMM d, yyyy h:mma').format(widget.date)}',
+                                                '${DateFormat('MMM d, yyyy h:mma').format(DateTime.parse(widget.data["time_slot"]))}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1
@@ -331,39 +381,40 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                           ],
                         ),
                       ),
-                      // Align(
-                      //   alignment: AlignmentDirectional(-1, 0),
-                      //   child: Padding(
-                      //     padding:
-                      //         EdgeInsetsDirectional.fromSTEB(12, 12, 12, 0),
-                      //     child: Text(
-                      //       'HVT Goal',
-                      //       style:
-                      //           FlutterFlowTheme.of(context).bodyText1.override(
-                      //                 fontFamily: 'Open Sans',
-                      //                 color: Color(0xFF606E87),
-                      //                 fontSize: 16,
-                      //                 fontWeight: FontWeight.bold,
-                      //               ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // Align(
-                      //   alignment: AlignmentDirectional(-1, 0),
-                      //   child: Padding(
-                      //     padding:
-                      //         EdgeInsetsDirectional.fromSTEB(12, 10, 12, 12),
-                      //     child: Text(
-                      //       widget.symtopms,
-                      //       style:
-                      //           FlutterFlowTheme.of(context).bodyText1.override(
-                      //                 fontFamily: 'Open Sans',
-                      //                 color: Color(0xFF606E87),
-                      //                 fontSize: 12,
-                      //               ),
-                      //     ),
-                      //   ),
-                      // ),
+                      Align(
+                        alignment: AlignmentDirectional(-1, 0),
+                        child: Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(12, 12, 12, 0),
+                          child: Text(
+                            'HVT Goal',
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF606E87),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional(-1, 0),
+                        child: Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(12, 10, 12, 12),
+                          child: Text(
+                            // "to get better",
+                            widget.data["goal"],
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF606E87),
+                                      fontSize: 12,
+                                    ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -389,6 +440,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: FlutterFlowRadioButton(
+                    initialValue: _paymentValueType,
                     options: [
                       'Online Payment',
                     ],
@@ -443,39 +495,39 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                       ),
                       child: InkWell(
                         onTap: () async {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => hvtSuccessScreenWidget(),
-                              ));
-                          // if (_paymentValueType == null) {
-                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          //       content: Text(
-                          //           'Please select a payment mode to proceed')));
-                          // } else {
-                          //   if (_paymentValueType == 'Free' ||
-                          //       _paymentValueType == 'Cash (Offline)') {
-                          //     await _bookAppointment(
-                          //         transactionId: DateTime.now()
-                          //             .millisecondsSinceEpoch
-                          //             .toString());
-                          //     ScaffoldMessenger.of(context).showSnackBar(
-                          //       SnackBar(content: Text('Booked')),
-                          //     );
-                          //     Navigator.of(context).push(MaterialPageRoute(
-                          //         builder: (_) => hvtSuccessScreenWidget()));
-                          //   } else {
-                          //     // through UPI/Debit
-                          //     _makePayment();
-                          //   }
-                          // }
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => hvtSuccessScreenWidget(),
+                          //     ));
+                          if (_paymentValueType == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    'Please select a payment mode to proceed')));
+                          } else {
+                            if (_paymentValueType == 'Free' ||
+                                _paymentValueType == 'Cash (Offline)') {
+                              await _bookAppointment(
+                                  transactionId: DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString());
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Booked')),
+                              );
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => hvtSuccessScreenWidget()));
+                            } else {
+                              // through UPI/Debit
+                              _makePayment();
+                            }
+                          }
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Pay \u20B9',
+                              'Pay \u20B9${widget.data["amount"]}',
                               //${widget.service.amount.toInt()}',
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1

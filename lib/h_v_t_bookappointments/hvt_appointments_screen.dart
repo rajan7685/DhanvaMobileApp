@@ -22,13 +22,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../global/services/api_services/api_service_base.dart';
 import '../h_v_t_assestment_screen/h_v_t_assestment_screen_widget.dart';
 import 'hvt_check_screen.dart';
 import 'hvt_start_appointment.dart';
 
 class HvtAppointmentsScreenWidget extends StatefulWidget {
+  final Map<String, dynamic> data;
   final bool shouldPopNormally;
-  const HvtAppointmentsScreenWidget({Key key, this.shouldPopNormally = true})
+  const HvtAppointmentsScreenWidget(
+      {Key key, this.shouldPopNormally = true, @required this.data})
       : super(key: key);
 
   @override
@@ -41,29 +44,42 @@ class _HvtAppointmentsScreenWidgetState
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool isDataLoading = false;
-  List<dynamic> resData = [];
+  List<dynamic> appointments = [];
   List<dynamic> resDatas;
 
-  void _loadAppointmentsData() async {
+  // void _loadAppointmentsData() async {
+  //   Patient patient = Patient.fromJson(
+  //       jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+  //   resDatas =
+  //       await MedicalAppointmentsService.fetchMedicalAppointments(patient.id);
+  //   resData = resDatas != null ? resDatas : [];
+
+  //   //resData = [];
+  //   resData.sort((a, b) => DateTime.parse(b['appointmentDate'])
+  //       .compareTo(DateTime.parse(a['appointmentDate'])));
+  //   setState(() {
+  //     isDataLoading = false;
+  //   });
+  //   print("get response $resData.sort((a, b)");
+  // }
+
+  Future<void> _loadhvtAppointments() async {
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    resDatas =
-        await MedicalAppointmentsService.fetchMedicalAppointments(patient.id);
-    resData = resDatas != null ? resDatas : [];
-
-    //resData = [];
-    resData.sort((a, b) => DateTime.parse(b['appointmentDate'])
-        .compareTo(DateTime.parse(a['appointmentDate'])));
-    setState(() {
-      isDataLoading = false;
-    });
-    print("get response $resData.sort((a, b)");
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/family/all/${patient.id}",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    appointments = res.data;
+    print("HVT APPOINTMENT LIST${res.data}");
   }
 
   @override
   void initState() {
     super.initState();
     // _loadAppointmentsData();
+    _loadhvtAppointments();
   }
 
   @override
@@ -176,7 +192,7 @@ class _HvtAppointmentsScreenWidgetState
                 Expanded(
                   child: isDataLoading
                       ? Center(child: CircularProgressIndicator())
-                      : (resData.length != 0
+                      : (appointments.length == 0
                           ? Center(
                               child: Text(
                                   'Nothing yet, Try booking an HVT appointment'))
@@ -188,7 +204,7 @@ class _HvtAppointmentsScreenWidgetState
                                 // _loadAppointmentsData();
                               },
                               child: ListView.builder(
-                                itemCount: 20,
+                                itemCount: appointments.length,
                                 itemBuilder: (_, int index) => GestureDetector(
                                   child: AppointmentCard(),
                                   onTap: () async {

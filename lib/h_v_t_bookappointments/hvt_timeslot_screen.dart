@@ -22,7 +22,7 @@ String _selectedDoctorId;
 String _selectedDoctorName;
 
 String _to24HourTime(String time) {
-  print("Given time $time");
+  // print("Given time $time");
   String timeMaridane = time.split(' ')[1];
   String hourTime = time.split(' ')[0];
   int hour = int.parse(hourTime.split(':')[0]);
@@ -35,10 +35,10 @@ String _to24HourTime(String time) {
     return '$hour:00';
   }
   if (hour.toString().length == 1) {
-    print('Formatted time 0$hour:$minute');
+    // print('Formatted time 0$hour:$minute');
     return '0$hour:$minute';
   }
-  print('Formatted time $hour:$minute');
+  // print('Formatted time $hour:$minute');
   return '$hour:$minute';
 }
 
@@ -68,7 +68,8 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
 
   @override
   void initState() {
-    print("time slot check");
+    print("time slot universal? ${widget.isUniversalTimeSlot}");
+    print("doctor? ${widget.doctor}");
     if (widget.isUniversalTimeSlot) {
       _loadAllTimeSlots();
     } else {
@@ -79,7 +80,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
 
   Future<void> _loadAllTimeSlots() async {
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/time-slots/available/63401e150ee969214e9d305a",
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/available/time-slots",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -98,10 +99,12 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
+    print(res.data);
     (res.data as Map).entries.forEach(
           (slot) =>
               doctorTimeSlots.add(DateTimeSlot.fromSlotDataByDoctor(slot)),
         );
+
     setState(() {
       _isTimeSlotDataLoading = false;
     });
@@ -184,13 +187,19 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
 
             InkWell(
               onTap: () {
-                print(_dateTimeSelectedId.split(',')[0]);
+                // print(_dateTimeSelectedId.split(',')[0]);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => hvtPaymentScreenWidget(
                         // goal: widget.data["goal"],
+                        doctorId: widget.doctor == null
+                            ? _selectedDoctorId
+                            : widget.doctor.id,
+                        doctorName: widget.doctor == null
+                            ? _selectedDoctorName
+                            : widget.doctor.name,
                         data: {
-                          "time_slot": _dateTimeSelectedId,
+                          "time_slot": _dateTimeSelectedId.split(",")[0],
                           ...widget.data,
                         }),
                   ),
@@ -226,7 +235,7 @@ class UniversalTimeSlotList extends StatefulWidget {
 class _UniversalTimeSlotListState extends State<UniversalTimeSlotList> {
   @override
   void initState() {
-    // TODO: implement initState
+    print("unversal timeslot");
     super.initState();
   }
 
@@ -238,7 +247,7 @@ class _UniversalTimeSlotListState extends State<UniversalTimeSlotList> {
 
   @override
   Widget build(BuildContext context) {
-    print('main list len ${widget.timeSlots}');
+    // print('main list len ${widget.timeSlots}');
     return SizedBox(
       width: double.maxFinite,
       child: Row(
@@ -311,7 +320,6 @@ class _DoctorTimeSlotListRendererState
                 // _selectedDoctorName =
                 //       widget.availableTimeSlots[index].docNames[0];
                 widget.updateUI();
-                
               },
               child: TimeSLotButton(
                   dateId:
@@ -336,7 +344,7 @@ class DoctorTimeSlotList extends StatefulWidget {
 class _DoctorTimeSlotListState extends State<DoctorTimeSlotList> {
   @override
   Widget build(BuildContext context) {
-    print("time list${widget.slots}");
+    // print("time list${widget.slots}");
     return SizedBox(
       width: double.maxFinite,
       child: Row(
@@ -378,7 +386,7 @@ class GlobalTimeSlotRenderer extends StatefulWidget {
 class _GlobalTimeSlotRendererState extends State<GlobalTimeSlotRenderer> {
   @override
   void initState() {
-    // TODO: implement initState
+    print("GlobalTimeSlotRenderer");
     super.initState();
   }
 
@@ -402,8 +410,7 @@ class _GlobalTimeSlotRendererState extends State<GlobalTimeSlotRenderer> {
                 widget.availableTimeSlots[index].availableTimeSlot);
             return InkWell(
               onTap: () {
-               
-                
+                print("select ${widget.availableTimeSlots[index].toString()}");
                 setState(() {
                   _dateTimeSelectedId =
                       '${widget.date.toString().split(' ')[0]} $formattedTime, ${widget.parentIndex}:$index';
@@ -412,6 +419,7 @@ class _GlobalTimeSlotRendererState extends State<GlobalTimeSlotRenderer> {
                       widget.availableTimeSlots[index].docIds[0];
                   _selectedDoctorName =
                       widget.availableTimeSlots[index].docNames[0];
+
                   widget.updateUI();
                 });
               },

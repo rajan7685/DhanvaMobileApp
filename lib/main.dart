@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> _getFCMToken() async {
     await Firebase.initializeApp();
     String fcmToken = await FirebaseMessaging.instance.getToken();
-
+    print("started FCM ${fcmToken}");
     SharedPreferenceService.saveString(key: FcmTokenKey, value: fcmToken);
   }
 

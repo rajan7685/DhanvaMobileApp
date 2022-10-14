@@ -23,7 +23,9 @@ import '../global/services/shared_preference_service.dart';
 import 'hvt_bookdoctor_screen.dart';
 
 class HvtStartAppointmentWidget extends StatefulWidget {
-  const HvtStartAppointmentWidget({Key key}) : super(key: key);
+  const HvtStartAppointmentWidget({
+    Key key,
+  }) : super(key: key);
 
   @override
   _HvtStartAppointmentWidgetState createState() =>
@@ -73,7 +75,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
   @override
   void initState() {
     super.initState();
-    textController1 = TextEditingController(text: '  JAMES HEMSWORTH');
+    // textController1 = TextEditingController(text: '  JAMES HEMSWORTH');
     textController2 = TextEditingController();
     // _sendAppointmentDetails();
     patient = Patient.fromJson(
@@ -85,6 +87,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
     _selectedPatientId = patient.id;
     _loadIntervals();
     _loadRelations();
+    _loadPaymentDetails();
   }
 
   // Future<void> _sendAppointmentDetails() async {
@@ -139,6 +142,18 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
     setState(() {
       // updateUI
     });
+  }
+
+  Future<void> _loadPaymentDetails() async {
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/assessment-service",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    print("load payment service info${res.data}");
+
+    data["amount"] = res.data["amount"];
+    data["name"] = res.data["name"];
   }
 
   @override

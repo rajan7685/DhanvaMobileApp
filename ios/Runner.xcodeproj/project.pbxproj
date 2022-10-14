@@ -3,16 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
-		438A3EAD28F6A41C00A734EA /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 438A3EAC28F6A41C00A734EA /* FirebaseAnalytics */; };
-		438A3EAF28F6A41C00A734EA /* FirebaseInAppMessaging-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 438A3EAE28F6A41C00A734EA /* FirebaseInAppMessaging-Beta */; };
-		438A3EB128F6A41C00A734EA /* FirebaseInAppMessagingSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 438A3EB028F6A41C00A734EA /* FirebaseInAppMessagingSwift-Beta */; };
-		438A3EB328F6A41C00A734EA /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 438A3EB228F6A41C00A734EA /* FirebaseMessaging */; };
 		438A3EB528F6B9A500A734EA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 438A3EB428F6B9A400A734EA /* GoogleService-Info.plist */; };
 		6436409A27A31CD800820AF7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6436409C27A31CD800820AF7 /* InfoPlist.strings */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -61,11 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				438A3EAD28F6A41C00A734EA /* FirebaseAnalytics in Frameworks */,
 				CB43520E79A6B6A97A152E63 /* Pods_Runner.framework in Frameworks */,
-				438A3EB328F6A41C00A734EA /* FirebaseMessaging in Frameworks */,
-				438A3EB128F6A41C00A734EA /* FirebaseInAppMessagingSwift-Beta in Frameworks */,
-				438A3EAF28F6A41C00A734EA /* FirebaseInAppMessaging-Beta in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,10 +151,6 @@
 			);
 			name = Runner;
 			packageProductDependencies = (
-				438A3EAC28F6A41C00A734EA /* FirebaseAnalytics */,
-				438A3EAE28F6A41C00A734EA /* FirebaseInAppMessaging-Beta */,
-				438A3EB028F6A41C00A734EA /* FirebaseInAppMessagingSwift-Beta */,
-				438A3EB228F6A41C00A734EA /* FirebaseMessaging */,
 			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
@@ -193,7 +181,6 @@
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			packageReferences = (
-				438A3EAB28F6A41C00A734EA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
@@ -597,40 +584,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		438A3EAB28F6A41C00A734EA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		438A3EAC28F6A41C00A734EA /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 438A3EAB28F6A41C00A734EA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		438A3EAE28F6A41C00A734EA /* FirebaseInAppMessaging-Beta */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 438A3EAB28F6A41C00A734EA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseInAppMessaging-Beta";
-		};
-		438A3EB028F6A41C00A734EA /* FirebaseInAppMessagingSwift-Beta */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 438A3EAB28F6A41C00A734EA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseInAppMessagingSwift-Beta";
-		};
-		438A3EB228F6A41C00A734EA /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 438A3EAB28F6A41C00A734EA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }

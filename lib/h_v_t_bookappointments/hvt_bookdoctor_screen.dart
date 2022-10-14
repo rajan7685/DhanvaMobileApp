@@ -49,6 +49,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
     super.initState();
     print(SharedPreferenceService.loadString(key: AuthTokenKey));
     textController = TextEditingController();
+    print("service info added${widget.data}");
   }
 
   Future<void> _sendDoctorBookDetails() async {
@@ -311,6 +312,8 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                                 setState(() => radioButtonValue = value);
                                 if (radioButtonValue == 'Yes')
                                   _getDoctorDetails();
+                                else
+                                  _selectedDoctor = null;
                               },
                               optionHeight: 25,
                               textStyle: FlutterFlowTheme.of(context)
@@ -457,6 +460,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                                                         _selectedDoctor == null
                                                             ? true
                                                             : false,
+                                                          
                                                     doctor: _selectedDoctor,
                                                     data: {
                                                       "goal":

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_bookdoctor_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/home_screen_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 
 import '../components/hvt_bottomsheet_widget.dart';
@@ -13,6 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+
+import '../global/services/api_services/api_service_base.dart';
+import '../global/services/shared_preference_service.dart';
 
 class hvtLogsInvestigationWidget extends StatefulWidget {
   const hvtLogsInvestigationWidget({Key key}) : super(key: key);
@@ -42,9 +46,20 @@ class _hvtLogsInvestigationWidgetState
   @override
   void initState() {
     super.initState();
+    _loadChats();
 
     // textController16 = TextEditingController(text: 'Type your message...');
     tabIndex = 0;
+  }
+
+  Future<void> _loadChats() async {
+    //print("${ApiService.protocol}${ApiService.baseUrl2}hvt/checkup-intervals");
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/get/logs/632b345d811ef1672064c775/63342eedec31536598cbf7b9",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    print("chat details${res.data}");
   }
 
   @override
@@ -371,7 +386,7 @@ class _hvtLogsInvestigationWidgetState
             //   ],
             // ),
             Align(
-               alignment: AlignmentDirectional(0, 1),
+              alignment: AlignmentDirectional(0, 1),
               //alignment: AlignmentDirectional(0, 2),
               child: Container(
                 width: double.infinity,

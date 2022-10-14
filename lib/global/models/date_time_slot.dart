@@ -29,8 +29,6 @@ class UniversalDateTimeSlot {
     @required this.availableTimeSlots,
   });
 
-  
-
   factory UniversalDateTimeSlot.fromAllTimeSlotData(
       MapEntry<String, dynamic> json) {
     List<GlobalAvailableTimeSlot> slots = [];
@@ -55,6 +53,8 @@ class DateTimeSlot {
       @required this.docName});
 
   factory DateTimeSlot.fromSlotDataByDoctor(MapEntry<String, dynamic> json) {
+    if ((json.value as List).isEmpty)
+      return DateTimeSlot.fromSlotDataByDoctor(json);
     Map<String, dynamic> valueJson = json.value[0];
     return DateTimeSlot(
         date: DateTime.parse(json.key),
