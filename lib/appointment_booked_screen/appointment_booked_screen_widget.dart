@@ -82,6 +82,7 @@ class _AppointmentBookedScreenWidgetState
           "status": 0
         });
     //${ApiService.protocol}ae7a-49-204-130-5.ngrok.io
+    print("date format check ${widget.date.toString().split(' ')[0]}");
     Response bookingRes = await ApiService.dio.post(
         '${ApiService.protocol}api2.dhanva.icu/appointment/book',
         options: Options(headers: {

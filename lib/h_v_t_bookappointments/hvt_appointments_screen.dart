@@ -43,27 +43,15 @@ class _HvtAppointmentsScreenWidgetState
     extends State<HvtAppointmentsScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  bool isDataLoading = false;
+  bool isDataLoading = true;
   List<dynamic> appointments = [];
   List<dynamic> resDatas;
 
-  // void _loadAppointmentsData() async {
-  //   Patient patient = Patient.fromJson(
-  //       jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-  //   resDatas =
-  //       await MedicalAppointmentsService.fetchMedicalAppointments(patient.id);
-  //   resData = resDatas != null ? resDatas : [];
-
-  //   //resData = [];
-  //   resData.sort((a, b) => DateTime.parse(b['appointmentDate'])
-  //       .compareTo(DateTime.parse(a['appointmentDate'])));
-  //   setState(() {
-  //     isDataLoading = false;
-  //   });
-  //   print("get response $resData.sort((a, b)");
-  // }
-
-  Future<void> _loadhvtAppointments() async {
+  Future<void> _loadhvtAppointments({bool init = false}) async {
+    if (!init)
+      setState(() {
+        isDataLoading = true;
+      });
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
     Response res = await ApiService.dio.get(
@@ -72,14 +60,16 @@ class _HvtAppointmentsScreenWidgetState
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
     appointments = res.data;
+    setState(() {
+      isDataLoading = false;
+    });
     print("HVT APPOINTMENT LIST${res.data}");
   }
 
   @override
   void initState() {
     super.initState();
-    // _loadAppointmentsData();
-    _loadhvtAppointments();
+    _loadhvtAppointments(init: true);
   }
 
   @override
@@ -198,20 +188,22 @@ class _HvtAppointmentsScreenWidgetState
                                   'Nothing yet, Try booking an HVT appointment'))
                           : RefreshIndicator(
                               onRefresh: () async {
-                                // setState(() {
-                                //   isDataLoading = true;
-                                // });
-                                // _loadAppointmentsData();
+                                // _loadhvtAppointments();
                               },
                               child: ListView.builder(
                                 itemCount: appointments.length,
                                 itemBuilder: (_, int index) => GestureDetector(
-                                  child: AppointmentCard(),
+                                  child: AppointmentCard(
+                                    appointmentModel: appointments[index],
+                                  ),
                                   onTap: () async {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (_) =>
-                                                hvtCheckScreenWidget()));
+                                                hvtCheckScreenWidget(
+                                                  appointmentJson:
+                                                      appointments[index],
+                                                )));
                                   },
                                 ),
                               ),
@@ -234,7 +226,9 @@ class _HvtAppointmentsScreenWidgetState
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => HvtStartAppointmentWidget()));
+                                  builder: (_) => HvtStartAppointmentWidget(
+                                  
+                                  )));
                             },
                             child: Text(
                               'Create HVT Program',
@@ -275,7 +269,8 @@ class _HvtAppointmentsScreenWidgetState
 class AppointmentCard extends StatelessWidget {
   final Map<String, dynamic> appointmentModel;
 
-  const AppointmentCard({Key key, this.appointmentModel}) : super(key: key);
+  const AppointmentCard({Key key, @required this.appointmentModel})
+      : super(key: key);
 
   String statusText(int val) {
     String status;
@@ -284,8 +279,8 @@ class AppointmentCard extends StatelessWidget {
     if (val == 0)
       status = 'Booked';
     else if (val == 1)
-      status = 'Accepted';
-    else if (val == 2) status = 'Cancelled';
+      status = 'Active';
+    else if (val == 2) status = 'Completed';
     return status;
   }
 
@@ -327,7 +322,7 @@ class AppointmentCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "Aniket",
+                            appointmentModel["patient_id"]["name"] ?? "-",
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',
@@ -337,7 +332,7 @@ class AppointmentCard extends StatelessWidget {
                                     ),
                           ),
                           // if (appointmentModel['payment_info'] != null)
-                          Text("Friend")
+                          // Text(" (Friend)")
                         ],
                       ),
                       Row(
@@ -345,8 +340,8 @@ class AppointmentCard extends StatelessWidget {
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
                             child: Text(
-                              // "${DateFormat('MMM d, yyyy').format(DateTime.parse(appointmentModel['appointmentDate']))} ${appointmentModel['time_slot']}",
-                              "12 Sept 12:00AM",
+                              "${DateFormat('MMM d, yyyy').format(DateTime.parse(appointmentModel['appointmentDate']))} ${appointmentModel['time_slot']}",
+                              // "12 Sept 12:00AM",
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -356,15 +351,15 @@ class AppointmentCard extends StatelessWidget {
                             ),
                           ),
                           // if (appointmentModel['payment_info'] != null)
-                          Text(
-                            // " (${appointmentModel['payment_info']['meta_info']['booking_type']} booking)",
-                            "Online",
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Open Sans',
-                                      fontSize: 12,
-                                    ),
-                          ),
+                          // Text(
+                          //   // " (${appointmentModel['payment_info']['meta_info']['booking_type']} booking)",
+                          //   "Online",
+                          //   style:
+                          //       FlutterFlowTheme.of(context).bodyText1.override(
+                          //             fontFamily: 'Open Sans',
+                          //             fontSize: 12,
+                          //           ),
+                          // ),
                         ],
                       ),
                       Padding(
@@ -373,7 +368,8 @@ class AppointmentCard extends StatelessWidget {
                           onPressed: () {
                             print('Button pressed ...');
                           },
-                          text: statusText(1),
+                          text:
+                              statusText(int.parse(appointmentModel["status"])),
                           options: FFButtonOptions(
                             // width: 80,
                             height: 24,

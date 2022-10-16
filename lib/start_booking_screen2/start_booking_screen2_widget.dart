@@ -513,7 +513,7 @@ class _DoctorCardListViewState extends State<DoctorCardListView> {
                   _selectedIndex = index;
                   _selectedDoctor = widget.doctors[index];
                 });
-                widget.onTap(widget.doctors[index]);
+                if (widget.onTap != null) widget.onTap(widget.doctors[index]);
               },
               child: DoctorCard(
                 isSelected: _selectedIndex == index,

@@ -1,5 +1,10 @@
+import 'dart:convert';
+
+import 'package:dhanva_mobile_app/global/models/patient.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_payment_breakage_screen.dart';
+import 'package:dio/dio.dart';
 
 import '../components/notification_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -9,10 +14,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../global/services/shared_preference_service.dart';
 import 'hvt_check_payment.dart';
 
 class hvtCheckScreenWidget extends StatefulWidget {
-  const hvtCheckScreenWidget({Key key}) : super(key: key);
+  final Map<String, dynamic> appointmentJson;
+  const hvtCheckScreenWidget({Key key, @required this.appointmentJson})
+      : super(key: key);
 
   @override
   _hvtCheckScreenWidgetState createState() => _hvtCheckScreenWidgetState();
@@ -20,6 +28,29 @@ class hvtCheckScreenWidget extends StatefulWidget {
 
 class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  Map<String, dynamic> resData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPlanNotesDetails();
+  }
+
+  Future<void> _loadPlanNotesDetails() async {
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/${widget.appointmentJson["_id"]}",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    setState(() {
+      resData = res.data;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,8 +134,8 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                 ),
               ),
               Align(
-                 alignment: AlignmentDirectional(0, 1),
-              //  alignment: AlignmentDirectional(0, 2),
+                alignment: AlignmentDirectional(0, 1),
+                //  alignment: AlignmentDirectional(0, 2),
                 child: Container(
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.77,
@@ -169,7 +200,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Text(
-                                                'Doctor Name: Viki Kawshal',
+                                                'Doctor Name: ${widget.appointmentJson["doctor"]["name"]}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1
@@ -192,7 +223,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Text(
-                                                'Appointment On: 08 Oct 2022 02.00PM',
+                                                'Appointment On: ${DateFormat("dd MMM yyyy").format(DateTime.parse(widget.appointmentJson["appointmentDate"]))} ${widget.appointmentJson["time_slot"]}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1
@@ -215,7 +246,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Text(
-                                                'HVT Goal: To get healthy enough!',
+                                                'HVT Goal: ${widget.appointmentJson["goal"]}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1
@@ -238,7 +269,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
                                               Text(
-                                                'HVT Plan: 3 Months',
+                                                'HVT Plan: ${resData["plan_name"]}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1
@@ -312,7 +343,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                           children: [
                                             Expanded(
                                               child: Text(
-                                                'A systematic review of PubMed and associated papers was carried out using search terms ‘family practice consultation length’.',
+                                                " ${resData["consultation_notes"]}",
                                                 maxLines: 5,
                                                 style:
                                                     FlutterFlowTheme.of(context)
@@ -357,7 +388,14 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              hvtCheckPaymentScreenWidget(),
+                                              hvtCheckPaymentScreenWidget(
+                                            data: widget.appointmentJson,
+                                            hvtPayment: int.parse(
+                                              resData["initial_amount"],
+                                            ),
+                                            hvtId: resData["_id"],
+                                            hvtStatus: resData["status"],
+                                          ),
                                         ));
                                   },
                                   child: Row(
@@ -365,7 +403,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        'Pay \u20B9100',
+                                        'Pay \u20B9${resData["initial_amount"]}',
                                         style: FlutterFlowTheme.of(context)
                                             .bodyText1
                                             .override(
@@ -389,37 +427,37 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
-                                child: InkWell(
-                                  onTap: () async {
-                                    await showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (context) {
-                                        return Padding(
-                                          padding:
-                                              MediaQuery.of(context).viewInsets,
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.45,
-                                            child: hvtAmountBreakupWidget(),
-                                          ),
-                                        );
-                                      },
-                                    ).then((value) => setState(() {}));
-                                  },
-                                  child: Icon(
-                                    Icons.arrow_drop_down_outlined,
-                                    color: Color(0xFF00A8A3),
-                                    size: 35,
-                                  ),
-                                ),
-                              )
+                              // Padding(
+                              //   padding:
+                              //       EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
+                              //   child: InkWell(
+                              //     onTap: () async {
+                              //       await showModalBottomSheet(
+                              //         isScrollControlled: true,
+                              //         backgroundColor: Colors.transparent,
+                              //         context: context,
+                              //         builder: (context) {
+                              //           return Padding(
+                              //             padding:
+                              //                 MediaQuery.of(context).viewInsets,
+                              //             child: Container(
+                              //               height: MediaQuery.of(context)
+                              //                       .size
+                              //                       .height *
+                              //                   0.45,
+                              //               child: hvtAmountBreakupWidget(),
+                              //             ),
+                              //           );
+                              //         },
+                              //       ).then((value) => setState(() {}));
+                              //     },
+                              //     child: Icon(
+                              //       Icons.arrow_drop_down_outlined,
+                              //       color: Color(0xFF00A8A3),
+                              //       size: 35,
+                              //     ),
+                              //   ),
+                              // )
                             ],
                           ),
                         ),

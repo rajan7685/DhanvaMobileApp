@@ -88,6 +88,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
     _loadIntervals();
     _loadRelations();
     _loadPaymentDetails();
+    data["patient_id"] = _selectedPatientId;
   }
 
   // Future<void> _sendAppointmentDetails() async {

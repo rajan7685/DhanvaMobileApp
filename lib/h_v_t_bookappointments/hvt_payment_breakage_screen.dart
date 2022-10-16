@@ -71,7 +71,7 @@ class _hvtAmountBreakupWidgetState extends State<hvtAmountBreakupWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Taxes',
+                  'Doctor Fee',
                   style: FlutterFlowTheme.of(context).bodyText2.override(
                         // fontFamily: 'Outfit',
                         fontFamily: 'Open Sans',

@@ -13,11 +13,16 @@ class GlobalAvailableTimeSlot {
 
   factory GlobalAvailableTimeSlot.fromJson(MapEntry<String, dynamic> json) =>
       GlobalAvailableTimeSlot(
-          availableTimeSlot: json.key,
-          docIds: List.generate((json.value as List).length,
-              (int index) => json.value[index]['id']),
-          docNames: List.generate((json.value as List).length,
-              (int index) => json.value[index]['name']));
+        availableTimeSlot: json.key,
+        docIds: List.generate(
+          (json.value as List).length,
+          (int index) => json.value[index]['id'],
+        ),
+        docNames: List.generate(
+          (json.value as List).length,
+          (int index) => json.value[index]['name'],
+        ),
+      );
 }
 
 class UniversalDateTimeSlot {
@@ -31,6 +36,7 @@ class UniversalDateTimeSlot {
 
   factory UniversalDateTimeSlot.fromAllTimeSlotData(
       MapEntry<String, dynamic> json) {
+    print("yayyyy ${json.value}");
     List<GlobalAvailableTimeSlot> slots = [];
     (json.value as Map<String, dynamic>).entries.forEach((json) {
       slots.add(GlobalAvailableTimeSlot.fromJson(json));
@@ -53,14 +59,15 @@ class DateTimeSlot {
       @required this.docName});
 
   factory DateTimeSlot.fromSlotDataByDoctor(MapEntry<String, dynamic> json) {
-    if ((json.value as List).isEmpty)
-      return DateTimeSlot.fromSlotDataByDoctor(json);
     Map<String, dynamic> valueJson = json.value[0];
     return DateTimeSlot(
-        date: DateTime.parse(json.key),
-        docID: valueJson['id'],
-        docName: valueJson['name'],
-        availableTimeSlots: List.generate(valueJson['availableSlots'].length,
-            (int index) => valueJson['availableSlots'][index]));
+      date: DateTime.parse(json.key),
+      docID: valueJson['id'],
+      docName: valueJson['name'],
+      availableTimeSlots: List.generate(
+        valueJson['availableSlots'].length,
+        (int index) => valueJson['availableSlots'][index],
+      ),
+    );
   }
 }

@@ -79,44 +79,40 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
         data: {
-          //  "amount": widget.service.amount,
+          "amount": widget.data["amount"],
           "transaction_id": transactionId,
-          // two params (more) ->
-          "meta_info": {
-            "payment_type": _paymentValueType,
-            //"booking_type": widget.isOnline ? "Online" : "Offline",
-            //  "relation_type": widget.patientRelationType
-          },
           "payment_status_string": "Success",
-          // "patient_id": widget.patient_id,
-          // "is_online": widget.isOnline,
+          "patient_id": widget.data["patient_id"],
           "status": 0
         });
-    //${ApiService.protocol}ae7a-49-204-130-5.ngrok.io
     Response bookingRes = await ApiService.dio.post(
-        '${ApiService.protocol}api2.dhanva.icu/appointment/book',
+        '${ApiService.protocol}api2.dhanva.icu/hvt/book',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
         data: {
-          // "goal": widget.data["goal"],
-          // "appointmentDate": widget.date.toString().split(' ')[0],
-          // "patient_id": widget.patient_id,
-          // "name": widget.doctor,
-          // "time_slot": widget.timeString,
-          // "payment_info": res.data['_id'],
-          // "doctor": widget.doctor,
-          // "service_id": widget.service_id,
-          // "hospital_id": widget.hospitalId
+          "shape": widget.data["shapes"],
+          "goal": widget.data["goal"],
+          "healthRating": widget.data["healthRating"],
+          "checkupFrequency": widget.data["checkupFrequency"],
+          "patient_id": widget.data["patient_id"],
+          "appointmentDate":
+              "${DateTime.parse(widget.data["appointmentDate"]).toString().split(" ")[0]}T00:00:00.000+0000",
+          "time_slot": widget.data["time_slot"],
+          "payment_info": res.data["_id"],
+          "doctor": widget.doctorId,
+          "service_id": "6340254a0ee969214e9d3063"
         });
-    // print('Booking response > ${bookingRes.data}');
+    print('Booking response > ${bookingRes.data}');
+    print('Booking status > ${bookingRes.statusCode}');
+    print('Booking msg > ${bookingRes.statusMessage}');
   }
 
   Future<void> _makePayment() async {
     var options = {
       'key': 'rzp_test_xbbqVc7yVFG9f6',
       'amount': int.parse(widget.data["amount"]) * 100,
-      'name': widget.data["name"],
+      'name': "Initial Payment",
       'description': 'Service',
       'prefill': {'contact': p.phone, 'email': p.email}
     };
@@ -129,10 +125,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     print('Payment success : $response');
-
-    paymentId = response.paymentId;
-    _sendAllDetails();
-    //await _bookAppointment(transactionId: );
+    await _bookAppointment(transactionId: response.paymentId);
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => hvtSuccessScreenWidget()));
   }
@@ -181,23 +174,31 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
     //print("Formatted date ${widget.date.toString().split(' ')[0]}");
 
     print("final all data to be send ${widget.data}");
+    print("Doctor ${widget.doctorId} ${widget.doctorName}");
+    print("time_slot: ${widget.data["time_slot"]}");
+    _sendAllDetails();
+    _loadAssessmentService();
   }
 
   Future<void> _sendAllDetails() async {
-    print("""
-      booking req body
-        "shape": ${widget.data["shapes"]},
-        "goal": ${widget.data["goal"]},
-        "healthRating": ${widget.data["healthRating"]},
-        "checkupFrequency": ${widget.data["checkupFrequency"]},
-        "patient_id": ${widget.data["patient_id"]},
-        // "name": widget.data["name"],
-        "appointmentDate": ${widget.data["time_slot"].split(' ')[0]},
-        "time_slot": ${widget.data["time_slot"].split(' ')[1]},
-        "payment_info": $paymentId,
-        "doctor": ${widget.doctorId},
-        "service_id": "633e7fbb000b2619dbbf84f4"
-      """);
+    // print("""
+    //   booking req body
+    //     "shape": ${widget.data["shapes"]},
+    //     "goal": ${widget.data["goal"]},
+    //     "healthRating": ${widget.data["healthRating"]},
+    //     "checkupFrequency": ${widget.data["checkupFrequency"]},
+    //     "patient_id": ${widget.data["patient_id"]},
+    //     "appointmentDate": "${DateTime.parse(widget.data["appointmentDate"]).toString().split(" ")[0]}T00:00:00.000+0000",
+    //     "time_slot": ${widget.data["time_slot"]},
+    //     "payment_info": $paymentId,
+    //     "doctor": "${widget.doctorId}",
+    //     "service_id": "6340254a0ee969214e9d3063"
+    //   """);
+    Response assesmentRes = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/assessment-service",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
 
     Response res = await ApiService.dio.post(
       "${ApiService.protocol}${ApiService.baseUrl2}hvt/book",
@@ -211,13 +212,37 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
         "checkupFrequency": widget.data["checkupFrequency"],
         "patient_id": widget.data["patient_id"],
         // "name": widget.data["name"],
-        "appointmentDate": widget.data["time_slot"].split(' ')[0],
-        "time_slot": widget.data["time_slot"].split(' ')[1],
+        "appointmentDate":
+            "${DateTime.parse(widget.data["appointmentDate"]).toString().split(" ")[0]}T00:00:00.000+0000",
+        "time_slot": widget.data["time_slot"],
         "payment_info": paymentId,
         "doctor": widget.doctorId,
-        "service_id": "633e7fbb000b2619dbbf84f4"
+        "service_id": assesmentRes.data["_id"],
+
+        // "goal": "Losing Weight",
+        // "shape": "Triangle",
+        // "appointmentDate": "2022-10-11T00:00:00.000+0000",
+        // "healthRating": "10",
+        // "checkupFrequency": "Once in months",
+        // "patient_id": "6325d2bf2f8f1178ecf461ae",
+        // "name": "Manickam Anna",
+        // "time_slot": "05:00 pm",
+        // "payment_info": "633ad06fa8d2093e24ee131f",
+        // "doctor": "63342eedec31536598cbf7b9",
+        //  "service_id": assesmentRes.data["_id"],
       },
     );
+    print("hellooww how are u${res.data}");
+    // print("time_slot: ${widget.data["time_slot"]}");
+  }
+
+  Future<void> _loadAssessmentService() async {
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/assessment-service",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    print("assessment service ${res.data}");
   }
 
   @override
@@ -358,7 +383,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                                               child: Text(
                                                 // 'hai',
 
-                                                '${DateFormat('MMM d, yyyy h:mma').format(DateTime.parse(widget.data["time_slot"]))}',
+                                                '${DateFormat('MMM d, yyyy h:mma').format(DateTime.parse(widget.data["appointmentDate"]))}',
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyText1

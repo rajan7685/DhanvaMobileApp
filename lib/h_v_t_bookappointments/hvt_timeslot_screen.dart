@@ -42,6 +42,22 @@ String _to24HourTime(String time) {
   return '$hour:$minute';
 }
 
+String _time24to12Format(String time) {
+  time = time.split(" ").first;
+  int hour = int.parse(time.split(":").first);
+  String minuteString = time.split(":").last;
+
+  if (hour == 0) {
+    return '$hour:$minuteString am';
+  } else if (hour <= 12) {
+    return '${time.split(":").first}:$minuteString am';
+  } else {
+    int h = hour % 12;
+    if (h <= 9) return '0$h:$minuteString pm';
+    return '$h:$minuteString pm';
+  }
+}
+
 ChangeNotifierProvider<TimeSlotProvider> _timeSotProvider =
     ChangeNotifierProvider((ref) => TimeSlotProvider());
 
@@ -80,7 +96,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
 
   Future<void> _loadAllTimeSlots() async {
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/available/time-slots",
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/available/time-slots/alternate",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -108,6 +124,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
     setState(() {
       _isTimeSlotDataLoading = false;
     });
+    print(" time_slot:${_time24to12Format(_dateTimeSelectedString)}");
   }
 
   @override
@@ -199,7 +216,8 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
                             ? _selectedDoctorName
                             : widget.doctor.name,
                         data: {
-                          "time_slot": _dateTimeSelectedId.split(",")[0],
+                          "appointmentDate": _dateTimeSelectedId.split(",")[0],
+                          "time_slot": _dateTimeSelectedString,
                           ...widget.data,
                         }),
                   ),
@@ -410,11 +428,11 @@ class _GlobalTimeSlotRendererState extends State<GlobalTimeSlotRenderer> {
                 widget.availableTimeSlots[index].availableTimeSlot);
             return InkWell(
               onTap: () {
-                print("select ${widget.availableTimeSlots[index].toString()}");
                 setState(() {
                   _dateTimeSelectedId =
                       '${widget.date.toString().split(' ')[0]} $formattedTime, ${widget.parentIndex}:$index';
-                  _dateTimeSelectedString = formattedTime;
+                  _dateTimeSelectedString =
+                      widget.availableTimeSlots[index].availableTimeSlot;
                   _selectedDoctorId =
                       widget.availableTimeSlots[index].docIds[0];
                   _selectedDoctorName =
@@ -422,6 +440,9 @@ class _GlobalTimeSlotRendererState extends State<GlobalTimeSlotRenderer> {
 
                   widget.updateUI();
                 });
+                print("initial time : $_dateTimeSelectedString");
+                print(
+                    "fornatted time : ${_time24to12Format(_dateTimeSelectedString)}");
               },
               child: TimeSLotButton(
                   dateId:
