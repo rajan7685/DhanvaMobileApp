@@ -48,6 +48,7 @@ class _HvtAppointmentsScreenWidgetState
   List<dynamic> resDatas;
 
   Future<void> _loadhvtAppointments({bool init = false}) async {
+    print("calling the get API");
     if (!init)
       setState(() {
         isDataLoading = true;
@@ -63,13 +64,20 @@ class _HvtAppointmentsScreenWidgetState
     setState(() {
       isDataLoading = false;
     });
-    print("HVT APPOINTMENT LIST${res.data}");
+    print((res.data as List).length);
+    print("HVT${res.data}");
   }
 
   @override
   void initState() {
     super.initState();
     _loadhvtAppointments(init: true);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -125,13 +133,13 @@ class _HvtAppointmentsScreenWidgetState
                     children: [
                       InkWell(
                         onTap: () async {
-                          if (widget.shouldPopNormally)
-                            Navigator.pop(context);
-                          else
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => NavBarPage())));
+                          // if (widget.shouldPopNormally)
+                          //   Navigator.pop(context);
+                          // else
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => NavBarPage())));
                         },
                         child: Icon(
                           Icons.arrow_back_rounded,
@@ -203,6 +211,8 @@ class _HvtAppointmentsScreenWidgetState
                                                 hvtCheckScreenWidget(
                                                   appointmentJson:
                                                       appointments[index],
+                                                  hvtId: appointments[index]
+                                                      ["_id"],
                                                 )));
                                   },
                                 ),
@@ -226,9 +236,7 @@ class _HvtAppointmentsScreenWidgetState
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => HvtStartAppointmentWidget(
-                                  
-                                  )));
+                                  builder: (_) => AppGuideScreen2Widget()));
                             },
                             child: Text(
                               'Create HVT Program',
@@ -340,7 +348,11 @@ class AppointmentCard extends StatelessWidget {
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
                             child: Text(
-                              "${DateFormat('MMM d, yyyy').format(DateTime.parse(appointmentModel['appointmentDate']))} ${appointmentModel['time_slot']}",
+                              "${DateFormat('MMM d, yyyy').format(
+                                DateTime.parse(
+                                  appointmentModel['appointmentDate'],
+                                ),
+                              )} ${appointmentModel['time_slot']}",
                               // "12 Sept 12:00AM",
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
@@ -368,8 +380,11 @@ class AppointmentCard extends StatelessWidget {
                           onPressed: () {
                             print('Button pressed ...');
                           },
-                          text:
-                              statusText(int.parse(appointmentModel["status"])),
+                          text: statusText(
+                            int.parse(
+                              appointmentModel["status"],
+                            ),
+                          ),
                           options: FFButtonOptions(
                             // width: 80,
                             height: 24,

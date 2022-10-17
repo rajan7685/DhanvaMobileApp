@@ -1,3 +1,5 @@
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
+
 import '../app_guide_screen2/app_guide_screen2_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -187,7 +189,7 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        AppGuideScreen2Widget(),
+                                        HvtAppointmentsScreenWidget(),
                                   ),
                                 );
                               },

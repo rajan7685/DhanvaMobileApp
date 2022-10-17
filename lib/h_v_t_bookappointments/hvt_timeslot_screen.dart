@@ -124,7 +124,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
     setState(() {
       _isTimeSlotDataLoading = false;
     });
-    print(" time_slot:${_time24to12Format(_dateTimeSelectedString)}");
+    //print(" time_slot:${_time24to12Format(_dateTimeSelectedString)}");
   }
 
   @override
@@ -217,7 +217,9 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
                             : widget.doctor.name,
                         data: {
                           "appointmentDate": _dateTimeSelectedId.split(",")[0],
-                          "time_slot": _dateTimeSelectedString,
+                          "time_slot": DateFormat("h:mm a").format(
+                              DateTime.parse(
+                                  _dateTimeSelectedId.split(",")[0])),
                           ...widget.data,
                         }),
                   ),

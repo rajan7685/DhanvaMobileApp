@@ -143,6 +143,7 @@ class _AddFamilyMembersScreenWidgetState
             'Authorization':
                 SharedPreferenceService.loadString(key: AuthTokenKey)
           }));
+      print("check add res${res.data}");
 
       if (res.statusCode == 200) {
         ScaffoldMessenger.of(context)

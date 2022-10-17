@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
@@ -15,11 +16,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 
+import '../global/models/patient.dart';
 import '../global/services/api_services/api_service_base.dart';
 import '../global/services/shared_preference_service.dart';
 
 class hvtLogsInvestigationWidget extends StatefulWidget {
-  const hvtLogsInvestigationWidget({Key key}) : super(key: key);
+  final Map<String, dynamic> appointmentJson;
+  final String hvtId;
+
+  const hvtLogsInvestigationWidget(
+      {Key key, @required this.appointmentJson, @required this.hvtId})
+      : super(key: key);
 
   @override
   _hvtLogsInvestigationWidgetState createState() =>
@@ -30,36 +37,63 @@ class _hvtLogsInvestigationWidgetState
     extends State<hvtLogsInvestigationWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int tabIndex;
-  List<dynamic> _chats = [
-    {
-      "message": "hi how are you",
-      "date_time": DateTime.now().toString(),
-      "all_read": true
-    },
-    {
-      "message": "hi how are you",
-      "date_time": DateTime.now().toString(),
-      "all_read": false
-    }
-  ];
+  List<dynamic> _chats = [];
+  bool _isChatsLoading = true;
+  TextEditingController _chatController;
 
   @override
   void initState() {
     super.initState();
-    _loadChats();
+    _loadChats(init: true);
+    _chatController = TextEditingController();
 
     // textController16 = TextEditingController(text: 'Type your message...');
     tabIndex = 0;
   }
 
-  Future<void> _loadChats() async {
-    //print("${ApiService.protocol}${ApiService.baseUrl2}hvt/checkup-intervals");
+  Future<void> _loadChats({bool init = false}) async {
+    if (!init)
+      setState(() {
+        _isChatsLoading = true;
+      });
+    String patientId = Patient.fromJson(
+            jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
+        .id;
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/get/logs/632b345d811ef1672064c775/63342eedec31536598cbf7b9",
+        "${ApiService.protocol}${ApiService.baseUrl2}hvt/get/logs/${widget.hvtId}/$patientId",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-    print("chat details${res.data}");
+    _chats = res.data["chats"];
+    print(_chats);
+    setState(() {
+      _isChatsLoading = false;
+    });
+  }
+
+  Future<void> _sendMessage() async {
+    var data = FormData.fromMap({
+      "sender_id": Patient.fromJson(
+        jsonDecode(
+          SharedPreferenceService.loadString(key: PatientKey),
+        ),
+      ).id,
+      "receiver_id": widget.appointmentJson["doctor"]["_id"],
+      "sender_type": "Patient",
+      "message": _chatController.text,
+      "hvt_id": widget.hvtId,
+      //'file': await MultipartFile.fromFile('./text.txt',filename: 'upload.txt')
+    });
+    Response res = await ApiService.dio.post(
+      '${ApiService.protocol}${ApiService.baseUrl2}hvt/post/message',
+      data: data,
+      options: Options(headers: {
+        'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+      }),
+    );
+    print(res.data);
+
+    _loadChats();
   }
 
   @override
@@ -68,7 +102,7 @@ class _hvtLogsInvestigationWidgetState
   }
 
   Widget chatWidget(int index, {@required bool me}) {
-    print(_chats[index]['profile']);
+    // print(_chats[index]['profile']);
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(!me ? 10 : 0, 20, me ? 10 : 0, 0),
       child: Row(
@@ -179,7 +213,7 @@ class _hvtLogsInvestigationWidgetState
                   if (me)
                     Icon(
                       FontAwesomeIcons.checkDouble,
-                      color: _chats[index]['all_read']
+                      color: _chats[index]['read_by']
                           ? Color(0xFF00A8A3)
                           : Colors.white,
                       size: 9,
@@ -304,87 +338,9 @@ class _hvtLogsInvestigationWidgetState
                           fontWeight: FontWeight.w300,
                         ),
                   ),
-                  // // Text(
-                  // //   'Subscription Plan',
-                  // //   style: FlutterFlowTheme.of(context).bodyText1.override(
-                  // //         fontFamily: 'Open Sans',
-                  // //         color: Color(0xFFF3F4F4),
-                  // //         fontSize: 16,
-                  // //         fontWeight: FontWeight.w300,
-                  // //       ),
-                  // ),
                 ],
               ),
             ),
-            // Row(
-            //   mainAxisSize: MainAxisSize.max,
-            //   children: [
-            //     Padding(
-            //       padding: EdgeInsetsDirectional.fromSTEB(4, 0, 0, 0),
-            //       child: Text(
-            //         'Subscription Plan',
-            //         style: FlutterFlowTheme.of(context).bodyText1.override(
-            //               fontFamily: 'Open Sans',
-            //               color: Color(0xFFF3F4F4),
-            //               fontWeight: FontWeight.w600,
-            //             ),
-            //       ),
-            //     ),
-            //     Expanded(
-            //       child: Padding(
-            //         padding: EdgeInsetsDirectional.fromSTEB(120, 0, 5, 0),
-            //         child: TextFormField(
-            //           controller: textController1,
-            //           autofocus: true,
-            //           obscureText: false,
-            //           decoration: InputDecoration(
-            //             hintStyle: FlutterFlowTheme.of(context).bodyText2,
-            //             enabledBorder: UnderlineInputBorder(
-            //               borderSide: BorderSide(
-            //                 color: Color(0xFF00A8A3),
-            //                 width: 1,
-            //               ),
-            //               borderRadius: BorderRadius.circular(100),
-            //             ),
-            //             focusedBorder: UnderlineInputBorder(
-            //               borderSide: BorderSide(
-            //                 color: Color(0xFF00A8A3),
-            //                 width: 1,
-            //               ),
-            //               borderRadius: BorderRadius.circular(100),
-            //             ),
-            //             errorBorder: UnderlineInputBorder(
-            //               borderSide: BorderSide(
-            //                 color: Color(0x00000000),
-            //                 width: 1,
-            //               ),
-            //               borderRadius: BorderRadius.circular(100),
-            //             ),
-            //             focusedErrorBorder: UnderlineInputBorder(
-            //               borderSide: BorderSide(
-            //                 color: Color(0x00000000),
-            //                 width: 1,
-            //               ),
-            //               borderRadius: BorderRadius.circular(100),
-            //             ),
-            //             filled: true,
-            //             fillColor: Color(0xFFF3F4F4),
-            //             suffixIcon: Icon(
-            //               Icons.local_play,
-            //               color: Color(0xFF070000),
-            //               size: 22,
-            //             ),
-            //           ),
-            //           style: FlutterFlowTheme.of(context).bodyText1.override(
-            //                 fontFamily: 'Open Sans',
-            //                 color: Colors.black,
-            //               ),
-            //           textAlign: TextAlign.end,
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Align(
               alignment: AlignmentDirectional(0, 1),
               //alignment: AlignmentDirectional(0, 2),
@@ -447,15 +403,26 @@ class _hvtLogsInvestigationWidgetState
                                     Column(
                                       children: [
                                         Expanded(
-                                          child: ListView.builder(
-                                            itemBuilder: ((context, index) =>
-                                                chatWidget(index,
-                                                    me: index % 2 == 0
-                                                        ? true
-                                                        : false)),
-                                            itemCount: _chats.length,
-                                            shrinkWrap: true,
-                                          ),
+                                          child: _isChatsLoading
+                                              ? Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                )
+                                              : (_chats.length == 0
+                                                  ? Center(
+                                                      child: Text(
+                                                          "Nothing to show here"),
+                                                    )
+                                                  : ListView.builder(
+                                                      itemBuilder: ((context,
+                                                              index) =>
+                                                          chatWidget(index,
+                                                              me: index % 2 == 0
+                                                                  ? true
+                                                                  : false)),
+                                                      itemCount: _chats.length,
+                                                      shrinkWrap: true,
+                                                    )),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8),
@@ -472,7 +439,7 @@ class _hvtLogsInvestigationWidgetState
                                                   textAlignVertical:
                                                       TextAlignVertical.center,
                                                   maxLines: 1,
-                                                  //controller: _chatController,
+                                                  controller: _chatController,
                                                   obscureText: false,
                                                   decoration: InputDecoration(
                                                     isCollapsed: true,
@@ -528,7 +495,7 @@ class _hvtLogsInvestigationWidgetState
                                                           ),
                                                         ),
                                                         InkWell(
-                                                          // onTap: _sendMessage,
+                                                          onTap: _sendMessage,
                                                           child: Image.asset(
                                                             'assets/images/7830587_send_email_icon.png',
                                                             width: 20,

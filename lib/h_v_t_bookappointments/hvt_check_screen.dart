@@ -19,7 +19,9 @@ import 'hvt_check_payment.dart';
 
 class hvtCheckScreenWidget extends StatefulWidget {
   final Map<String, dynamic> appointmentJson;
-  const hvtCheckScreenWidget({Key key, @required this.appointmentJson})
+  final String hvtId;
+  const hvtCheckScreenWidget(
+      {Key key, @required this.appointmentJson, @required this.hvtId})
       : super(key: key);
 
   @override
@@ -245,18 +247,20 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
-                                              Text(
-                                                'HVT Goal: ${widget.appointmentJson["goal"]}',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color:
-                                                              Color(0xFF070000),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                              Flexible(
+                                                child: Text(
+                                                  'HVT Goal: ${widget.appointmentJson["goal"]}',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            Color(0xFF070000),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -268,19 +272,20 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
                                             children: [
-                                              Text(
-                                                'HVT Plan: ${resData["plan_name"]}',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color:
-                                                              Color(0xFF070000),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                              ),
+                                              if (resData["plan_name"] != null)
+                                                Text(
+                                                  'HVT Plan: ${resData["plan_name"]}',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            Color(0xFF070000),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                ),
                                             ],
                                           ),
                                         ),
@@ -320,8 +325,8 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                             children: [
                               Expanded(
                                 child: Container(
-                                  width: 100,
-                                  height: 100,
+                                  // width: 100,
+                                  // height: 100,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.only(
@@ -341,21 +346,20 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
-                                            Expanded(
+                                            Flexible(
                                               child: Text(
-                                                " ${resData["consultation_notes"]}",
-                                                maxLines: 5,
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyText1
-                                                        .override(
-                                                          fontFamily: 'Poppins',
-                                                          color:
-                                                              Color(0xFF070000),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                              ),
+                                                  " ${resData["consultation_notes"] ?? "Not mentioned by the doctor"}",
+                                                  maxLines: 5,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            Color(0xFF070000),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      )),
                                             ),
                                           ],
                                         ),
@@ -375,7 +379,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                width: 150,
+                                // width: 150,
                                 height: 50,
                                 decoration: BoxDecoration(
                                   color: Color(0xFF00A8A3),
@@ -395,6 +399,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                             ),
                                             hvtId: resData["_id"],
                                             hvtStatus: resData["status"],
+                                           
                                           ),
                                         ));
                                   },
@@ -402,17 +407,75 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        'Pay \u20B9${resData["initial_amount"]}',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Colors.white,
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                      ),
+                                      if (resData["hvtPayments"] != null &&
+                                          resData["initial_amount"] != null &&
+                                          !resData["hvtPayments"]
+                                              .containsKey("initial_payment"))
+                                        Text(
+                                          'Pay \u20B9${resData["initial_amount"]}',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Open Sans',
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      // Padding(
+                                      //   padding: EdgeInsetsDirectional.fromSTEB(
+                                      //       12, 0, 0, 0),
+                                      //   child: Image.asset(
+                                      //     'assets/images/Layer_2.png',
+                                      //     width: 35,
+                                      //     height: 35,
+                                      //     fit: BoxFit.contain,
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                // width: 150,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF00A8A3),
+                                  borderRadius: BorderRadius.circular(10),
+                                  shape: BoxShape.rectangle,
+                                ),
+                                child: InkWell(
+                                  onTap: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              hvtLogsInvestigationWidget(
+                                            appointmentJson:
+                                                widget.appointmentJson,
+                                                 hvtId: resData["_id"],
+                                                
+                                          ),
+                                        ));
+                                  },
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (resData["hvtPayments"] != null &&
+                                          resData["hvtPayments"]
+                                              .containsKey("initial_payment"))
+                                        Text(
+                                          'Logs & Investigation',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Open Sans',
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
                                       // Padding(
                                       //   padding: EdgeInsetsDirectional.fromSTEB(
                                       //       12, 0, 0, 0),

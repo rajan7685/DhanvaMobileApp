@@ -380,7 +380,9 @@ class _hvtCheckPaymentScreenWidgetState
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => hvtLogsInvestigationWidget(),
+                          builder: (context) => hvtLogsInvestigationWidget(
+                            appointmentJson: widget.data,
+                          ),
                         ),
                       );
                     },

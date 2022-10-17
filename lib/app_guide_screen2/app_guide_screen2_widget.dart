@@ -498,7 +498,7 @@ class _AppGuideScreen2WidgetState extends State<AppGuideScreen2Widget> {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
                                                 builder: (_) =>
-                                                    HvtAppointmentsScreenWidget()));
+                                                    HvtStartAppointmentWidget()));
                                       },
                                       child: Text(
                                         'Start Booking',

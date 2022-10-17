@@ -73,6 +73,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
   bool isDataLoading = true;
 
   Future<void> _bookAppointment({@required String transactionId}) async {
+    print("An Appointment is started booking!!!");
     Response res = await ApiService.dio.post(
         '${ApiService.protocol}api2.dhanva.icu/payment/add',
         options: Options(headers: {
@@ -112,7 +113,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
     var options = {
       'key': 'rzp_test_xbbqVc7yVFG9f6',
       'amount': int.parse(widget.data["amount"]) * 100,
-      'name': "Initial Payment",
+      'name': widget.data["name"],
       'description': 'Service',
       'prefill': {'contact': p.phone, 'email': p.email}
     };
@@ -145,95 +146,21 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
   @override
   void initState() {
     super.initState();
-    // print(widget.timeString);
-    // widget.doctor = "123";
-    // // widget.hospital_id = "321";
-    // widget.doctor = "Esskay";
-    // widget.date = DateTime.now();
-    // widget.timeString = DateTime.now().toString();
-    // widget.goal = "To get more healthy";
-    // widget.patient_id = "12345678";
-    //widget.patientRelationType = "son";
-    // widget.service = QuickServiceUiModel(
-    //     departments: ["departments"],
-    //     amount: 100,
-    //     id: "yjhbx",
-    //     name: "service name",
-    //     enabled: true,
-    //     createdDateTime: DateTime.now(),
-    //     v: 0,
-    //     iconLink: "",
-    //     updatedDateTime: DateTime.now(),
-    //     paymentType: 1);
-
     _rzPay = Razorpay();
     _rzPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _rzPay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _rzPay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-    //print("raw date ${widget.date.toString()}");
-    //print("Formatted date ${widget.date.toString().split(' ')[0]}");
-
-    print("final all data to be send ${widget.data}");
-    print("Doctor ${widget.doctorId} ${widget.doctorName}");
-    print("time_slot: ${widget.data["time_slot"]}");
     _sendAllDetails();
     _loadAssessmentService();
+    print("timeslot issue check${widget.data["appointmentDate"]}");
   }
 
   Future<void> _sendAllDetails() async {
-    // print("""
-    //   booking req body
-    //     "shape": ${widget.data["shapes"]},
-    //     "goal": ${widget.data["goal"]},
-    //     "healthRating": ${widget.data["healthRating"]},
-    //     "checkupFrequency": ${widget.data["checkupFrequency"]},
-    //     "patient_id": ${widget.data["patient_id"]},
-    //     "appointmentDate": "${DateTime.parse(widget.data["appointmentDate"]).toString().split(" ")[0]}T00:00:00.000+0000",
-    //     "time_slot": ${widget.data["time_slot"]},
-    //     "payment_info": $paymentId,
-    //     "doctor": "${widget.doctorId}",
-    //     "service_id": "6340254a0ee969214e9d3063"
-    //   """);
     Response assesmentRes = await ApiService.dio.get(
         "${ApiService.protocol}${ApiService.baseUrl2}hvt/assessment-service",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-
-    Response res = await ApiService.dio.post(
-      "${ApiService.protocol}${ApiService.baseUrl2}hvt/book",
-      options: Options(headers: {
-        'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
-      }),
-      data: {
-        "shape": widget.data["shapes"],
-        "goal": widget.data["goal"],
-        "healthRating": widget.data["healthRating"],
-        "checkupFrequency": widget.data["checkupFrequency"],
-        "patient_id": widget.data["patient_id"],
-        // "name": widget.data["name"],
-        "appointmentDate":
-            "${DateTime.parse(widget.data["appointmentDate"]).toString().split(" ")[0]}T00:00:00.000+0000",
-        "time_slot": widget.data["time_slot"],
-        "payment_info": paymentId,
-        "doctor": widget.doctorId,
-        "service_id": assesmentRes.data["_id"],
-
-        // "goal": "Losing Weight",
-        // "shape": "Triangle",
-        // "appointmentDate": "2022-10-11T00:00:00.000+0000",
-        // "healthRating": "10",
-        // "checkupFrequency": "Once in months",
-        // "patient_id": "6325d2bf2f8f1178ecf461ae",
-        // "name": "Manickam Anna",
-        // "time_slot": "05:00 pm",
-        // "payment_info": "633ad06fa8d2093e24ee131f",
-        // "doctor": "63342eedec31536598cbf7b9",
-        //  "service_id": assesmentRes.data["_id"],
-      },
-    );
-    print("hellooww how are u${res.data}");
-    // print("time_slot: ${widget.data["time_slot"]}");
   }
 
   Future<void> _loadAssessmentService() async {
