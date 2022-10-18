@@ -19,6 +19,8 @@ import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import '../global/models/patient.dart';
 import '../global/services/api_services/api_service_base.dart';
 import '../global/services/shared_preference_service.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 class hvtLogsInvestigationWidget extends StatefulWidget {
   final Map<String, dynamic> appointmentJson;
@@ -37,20 +39,33 @@ class _hvtLogsInvestigationWidgetState
     extends State<hvtLogsInvestigationWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int tabIndex;
+  TextEditingController _chatController;
+  PlatformFile _file;
+
+  // for Log
   List<dynamic> _chats = [];
   bool _isChatsLoading = true;
-  TextEditingController _chatController;
+
+  // for Investigations
+  bool _isInvestigationLoading = true;
+  List<dynamic> _investigationChats = [];
+
+  // for Observation
+  bool _isObservationLoading = true;
+  List<dynamic> _observationChats = [];
 
   @override
   void initState() {
     super.initState();
     _loadChats(init: true);
+    _loadInvestigationChats(init: true);
     _chatController = TextEditingController();
 
     // textController16 = TextEditingController(text: 'Type your message...');
     tabIndex = 0;
   }
 
+//For logs load chat
   Future<void> _loadChats({bool init = false}) async {
     if (!init)
       setState(() {
@@ -71,7 +86,79 @@ class _hvtLogsInvestigationWidgetState
     });
   }
 
+  //for Investigation load chat
+  Future<void> _loadInvestigationChats({bool init = false}) async {
+    if (!init)
+      setState(() {
+        _isInvestigationLoading = true;
+      });
+    String patientId = Patient.fromJson(
+            jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
+        .id;
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvtRecord/get/investigation/${widget.hvtId}/$patientId",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    (res.data as List).forEach((json) => _investigationChats.add(json));
+    setState(() {
+      _isInvestigationLoading = false;
+    });
+  }
+
+//for Observation load chat
+
+  Future<void> _loadObservationChats({bool init = false}) async {
+    if (!init)
+      setState(() {
+        _isObservationLoading = true;
+      });
+    String patientId = Patient.fromJson(
+            jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
+        .id;
+    Response res = await ApiService.dio.get(
+        "${ApiService.protocol}${ApiService.baseUrl2}hvtRecord/get/observation/${widget.hvtId}/$patientId",
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    _observationChats = res.data["chats"];
+    print(_observationChats);
+    setState(() {
+      _isObservationLoading = false;
+    });
+  }
+
+  Future<void> _pickFile() async {
+    FilePickerResult result =
+        await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result != null) {
+      _file = result.files.first;
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Please select a File')));
+    }
+  }
+
+  Future<void> _downloadFile({String fileUrl}) async {
+    //
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('File is being downloaded')));
+    Directory _dir = await getApplicationDocumentsDirectory();
+    String _timeStamp = DateTime.now().millisecond.toString();
+    String _fileName = fileUrl.split('/').last;
+    await Dio().download(fileUrl, '${_dir.path}/$_timeStamp $_fileName');
+    try {
+      await OpenFile.open('${_dir.path}/$_timeStamp $_fileName');
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future<void> _sendMessage() async {
+    if (_file != null)
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Please be patient while we upload your file")));
     var data = FormData.fromMap({
       "sender_id": Patient.fromJson(
         jsonDecode(
@@ -82,7 +169,9 @@ class _hvtLogsInvestigationWidgetState
       "sender_type": "Patient",
       "message": _chatController.text,
       "hvt_id": widget.hvtId,
-      //'file': await MultipartFile.fromFile('./text.txt',filename: 'upload.txt')
+      'document': _file == null
+          ? null
+          : await MultipartFile.fromFile(_file.path, filename: _file.name)
     });
     Response res = await ApiService.dio.post(
       '${ApiService.protocol}${ApiService.baseUrl2}hvt/post/message',
@@ -91,9 +180,10 @@ class _hvtLogsInvestigationWidgetState
         'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
       }),
     );
-    print(res.data);
-
+    _chatController.clear();
+    _file = null;
     _loadChats();
+    print("Chat res data${res.data}");
   }
 
   @override
@@ -101,6 +191,7 @@ class _hvtLogsInvestigationWidgetState
     super.dispose();
   }
 
+  // log chats widget
   Widget chatWidget(int index, {@required bool me}) {
     // print(_chats[index]['profile']);
     return Padding(
@@ -138,8 +229,8 @@ class _hvtLogsInvestigationWidgetState
                     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                     child: InkWell(
                       onTap: () {
-                        // if (_chats[index]['document'] != null)
-                        //   _downloadFile(fileUrl: _chats[index]['document']);
+                        if (_chats[index]['document'] != null)
+                          _downloadFile(fileUrl: _chats[index]['document']);
                       },
                       child: Container(
                         constraints: BoxConstraints(
@@ -162,19 +253,23 @@ class _hvtLogsInvestigationWidgetState
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              // if (_chats[index]['document'] != null)
-                              //   Icon(
-                              //     Icons.file_download,
-                              //     size: 13,
-                              //     color: Colors.white,
-                              //   ),
-                              // if (_chats[index]['document'] != null)
-                              //   SizedBox(
-                              //     width: 6,
-                              //   ),
+                              if (_chats[index]['document'] != null)
+                                InkWell(
+                                  onTap: () => _downloadFile(
+                                      fileUrl: _chats[index]['document']),
+                                  child: Icon(
+                                    Icons.file_download,
+                                    size: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              if (_chats[index]['document'] != null)
+                                SizedBox(
+                                  width: 6,
+                                ),
                               Flexible(
                                 child: Text(
-                                  _chats[index]['message'],
+                                  _chats[index]['message'] ?? "",
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
@@ -210,14 +305,146 @@ class _hvtLogsInvestigationWidgetState
                   ),
                   //Spacer(),
                   SizedBox(width: 8),
-                  if (me)
-                    Icon(
-                      FontAwesomeIcons.checkDouble,
-                      color: _chats[index]['read_by']
-                          ? Color(0xFF00A8A3)
-                          : Colors.white,
-                      size: 9,
+                  // if (me)
+                  //   Icon(
+                  //     FontAwesomeIcons.checkDouble,
+                  //     color: _chats[index]['read_by']
+                  //         ? Color(0xFF00A8A3)
+                  //         : Colors.white,
+                  //     size: 9,
+                  //   ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // investigatio chat widget
+  Widget _investigationChatWidget(int index, {@required bool me}) {
+    return Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(!me ? 10 : 0, 20, me ? 10 : 0, 0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: me ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+            child: Container(
+              width: 45,
+              height: 45,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Image.network(
+                _investigationChats[index]['profile'] == null ||
+                        (_investigationChats[index]['profile'] as String)
+                            .isEmpty
+                    ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYL2_7f_QDJhq5m9FYGrz5W4QI5EUuDLSdGA&usqp=CAU"
+                    : _chats[index]['profile'],
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                    child: InkWell(
+                      onTap: () {
+                        if (_investigationChats[index]['filePath'] != null)
+                          _downloadFile(
+                              fileUrl: _investigationChats[index]['filePath']);
+                      },
+                      child: Container(
+                        constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width * 0.2,
+                          maxWidth: MediaQuery.of(context).size.width * 0.75,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF00A8A3),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(0),
+                            bottomRight:
+                                _investigationChats[index]['filePath'] == null
+                                    ? Radius.circular(10)
+                                    : Radius.circular(0),
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(12, 7, 12, 7),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (_investigationChats[index]['filePath'] !=
+                                  null)
+                                InkWell(
+                                  onTap: () => _downloadFile(
+                                      fileUrl: _investigationChats[index]
+                                          ['filePath']),
+                                  child: Icon(
+                                    Icons.file_download,
+                                    size: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              if (_investigationChats[index]['filePath'] !=
+                                  null)
+                                SizedBox(
+                                  width: 6,
+                                ),
+                              Flexible(
+                                child: Text(
+                                  (_investigationChats[index]['filePath']
+                                          as String)
+                                      .split("/")
+                                      .last,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 2,
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    DateFormat('hh:mm a').format(
+                        DateTime.parse(_investigationChats[index]['date_time'])
+                            .toLocal()),
+                    // _chats[index]['date_time'],
+                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                          fontFamily: 'Poppins',
+                          color: Color(0xFF00A8A3),
+                          fontSize: 6,
+                        ),
+                  ),
+                  //Spacer(),
+                  SizedBox(width: 8),
                 ],
               ),
             ],
@@ -243,12 +470,16 @@ class _hvtLogsInvestigationWidgetState
                     return Padding(
                       padding: MediaQuery.of(context).viewInsets,
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: HvtBottomsheetWidget(),
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: HvtBottomsheetWidget(
+                          hvtId: widget.hvtId,
+                          doctorId: widget.appointmentJson["doctor"]["_id"],
+                        ),
                       ),
                     );
                   },
                 ).then((value) => setState(() {}));
+                _loadInvestigationChats();
               },
               backgroundColor: Color(0xFF00A8A3),
               elevation: 8,
@@ -402,6 +633,7 @@ class _hvtLogsInvestigationWidgetState
                                   children: [
                                     Column(
                                       children: [
+                                        //Logs
                                         Expanded(
                                           child: _isChatsLoading
                                               ? Center(
@@ -417,9 +649,16 @@ class _hvtLogsInvestigationWidgetState
                                                       itemBuilder: ((context,
                                                               index) =>
                                                           chatWidget(index,
-                                                              me: index % 2 == 0
-                                                                  ? true
-                                                                  : false)),
+                                                              me: _chats[index][
+                                                                      "sender_id"] ==
+                                                                  Patient
+                                                                      .fromJson(
+                                                                    jsonDecode(
+                                                                      SharedPreferenceService
+                                                                          .loadString(
+                                                                              key: PatientKey),
+                                                                    ),
+                                                                  ).id)),
                                                       itemCount: _chats.length,
                                                       shrinkWrap: true,
                                                     )),
@@ -459,30 +698,7 @@ class _hvtLogsInvestigationWidgetState
                                                           MainAxisSize.min,
                                                       children: [
                                                         InkWell(
-                                                          onTap: () async {
-                                                            FilePickerResult
-                                                                result =
-                                                                await FilePicker
-                                                                    .platform
-                                                                    .pickFiles();
-
-                                                            if (result !=
-                                                                null) {
-                                                              File file = File(
-                                                                  result
-                                                                      .files
-                                                                      .single
-                                                                      .path);
-                                                            } else {
-                                                              // ScaffoldMessenger
-                                                              //         .of(
-                                                              //             context)
-                                                              //     .showSnackBar(
-                                                              //         SnackBar(
-                                                              //             content:
-                                                              //                 Text('Please select a file')));
-                                                            }
-                                                          },
+                                                          onTap: _pickFile,
                                                           child:
                                                               Transform.rotate(
                                                             angle: 45,
@@ -495,7 +711,21 @@ class _hvtLogsInvestigationWidgetState
                                                           ),
                                                         ),
                                                         InkWell(
-                                                          onTap: _sendMessage,
+                                                          onTap: () {
+                                                            if (_chatController
+                                                                    .text
+                                                                    .isEmpty &&
+                                                                _file == null)
+                                                              ScaffoldMessenger
+                                                                      .of(
+                                                                          context)
+                                                                  .showSnackBar(
+                                                                      SnackBar(
+                                                                          content:
+                                                                              Text("Please enter something to send")));
+                                                            else
+                                                              _sendMessage();
+                                                          },
                                                           child: Image.asset(
                                                             'assets/images/7830587_send_email_icon.png',
                                                             width: 20,
@@ -570,12 +800,29 @@ class _hvtLogsInvestigationWidgetState
                                         )
                                       ],
                                     ),
-                                    ListView.builder(
-                                      itemBuilder: ((context, index) =>
-                                          chatWidget(index, me: false)),
-                                      itemCount: _chats.length,
-                                      shrinkWrap: true,
-                                    ),
+                                    //Investigations
+                                    _isInvestigationLoading
+                                        ? Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : ListView.builder(
+                                            itemBuilder: ((context, index) =>
+                                                _investigationChatWidget(index,
+                                                    me: _investigationChats[
+                                                                index]
+                                                            ["sender_id"] ==
+                                                        Patient.fromJson(jsonDecode(
+                                                                SharedPreferenceService
+                                                                    .loadString(
+                                                                        key:
+                                                                            PatientKey)))
+                                                            .id)),
+                                            itemCount:
+                                                _investigationChats.length,
+                                            shrinkWrap: true,
+                                          ),
+
+                                    //Observation
                                     ListView.builder(
                                       itemBuilder: ((context, index) =>
                                           chatWidget(index, me: false)),
