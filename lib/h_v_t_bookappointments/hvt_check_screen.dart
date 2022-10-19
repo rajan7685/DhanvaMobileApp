@@ -20,8 +20,12 @@ import 'hvt_check_payment.dart';
 class hvtCheckScreenWidget extends StatefulWidget {
   final Map<String, dynamic> appointmentJson;
   final String hvtId;
+  final int hvtStatus;
   const hvtCheckScreenWidget(
-      {Key key, @required this.appointmentJson, @required this.hvtId})
+      {Key key,
+      @required this.appointmentJson,
+      @required this.hvtId,
+      @required this.hvtStatus})
       : super(key: key);
 
   @override
@@ -399,7 +403,6 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                             ),
                                             hvtId: resData["_id"],
                                             hvtStatus: resData["status"],
-                                           
                                           ),
                                         ));
                                   },
@@ -453,8 +456,8 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                               hvtLogsInvestigationWidget(
                                             appointmentJson:
                                                 widget.appointmentJson,
-                                                 hvtId: resData["_id"],
-                                                
+                                            hvtId: resData["_id"],
+                                            hvtStatus: resData["status"],
                                           ),
                                         ));
                                   },
@@ -465,16 +468,19 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                       if (resData["hvtPayments"] != null &&
                                           resData["hvtPayments"]
                                               .containsKey("initial_payment"))
-                                        Text(
-                                          'Logs & Investigation',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Open Sans',
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            'Logs & Investigation',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily: 'Open Sans',
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
                                         ),
                                       // Padding(
                                       //   padding: EdgeInsetsDirectional.fromSTEB(

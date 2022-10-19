@@ -213,57 +213,64 @@ class _HvtAppointmentsScreenWidgetState
                                                       appointments[index],
                                                   hvtId: appointments[index]
                                                       ["_id"],
+                                                  hvtStatus: int.parse(
+                                                    appointments[index]
+                                                        ["status"],
+                                                  ),
                                                 )));
                                   },
                                 ),
                               ),
                             )),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.78,
-                      height: 55,
-                      decoration: BoxDecoration(
-                        color: Color(0xFF00A8A3),
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => AppGuideScreen2Widget()));
-                            },
-                            child: Text(
-                              'Create HVT Program',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFFFBFAFA),
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.78,
+                        height: 55,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF00A8A3),
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) => AppGuideScreen2Widget()));
+                              },
+                              child: Text(
+                                'Create HVT Program',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFFFBFAFA),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
-                            child: Image.asset(
-                              'assets/images/Layer_2.png',
-                              width: 35,
-                              height: 35,
-                              fit: BoxFit.cover,
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
+                              child: Image.asset(
+                                'assets/images/Layer_2.png',
+                                width: 35,
+                                height: 35,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

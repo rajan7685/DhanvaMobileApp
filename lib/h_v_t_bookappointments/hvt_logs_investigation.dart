@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_addon_Details.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
 import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_bookdoctor_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/home_screen_widget.dart';
@@ -25,9 +26,13 @@ import 'package:path_provider/path_provider.dart';
 class hvtLogsInvestigationWidget extends StatefulWidget {
   final Map<String, dynamic> appointmentJson;
   final String hvtId;
+  final String hvtStatus;
 
   const hvtLogsInvestigationWidget(
-      {Key key, @required this.appointmentJson, @required this.hvtId})
+      {Key key,
+      @required this.appointmentJson,
+      @required this.hvtId,
+      @required this.hvtStatus})
       : super(key: key);
 
   @override
@@ -59,6 +64,7 @@ class _hvtLogsInvestigationWidgetState
     super.initState();
     _loadChats(init: true);
     _loadInvestigationChats(init: true);
+    _loadObservationChats(init: true);
     _chatController = TextEditingController();
 
     // textController16 = TextEditingController(text: 'Type your message...');
@@ -121,7 +127,7 @@ class _hvtLogsInvestigationWidgetState
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-    _observationChats = res.data["chats"];
+    (res.data as List).forEach((json) => _observationChats.add(json));
     print(_observationChats);
     setState(() {
       _isObservationLoading = false;
@@ -322,7 +328,7 @@ class _hvtLogsInvestigationWidgetState
     );
   }
 
-  // investigatio chat widget
+  // investigation chat widget
   Widget _investigationChatWidget(int index, {@required bool me}) {
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(!me ? 10 : 0, 20, me ? 10 : 0, 0),
@@ -481,11 +487,11 @@ class _hvtLogsInvestigationWidgetState
                 ).then((value) => setState(() {}));
                 _loadInvestigationChats();
               },
-              backgroundColor: Color(0xFF00A8A3),
+              backgroundColor: Color(0xFFEEEEEE),
               elevation: 8,
               child: Icon(
                 Icons.add,
-                color: Color(0xFFF3F4F4),
+                color: Color(0xFF00A8A3),
                 size: 30,
               ),
             )
@@ -530,13 +536,39 @@ class _hvtLogsInvestigationWidgetState
                       size: 40,
                     ),
                   ),
+                  // Expanded(
+                  //   child: Row(
+                  //     mainAxisSize: MainAxisSize.max,
+                  //     mainAxisAlignment: MainAxisAlignment.end,
+                  //     children: [
+                  //       //
+                  //       NotificationIconButton()
+                  //     ],
+                  //   ),
+                  // ),
                   Expanded(
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        //
-                        NotificationIconButton()
+                        InkWell(
+                          onTap: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    HvtAddonDetailsScreenWidget(
+                                  hvtId: widget.hvtId,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            Icons.add_card_sharp,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -805,30 +837,58 @@ class _hvtLogsInvestigationWidgetState
                                         ? Center(
                                             child: CircularProgressIndicator(),
                                           )
-                                        : ListView.builder(
-                                            itemBuilder: ((context, index) =>
-                                                _investigationChatWidget(index,
-                                                    me: _investigationChats[
-                                                                index]
-                                                            ["sender_id"] ==
-                                                        Patient.fromJson(jsonDecode(
-                                                                SharedPreferenceService
-                                                                    .loadString(
-                                                                        key:
-                                                                            PatientKey)))
-                                                            .id)),
-                                            itemCount:
-                                                _investigationChats.length,
-                                            shrinkWrap: true,
-                                          ),
+                                        : (_chats.length == 0
+                                            ? Center(
+                                                child: Text(
+                                                    "Nothing to show here"),
+                                              )
+                                            : ListView.builder(
+                                                itemBuilder: ((context,
+                                                        index) =>
+                                                    _investigationChatWidget(
+                                                        index,
+                                                        me: _investigationChats[
+                                                                    index]
+                                                                ["sender_id"] ==
+                                                            Patient.fromJson(jsonDecode(
+                                                                    SharedPreferenceService
+                                                                        .loadString(
+                                                                            key:
+                                                                                PatientKey)))
+                                                                .id)),
+                                                itemCount:
+                                                    _investigationChats.length,
+                                                shrinkWrap: true,
+                                              )),
 
                                     //Observation
-                                    ListView.builder(
-                                      itemBuilder: ((context, index) =>
-                                          chatWidget(index, me: false)),
-                                      itemCount: _chats.length,
-                                      shrinkWrap: true,
-                                    ),
+                                    _isObservationLoading
+                                        ? Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : (_chats.length == 0
+                                            ? Center(
+                                                child: Text(
+                                                    "Nothing to show here"),
+                                              )
+                                            : ListView.builder(
+                                                itemBuilder: ((context,
+                                                        index) =>
+                                                    _investigationChatWidget(
+                                                        index,
+                                                        me: _observationChats[
+                                                                    index]
+                                                                ["sender_id"] ==
+                                                            Patient.fromJson(jsonDecode(
+                                                                    SharedPreferenceService
+                                                                        .loadString(
+                                                                            key:
+                                                                                PatientKey)))
+                                                                .id)),
+                                                itemCount:
+                                                    _observationChats.length,
+                                                shrinkWrap: true,
+                                              )),
                                   ],
                                 ),
                               ),
