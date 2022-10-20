@@ -156,7 +156,7 @@ class _HvtAddonDetailsScreenWidgetState
                                           .bodyText1
                                           .override(
                                             fontFamily: 'Open Sans',
-                                            color: Colors.black,
+                                            color: Color(0xFF606E87),
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600,
                                           ),

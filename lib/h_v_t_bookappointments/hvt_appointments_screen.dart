@@ -24,6 +24,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../global/services/api_services/api_service_base.dart';
 import '../h_v_t_assestment_screen/h_v_t_assestment_screen_widget.dart';
+import '../profile_screen/edit_profile_screen.dart';
 import 'hvt_check_screen.dart';
 import 'hvt_start_appointment.dart';
 
@@ -217,6 +218,9 @@ class _HvtAppointmentsScreenWidgetState
                                                     appointments[index]
                                                         ["status"],
                                                   ),
+                                                  isHvtPaused:
+                                                      appointments[index]
+                                                          ["paused"],
                                                 )));
                                   },
                                 ),
@@ -240,9 +244,25 @@ class _HvtAppointmentsScreenWidgetState
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => AppGuideScreen2Widget()));
+                              onTap: () async {
+                                Patient _patient = Patient.fromJson(jsonDecode(
+                                    SharedPreferenceService.loadString(
+                                        key: PatientKey)));
+                                if (_patient.name == null)
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => EditProfileScreenWidget(),
+                                    ),
+                                  );
+                                else
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AppGuideScreen2Widget(),
+                                    ),
+                                  );
                               },
                               child: Text(
                                 'Create HVT Program',
@@ -295,7 +315,7 @@ class AppointmentCard extends StatelessWidget {
       status = 'Booked';
     else if (val == 1)
       status = 'Active';
-    else if (val == 2) status = 'Completed';
+    else if (val == 2) status = 'Complete';
     return status;
   }
 

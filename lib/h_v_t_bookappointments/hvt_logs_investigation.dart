@@ -27,11 +27,13 @@ class hvtLogsInvestigationWidget extends StatefulWidget {
   final Map<String, dynamic> appointmentJson;
   final String hvtId;
   final String hvtStatus;
+  final bool isHvtpaused;
 
   const hvtLogsInvestigationWidget(
       {Key key,
       @required this.appointmentJson,
       @required this.hvtId,
+      @required this.isHvtpaused,
       @required this.hvtStatus})
       : super(key: key);
 
@@ -695,141 +697,143 @@ class _hvtLogsInvestigationWidgetState
                                                       shrinkWrap: true,
                                                     )),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    .95,
-                                                child: TextFormField(
-                                                  textAlignVertical:
-                                                      TextAlignVertical.center,
-                                                  maxLines: 1,
-                                                  controller: _chatController,
-                                                  obscureText: false,
-                                                  decoration: InputDecoration(
-                                                    isCollapsed: true,
-                                                    //  InkWell(
-                                                    //     // onTap: _pickFile,
-                                                    //     child: Transform.rotate(
-                                                    //       angle: 45,
-                                                    //       child: Icon(
-                                                    //         Icons.attach_file,
-                                                    //         size: 25,
-                                                    //         color: Color(0xFF209A1F),
-                                                    //       ),
-                                                    //     ),
-                                                    //   ),
-                                                    suffix: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        InkWell(
-                                                          onTap: _pickFile,
-                                                          child:
-                                                              Transform.rotate(
-                                                            angle: 45,
-                                                            child: Icon(
-                                                              Icons.attach_file,
-                                                              size: 25,
-                                                              color: Color(
-                                                                  0xFF00A8A3),
+                                        if (widget.hvtStatus != "2" ||
+                                            widget.isHvtpaused == true)
+                                          Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      .95,
+                                                  child: TextFormField(
+                                                    textAlignVertical:
+                                                        TextAlignVertical
+                                                            .center,
+                                                    maxLines: 1,
+                                                    controller: _chatController,
+                                                    obscureText: false,
+                                                    decoration: InputDecoration(
+                                                      isCollapsed: true,
+                                                      //  InkWell(
+                                                      //     // onTap: _pickFile,
+                                                      //     child: Transform.rotate(
+                                                      //       angle: 45,
+                                                      //       child: Icon(
+                                                      //         Icons.attach_file,
+                                                      //         size: 25,
+                                                      //         color: Color(0xFF209A1F),
+                                                      //       ),
+                                                      //     ),
+                                                      //   ),
+                                                      suffix: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: _pickFile,
+                                                            child: Transform
+                                                                .rotate(
+                                                              angle: 45,
+                                                              child: Icon(
+                                                                Icons
+                                                                    .attach_file,
+                                                                size: 25,
+                                                                color: Color(
+                                                                    0xFF00A8A3),
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        InkWell(
-                                                          onTap: () {
-                                                            if (_chatController
-                                                                    .text
-                                                                    .isEmpty &&
-                                                                _file == null)
-                                                              ScaffoldMessenger
-                                                                      .of(
-                                                                          context)
-                                                                  .showSnackBar(
-                                                                      SnackBar(
-                                                                          content:
-                                                                              Text("Please enter something to send")));
-                                                            else
-                                                              _sendMessage();
-                                                          },
-                                                          child: Image.asset(
-                                                            'assets/images/7830587_send_email_icon.png',
-                                                            width: 20,
-                                                            height: 20,
-                                                            fit: BoxFit.cover,
+                                                          InkWell(
+                                                            onTap: () {
+                                                              if (_chatController
+                                                                      .text
+                                                                      .isEmpty &&
+                                                                  _file == null)
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .showSnackBar(SnackBar(
+                                                                        content:
+                                                                            Text("Please enter something to send")));
+                                                              else
+                                                                _sendMessage();
+                                                            },
+                                                            child: Image.asset(
+                                                              'assets/images/7830587_send_email_icon.png',
+                                                              width: 20,
+                                                              height: 20,
+                                                              fit: BoxFit.cover,
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    isDense: true,
-                                                    // labelText: 'Last Name',
-                                                    hintText:
-                                                        'Type here to send...',
-                                                    fillColor: Colors.white,
-                                                    contentPadding:
-                                                        const EdgeInsets
-                                                                .symmetric(
-                                                            vertical: 10,
-                                                            horizontal: 8),
-                                                    filled: true,
+                                                        ],
+                                                      ),
+                                                      isDense: true,
+                                                      // labelText: 'Last Name',
+                                                      hintText:
+                                                          'Type here to send...',
+                                                      fillColor: Colors.white,
+                                                      contentPadding:
+                                                          const EdgeInsets
+                                                                  .symmetric(
+                                                              vertical: 10,
+                                                              horizontal: 8),
+                                                      filled: true,
 
-                                                    enabledBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Color(0x00000000),
-                                                        width: 1,
+                                                      enabledBorder:
+                                                          UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                          color:
+                                                              Color(0x00000000),
+                                                          width: 1,
+                                                        ),
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  4.0),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  4.0),
+                                                        ),
                                                       ),
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .only(
-                                                        topLeft:
-                                                            Radius.circular(
-                                                                4.0),
-                                                        topRight:
-                                                            Radius.circular(
-                                                                4.0),
+                                                      focusedBorder:
+                                                          UnderlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                          color:
+                                                              Color(0x00000000),
+                                                          width: 1,
+                                                        ),
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  4.0),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  4.0),
+                                                        ),
                                                       ),
                                                     ),
-                                                    focusedBorder:
-                                                        UnderlineInputBorder(
-                                                      borderSide: BorderSide(
-                                                        color:
-                                                            Color(0x00000000),
-                                                        width: 1,
-                                                      ),
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .only(
-                                                        topLeft:
-                                                            Radius.circular(
-                                                                4.0),
-                                                        topRight:
-                                                            Radius.circular(
-                                                                4.0),
-                                                      ),
-                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color:
+                                                              Color(0xFF606E87),
+                                                          fontSize: 16,
+                                                        ),
                                                   ),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyText1
-                                                      .override(
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            Color(0xFF606E87),
-                                                        fontSize: 16,
-                                                      ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        )
+                                                )
+                                              ],
+                                            ),
+                                          )
                                       ],
                                     ),
                                     //Investigations

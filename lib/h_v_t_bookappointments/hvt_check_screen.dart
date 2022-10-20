@@ -21,10 +21,12 @@ class hvtCheckScreenWidget extends StatefulWidget {
   final Map<String, dynamic> appointmentJson;
   final String hvtId;
   final int hvtStatus;
+  final bool isHvtPaused;
   const hvtCheckScreenWidget(
       {Key key,
       @required this.appointmentJson,
       @required this.hvtId,
+      @required this.isHvtPaused,
       @required this.hvtStatus})
       : super(key: key);
 
@@ -403,6 +405,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                             ),
                                             hvtId: resData["_id"],
                                             hvtStatus: resData["status"],
+                                            isHvtPaused: resData["paused"],
                                           ),
                                         ));
                                   },
@@ -458,6 +461,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                                 widget.appointmentJson,
                                             hvtId: resData["_id"],
                                             hvtStatus: resData["status"],
+                                            isHvtpaused: resData["paused"],
                                           ),
                                         ));
                                   },

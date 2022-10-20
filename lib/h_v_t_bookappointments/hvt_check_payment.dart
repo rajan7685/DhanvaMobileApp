@@ -28,11 +28,13 @@ class hvtCheckPaymentScreenWidget extends StatefulWidget {
   final int hvtPayment;
   final String hvtId;
   final String hvtStatus;
+  final bool isHvtPaused;
   hvtCheckPaymentScreenWidget(
       {Key key,
       @required this.data,
       @required this.hvtPayment,
       @required this.hvtId,
+       @required this.isHvtPaused,
       @required this.hvtStatus})
       : super(key: key);
 

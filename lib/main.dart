@@ -12,6 +12,20 @@ import 'flutter_flow/internationalization.dart';
 import 'home_screen/home_screen_widget.dart';
 import 'hospital_screen/hospital_screen_widget.dart';
 import 'profile_screen/profile_screen_widget.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+//flutter local notification
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp()
+      .then((FirebaseApp value) => print('Firebase Service init $value.'));
+  print('Handling a background message ${message.messageId}');
+}
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

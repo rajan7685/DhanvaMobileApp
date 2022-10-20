@@ -50,6 +50,7 @@ dependencies:
   package_info_plus: ^1.4.2
   firebase_messaging: ^13.1.0
   path_provider: ^2.0.11
+  flutter_local_notifications: ^12.0.2
   
   
 
