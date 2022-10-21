@@ -30,7 +30,7 @@ class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
   @override
   void initState() {
     super.initState();
-    textController = TextEditingController(text: 'Someone Sick');
+    textController = TextEditingController(text: 'Enter patient Name');
   }
 
   @override

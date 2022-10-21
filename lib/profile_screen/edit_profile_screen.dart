@@ -80,7 +80,8 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
   }
 
   Future<void> _getAndSetRelations() async {
-    String uri = 'http://api2.dhanva.icu/patient/get_relation_constants';
+    String uri =
+        '${ApiService.protocol}api2.dhanva.icu/patient/get_relation_constants';
     Response res = await ApiService.dio.get(uri,
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
@@ -98,7 +99,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
     String patientId = Patient.fromJson(
             jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
         .id;
-    String uri = 'http://api2.dhanva.icu/patient/getPatientDetails/$patientId';
+    String uri = 'https://api2.dhanva.icu/patient/getPatientDetails/$patientId';
     Response res = await ApiService.dio.get(uri,
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
@@ -107,7 +108,6 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
     if (res.data['name'] == null)
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Please fill all of your details first')));
-    print('API response : ${res.data}');
     setState(() {
       _patientNameController.text = res.data['name'];
       // _patientAgeController.text = res.data['age'];
@@ -129,7 +129,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
       _dob = res.data['dob'] != null ? DateTime.parse(res.data['dob']) : null;
       _dobController.text =
           _dob != null ? DateFormat('MMM d, yyyy').format(_dob) : null;
-      print('DOB response : ${DateTime.parse(res.data['dob']).year}');
+      //print('DOB response : ${DateTime.parse(res.data['dob']).year}');
     });
   }
 
@@ -155,7 +155,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
 
   Future<void> _savePatientDetails() async {
     //
-    String _uri = 'http://api2.dhanva.icu/patient/update';
+    String _uri = '${ApiService.protocol}api2.dhanva.icu/patient/update';
     String patientId = Patient.fromJson(
             jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
         .id;
@@ -171,10 +171,11 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
       "weight": _weightController.text,
       "relation_type": patientRelationType,
       "gender": gender,
+      // "hospital": hospitalId,
       // patient id
       "id": patientId,
     };
-    print("MY RESPONSE: ${d}");
+    // print("MY RESPONSE: ${d}");
     Response res = await ApiService.dio.post(_uri,
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)

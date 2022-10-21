@@ -41,11 +41,12 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
   DateTime _dob;
   Map<String, dynamic> memberDetails;
   List<String> relationList = [];
-  String _patientRelationUpdateApi = 'http://api3.dhanva.icu/patient/update';
+  String _patientRelationUpdateApi =
+      '${ApiService.protocol}api3.dhanva.icu/patient/update';
   String _patientRelationConsts =
-      'http://api3.dhanva.icu/patient/get_relation_constants';
+      '${ApiService.protocol}api3.dhanva.icu/patient/get_relation_constants';
   String _patientDetailsApi =
-      'http://api3.dhanva.icu/patient/getPatientDetails/';
+      '${ApiService.protocol}api3.dhanva.icu/patient/getPatientDetails/';
 
   Future<void> _getBloodGroup() {
     _bloodGroupTypes = ['A+', 'B+', 'AB+', 'AB-', 'O+', 'O-', 'A-', 'B-'];

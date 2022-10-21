@@ -64,7 +64,7 @@ class _StartBookingScreen2WidgetState
             jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
         .id;
     Response res = await ApiService.dio.get(
-        'http://api2.dhanva.icu/patient/getPatientRelations/$pid',
+        '${ApiService.protocol}api2.dhanva.icu/patient/getPatientRelations/$pid',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -490,7 +490,9 @@ class _StartBookingScreen2WidgetState
 
 class DoctorCardListView extends StatefulWidget {
   final List<Doctor> doctors;
-  const DoctorCardListView({Key key, @required this.doctors}) : super(key: key);
+  Function(Doctor) onTap;
+  DoctorCardListView({Key key, @required this.doctors, this.onTap})
+      : super(key: key);
 
   @override
   State<DoctorCardListView> createState() => _DoctorCardListViewState();
@@ -511,6 +513,7 @@ class _DoctorCardListViewState extends State<DoctorCardListView> {
                   _selectedIndex = index;
                   _selectedDoctor = widget.doctors[index];
                 });
+                if (widget.onTap != null) widget.onTap(widget.doctors[index]);
               },
               child: DoctorCard(
                 isSelected: _selectedIndex == index,

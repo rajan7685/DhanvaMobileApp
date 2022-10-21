@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:dhanva_mobile_app/appointments_screen/appointment_model.dart';
@@ -32,12 +33,16 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
 
   bool isDataLoading = true;
   List<dynamic> resData;
+  List<dynamic> resDatas;
 
   void _loadAppointmentsData() async {
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    resData =
+    resDatas =
         await MedicalAppointmentsService.fetchMedicalAppointments(patient.id);
+    resData = resDatas != null ? resDatas : [];
+
+    //resData = [];
     resData.sort((a, b) => DateTime.parse(b['appointmentDate'])
         .compareTo(DateTime.parse(a['appointmentDate'])));
     setState(() {
@@ -75,7 +80,7 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
       //     // final res = await FilePicker.platform.pickFiles(allowMultiple: false);
       //     // await OpenFile.open(res.files.first.path);
       //     final String _prescriptionDownloadUri =
-      //         'http://api2.dhanva.icu/files/download/';
+      //         '${ApiService.protocol}api2.dhanva.icu/files/download/';
       //     Directory path = await getApplicationDocumentsDirectory();
 
       //     print(path.uri);
@@ -200,6 +205,16 @@ class AppointmentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(" date format check${appointmentModel['appointmentDate']}");
+    print(
+        "appointment dates: ${DateTime.parse(appointmentModel['appointmentDate']).toLocal()}");
+    print(
+        " ${DateFormat('MMM d, yyyy').format(DateTime.parse(appointmentModel['appointmentDate']))}");
+
+    print(DateFormat('MMM d, yyyy')
+            .format(DateTime.parse(appointmentModel['appointmentDate'])) +
+        appointmentModel['time_slot']);
+
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       color: Colors.white,
@@ -245,9 +260,7 @@ class AppointmentCard extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                     ),
                           ),
-                          if (appointmentModel['payment_info']['meta_info']
-                                  ['relation_type'] !=
-                              null)
+                          if (appointmentModel['payment_info'] != null)
                             Text(
                                 " (${appointmentModel['payment_info']['meta_info']['relation_type']})")
                         ],
@@ -257,9 +270,7 @@ class AppointmentCard extends StatelessWidget {
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
                             child: Text(
-                              DateFormat('MMM d, yyyy h:mma').format(
-                                  DateTime.parse(
-                                      appointmentModel['appointmentDate'])),
+                              "${DateFormat('MMM d, yyyy').format(DateTime.parse(appointmentModel['appointmentDate']))} ${appointmentModel['time_slot']}",
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -268,9 +279,7 @@ class AppointmentCard extends StatelessWidget {
                                   ),
                             ),
                           ),
-                          if (appointmentModel['payment_info']['meta_info']
-                                  ['booking_type'] !=
-                              null)
+                          if (appointmentModel['payment_info'] != null)
                             Text(
                               " (${appointmentModel['payment_info']['meta_info']['booking_type']} booking)",
                               style: FlutterFlowTheme.of(context)

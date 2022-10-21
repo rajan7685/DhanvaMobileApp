@@ -63,7 +63,7 @@ class _BookingSuccessScreenWidgetState
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                         child: Text(
-                          'Thank for Booking',
+                          'Thanks for Booking',
                           style: FlutterFlowTheme.of(context).title1.override(
                                 fontFamily: 'Open Sans',
                                 color: Color(0xFF00A8A3),

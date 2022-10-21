@@ -26,7 +26,8 @@ class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
   bool isLoading = true;
 
   Future<void> _fetchNewses() async {
-    Response res = await ApiService.dio.get('http://api3.dhanva.icu/feeds/get',
+    Response res = await ApiService.dio.get(
+        '${ApiService.protocol}api3.dhanva.icu/feeds/get',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));

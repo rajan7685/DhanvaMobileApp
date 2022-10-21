@@ -39,10 +39,12 @@ class _AddFamilyMembersScreenWidgetState
   bool isApiLoading;
 
   List<String> relationList = [];
-  String _patientRelationUpdateApi = 'http://api3.dhanva.icu/patient/update';
-  String _patientRelationAddApi = 'http://api3.dhanva.icu/patient/add_relation';
+  String _patientRelationUpdateApi =
+      '${ApiService.protocol}api3.dhanva.icu/patient/update';
+  String _patientRelationAddApi =
+      '${ApiService.protocol}api3.dhanva.icu/patient/add_relation';
   String _patientRelationConsts =
-      'http://api3.dhanva.icu/patient/get_relation_constants';
+      '${ApiService.protocol}api3.dhanva.icu/patient/get_relation_constants';
 
   Future<void> _getBloodGroup() {
     _bloodGroupTypes = ['A+', 'B+', 'AB+', 'AB-', 'O+', 'O-', 'A-', 'B-'];
@@ -124,7 +126,7 @@ class _AddFamilyMembersScreenWidgetState
         "name": _patientNameController.text,
         "email": _patientEmailController.text,
         "phone": _patientPhoneController.text,
-        "dob": DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_dob),
+        "dob": _dob.toUtc().toString(),
         "bloodGroup": bloodGroupType,
         "age": _patientAgeController.text,
         "emergency_contact": _emergencyPhoneController.text,
@@ -141,6 +143,7 @@ class _AddFamilyMembersScreenWidgetState
             'Authorization':
                 SharedPreferenceService.loadString(key: AuthTokenKey)
           }));
+      print("check add res${res.data}");
 
       if (res.statusCode == 200) {
         ScaffoldMessenger.of(context)

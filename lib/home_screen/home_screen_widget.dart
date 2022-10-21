@@ -48,8 +48,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 //         'NOPE THAT CAN\'T BE ME'
 //       ]),
 // PsychometricsAssesmentQuestion(
-  // question: 'I like to try things out myself.',
-  // options: ['YEP! THAT IS ME', 'I AM REALLY INBETWEEN', 'NOPE THAT CAN\'T BE ME']),
+// question: 'I like to try things out myself.',
+// options: ['YEP! THAT IS ME', 'I AM REALLY INBETWEEN', 'NOPE THAT CAN\'T BE ME']),
 //   PsychometricsAssesmentQuestion(
 //       question: 'I like to know where I\'m going before leaving my house.',
 //       options: [
@@ -90,8 +90,8 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
       //     SnackBar(content: Text('You are connected to a wifi network')));
       // // I am connected to a wifi network.
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('You are not connected to internet')));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text('You are not connected to internet')));
     }
   }
 
@@ -149,7 +149,8 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
     setState(() {
       isDataLoaded = false;
     });
-    String _servicesApi = 'http://api2.dhanva.icu/services/get_online';
+    String _servicesApi =
+        '${ApiService.protocol}api2.dhanva.icu/services/get_online';
     await SharedPreferenceService.init();
     Response res = await ApiService.dio.get(_servicesApi,
         options: Options(headers: {
@@ -171,7 +172,7 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
   //   await SharedPreferenceService.init();
   //   try {
   //     Response res = await ApiService.dio.get(
-  //         'http://api2.dhanva.icu/hospital/get_all',
+  //         '${ApiService.protocol}api2.dhanva.icu/hospital/get_all',
   //         options: Options(headers: {
   //           'Authorization':
   //               SharedPreferenceService.loadString(key: AuthTokenKey)
@@ -465,8 +466,8 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
                           //   ),
                           // ),
                           InkWell(
-                            onTap: () async {
-                              await Navigator.push(
+                            onTap: () {
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => AppGuideScreen1Widget(),

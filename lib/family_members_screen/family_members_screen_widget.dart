@@ -29,13 +29,17 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
   Patient patient;
   Future<void> _loadMembersData() async {
     await SharedPreferenceService.init();
+
     patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    print(
+        "${ApiService.protocol}api3.dhanva.icu/patient/getPatientRelations/${patient.id}");
     Response res = await ApiService.dio.get(
-        "http://api3.dhanva.icu/patient/getPatientRelations/${patient.id}",
+        "${ApiService.protocol}api3.dhanva.icu/patient/getPatientRelations/${patient.id}",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
+    print("get patient${res.data}");
     _familyMemberList = res.data;
     setState(() {
       isLoading = false;

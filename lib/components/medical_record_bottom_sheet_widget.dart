@@ -61,7 +61,7 @@ class _MedicalRecordBottomSheetWidgetState
     ));
 //response get
     Response res = await ApiService.dio.get(
-        'http://api2.dhanva.icu/patient/getPatientRelations/$pid',
+        '${ApiService.protocol}api2.dhanva.icu/patient/getPatientRelations/$pid',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -118,7 +118,7 @@ class _MedicalRecordBottomSheetWidgetState
   //   FormData _formData = FormData.fromMap(map);
 
   //   Response res = await ApiService.dio.post(
-  //       "http://api2.dhanva.icu/files/uploads",
+  //       "${ApiService.protocol}api2.dhanva.icu/files/uploads",
   //       data: _formData,
   //       options: Options(headers: {
   //         'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
@@ -165,7 +165,8 @@ class _MedicalRecordBottomSheetWidgetState
     String filePath = await _downloadFileAndPreview(autopreview: false);
     if (filePath.isNotEmpty) {
       await deleteRecord(autopop: false);
-      String fileUploadUri = 'http://api2.dhanva.icu/files/upload';
+      String fileUploadUri =
+          '${ApiService.protocol}api2.dhanva.icu/files/upload';
       Patient patient = Patient.fromJson(
           jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
       FormData _formData = FormData.fromMap({
@@ -193,7 +194,7 @@ class _MedicalRecordBottomSheetWidgetState
   }
 
   Future<void> uploadFile(PlatformFile file) async {
-    String fileUploadUri = 'http://api2.dhanva.icu/files/upload';
+    String fileUploadUri = '${ApiService.protocol}api2.dhanva.icu/files/upload';
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
     FormData _formData = FormData.fromMap({
@@ -230,7 +231,7 @@ class _MedicalRecordBottomSheetWidgetState
   }
 
   Future<void> deleteRecord({bool autopop = true}) async {
-    String deleteUri = 'http://api2.dhanva.icu/files/delete/';
+    String deleteUri = '${ApiService.protocol}api2.dhanva.icu/files/delete/';
     print('$deleteUri${widget.medicalRecord.id}');
     Response res = await ApiService.dio.get(
         '$deleteUri${widget.medicalRecord.id}',
@@ -261,7 +262,7 @@ class _MedicalRecordBottomSheetWidgetState
         text: widget.newRecord
             ? ''
             : DateFormat('h:mma').format(widget.medicalRecord.createdAt));
-    print('mera response ${patientNameController}');
+    // print('mera response ${patientNameController}');
   }
 
   Future<dynamic> _downloadFileAndPreview({bool autopreview = true}) async {
