@@ -26,13 +26,42 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
 }
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AuthenticationProvider.instance; // initiallize AuthProvider
   await SharedPreferenceService.init();
+
+//firebase messaging
+  await Firebase.initializeApp()
+      .then((FirebaseApp value) => print('Firebase Service init $value.'));
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+  // for IOS
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>()
+      ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   runApp(MyApp());
 }
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'Dhanva', // id
+  'High Importance Notifications',
+  importance: Importance.high,
+);
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -52,10 +81,73 @@ class _MyAppState extends State<MyApp> {
         _themeMode = mode;
       });
 
+  void _onDidReceiveLocalNotification(int a, String b, String c, String d) {
+    print("recieved notification");
+  }
+
   @override
   void initState() {
     super.initState();
     _getFCMToken();
+    var initialzationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    final DarwinInitializationSettings iosSettings =
+        DarwinInitializationSettings(
+      requestSoundPermission: false,
+      requestBadgePermission: false,
+      requestAlertPermission: false,
+      onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
+    );
+    var initializationSettings = InitializationSettings(
+        android: initialzationSettingsAndroid, iOS: iosSettings);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      print("got notification ie not null");
+      if (notification != null) {
+        print("got notification ie not null");
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              iOS: DarwinNotificationDetails(
+                  presentAlert: true,
+                  presentBadge: true,
+                  presentSound: true,
+                  subtitle: "Dhanva",
+                  interruptionLevel: InterruptionLevel.critical),
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                color: Colors.white,
+                icon: "@mipmap/ic_launcher",
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      AppleNotification iphone = message.notification?.apple;
+      if (notification != null && android != null && iphone != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body)],
+                  ),
+                ),
+              );
+            });
+      }
+    });
   }
 
   Future<void> _getFCMToken() async {
