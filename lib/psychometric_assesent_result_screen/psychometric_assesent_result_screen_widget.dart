@@ -610,8 +610,8 @@ class _PsychometricAssesentResultScreenWidgetState
                     },
                     text: 'Got it',
                     options: FFButtonOptions(
-                      width: 90,
-                      height: 55,
+                      width: 130,
+                      height: 40,
                       color: Color(0xFF00A8A3),
                       textStyle:
                           FlutterFlowTheme.of(context).subtitle2.override(
@@ -623,7 +623,7 @@ class _PsychometricAssesentResultScreenWidgetState
                         color: Colors.transparent,
                         width: 1,
                       ),
-                      borderRadius: 24,
+                      borderRadius: 12,
                     ),
                   ),
                 ),

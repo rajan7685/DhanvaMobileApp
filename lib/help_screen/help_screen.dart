@@ -76,7 +76,10 @@ class _HelpScreenWidgetState extends State<HelpScreenWidget> {
               children: [
                 Text(
                   'App Version : ${_appVersion ?? '__._._'}',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),

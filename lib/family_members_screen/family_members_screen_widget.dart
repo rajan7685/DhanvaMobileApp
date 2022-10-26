@@ -29,17 +29,22 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
   Patient patient;
   Future<void> _loadMembersData() async {
     await SharedPreferenceService.init();
+
     patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    print(
+        "${ApiService.protocol}api3.dhanva.icu/patient/getPatientRelations/${patient.id}");
     Response res = await ApiService.dio.get(
-        "http://api3.dhanva.icu/patient/getPatientRelations/${patient.id}",
+        "${ApiService.protocol}api3.dhanva.icu/patient/getPatientRelations/${patient.id}",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
+    print("get patient${res.data}");
     _familyMemberList = res.data;
     setState(() {
       isLoading = false;
     });
+    print("Response data: ${res.data}");
   }
 
   @override
@@ -116,17 +121,22 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                           scrollDirection: Axis.vertical,
                           itemCount: _familyMemberList.length,
                           itemBuilder: (_, int index) {
-                            return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              UpdateFamilyMemberWidget(
-                                                  memberData: _familyMemberList[
-                                                      index])));
-                                },
-                                child: _buildFamilyMember(context, index));
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 10),
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                UpdateFamilyMemberWidget(
+                                                    memberData:
+                                                        _familyMemberList[
+                                                            index])));
+                                  },
+                                  child: _buildFamilyMember(context, index)),
+                            );
                           },
                         ),
                       ),
@@ -212,7 +222,7 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
               children: [
                 // if (index != 0)
                 Text(
-                  _familyMemberList[index]['type'],
+                  _familyMemberList[index]['type'].toString(),
                   style: FlutterFlowTheme.of(context).bodyText1.override(
                         fontFamily: 'Poppins',
                         color: Color(0xFF6D6D6D),

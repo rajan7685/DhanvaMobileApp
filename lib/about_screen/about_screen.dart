@@ -1,5 +1,6 @@
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class AboutScreenWidget extends StatefulWidget {
   const AboutScreenWidget({Key key}) : super(key: key);
@@ -10,6 +11,8 @@ class AboutScreenWidget extends StatefulWidget {
 
 class _AboutScreenWidgetState extends State<AboutScreenWidget> {
   @override
+  WebViewController _controller;
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffEDF3F3),
@@ -53,12 +56,14 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(
-              height: 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text('About us decription...'),
+            Expanded(
+              child: WebView(
+                initialUrl: 'https://dhanva.icu/',
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: (WebViewController webViewController) {
+                  _controller = webViewController;
+                },
+              ),
             )
           ],
         ),

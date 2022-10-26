@@ -4,10 +4,12 @@ import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/models/patient_relation.dart';
 import 'package:dhanva_mobile_app/global/providers/doctor_record_provider.dart';
+import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dhanva_mobile_app/start_booking_screen/start_booking_screen_widget.dart';
 import 'package:dhanva_mobile_app/time_slot_screen/time_slot_screen_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -54,7 +56,32 @@ class _StartBookingScreen2WidgetState
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<DropdownMenuItem<String>> patientNames = [];
   String _selectedPatientId;
+  List<PatientRelation> _relations = [];
   String patientRelationType = "Self";
+
+  void _loadRelations() async {
+    String pid = Patient.fromJson(
+            jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
+        .id;
+    Response res = await ApiService.dio.get(
+        '${ApiService.protocol}api2.dhanva.icu/patient/getPatientRelations/$pid',
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }));
+    print(res.data);
+    _relations =
+        (res.data as List).map((e) => PatientRelation.fromJson(e)).toList();
+    // print(relations);
+    for (PatientRelation relation in _relations) {
+      patientNames.add(DropdownMenuItem(
+        child: Text(relation.patientName),
+        value: relation.patientId,
+      ));
+    }
+    setState(() {
+      // updateUI
+    });
+  }
 
   @override
   void initState() {
@@ -66,12 +93,7 @@ class _StartBookingScreen2WidgetState
       child: Text(patient.name),
       value: patient.id,
     ));
-    for (PatientRelation relation in patient.relations) {
-      patientNames.add(DropdownMenuItem(
-        child: Text(relation.patientName),
-        value: relation.patientId,
-      ));
-    }
+    _loadRelations();
     _selectedPatientId = patient.id;
     textController2 = TextEditingController();
   }
@@ -270,13 +292,11 @@ class _StartBookingScreen2WidgetState
                               Map<String, dynamic> _patientJson = jsonDecode(
                                   SharedPreferenceService.loadString(
                                       key: PatientKey));
-                              int idx = patient.relations.indexWhere(
-                                  (element) =>
-                                      _selectedPatientId == element.patientId);
-                              patientRelationType = idx == -1
-                                  ? "Self"
-                                  : patient.relations[idx].type;
-                              // print(patientRelationType);
+                              int idx = _relations.indexWhere((element) =>
+                                  _selectedPatientId == element.patientId);
+                              patientRelationType =
+                                  idx == -1 ? "Self" : _relations[idx].type;
+                              print(patientRelationType);
                             },
                             decoration: InputDecoration(
                               filled: true,
@@ -289,6 +309,10 @@ class _StartBookingScreen2WidgetState
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                           child: TextFormField(
+                            validator: (String textController2) {
+                              if (textController2.length < 50)
+                                return 'Must be a valid Text';
+                            },
                             controller: textController2,
                             obscureText: false,
                             decoration: InputDecoration(
@@ -351,6 +375,7 @@ class _StartBookingScreen2WidgetState
                                       ref
                                           .read(_doctorsProvider)
                                           .fetchAllDoctors(
+                                              hospitalId: widget.hospitalId,
                                               serviceId: widget.service.id);
                                     }
                                   },
@@ -465,7 +490,9 @@ class _StartBookingScreen2WidgetState
 
 class DoctorCardListView extends StatefulWidget {
   final List<Doctor> doctors;
-  const DoctorCardListView({Key key, @required this.doctors}) : super(key: key);
+  Function(Doctor) onTap;
+  DoctorCardListView({Key key, @required this.doctors, this.onTap})
+      : super(key: key);
 
   @override
   State<DoctorCardListView> createState() => _DoctorCardListViewState();
@@ -486,6 +513,7 @@ class _DoctorCardListViewState extends State<DoctorCardListView> {
                   _selectedIndex = index;
                   _selectedDoctor = widget.doctors[index];
                 });
+                if (widget.onTap != null) widget.onTap(widget.doctors[index]);
               },
               child: DoctorCard(
                 isSelected: _selectedIndex == index,
@@ -521,7 +549,7 @@ class DoctorCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: SvgPicture.network(
+              child: Image.network(
                 doctor.profilePic.isEmpty
                     ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kigo369AKCLUVSYPBs4K54t0WQbsfL9Lmw&usqp=CAU'
                     : doctor.profilePic,
