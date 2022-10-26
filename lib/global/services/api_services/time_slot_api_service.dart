@@ -12,6 +12,7 @@ class TimeSlotApiService {
       '${ApiService.protocol}${ApiService.baseUrl}${ApiService.timeSlotsByDoctorApi}';
 
   static Future<dynamic> fetchAllTImeSlots() async {
+    print("_allTimeSlotUri $_allTimeSlotUri");
     await SharedPreferenceService.init();
     Response res = await ApiService.dio.get('$_allTimeSlotUri',
         options: Options(headers: {

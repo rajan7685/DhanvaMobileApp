@@ -2,6 +2,8 @@ import 'package:dhanva_mobile_app/components/bottom_navigation_bar.dart';
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/offline_consultation_screen/offline_consultation_screen_widget.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
@@ -10,13 +12,56 @@ import 'flutter_flow/internationalization.dart';
 import 'home_screen/home_screen_widget.dart';
 import 'hospital_screen/hospital_screen_widget.dart';
 import 'profile_screen/profile_screen_widget.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+//flutter local notification
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp()
+      .then((FirebaseApp value) => print('Firebase Service init $value.'));
+  print('Handling a background message ${message.messageId}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   AuthenticationProvider.instance; // initiallize AuthProvider
   await SharedPreferenceService.init();
+
+//firebase messaging
+  await Firebase.initializeApp()
+      .then((FirebaseApp value) => print('Firebase Service init $value.'));
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+  // for IOS
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>()
+      ?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   runApp(MyApp());
 }
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'Dhanva', // id
+  'High Importance Notifications',
+  importance: Importance.high,
+);
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -35,6 +80,82 @@ class _MyAppState extends State<MyApp> {
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
       });
+
+  void _onDidReceiveLocalNotification(int a, String b, String c, String d) {
+    print("recieved notification");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getFCMToken();
+    var initialzationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    final DarwinInitializationSettings iosSettings =
+        DarwinInitializationSettings(
+      requestSoundPermission: false,
+      requestBadgePermission: false,
+      requestAlertPermission: false,
+      onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
+    );
+    var initializationSettings = InitializationSettings(
+        android: initialzationSettingsAndroid, iOS: iosSettings);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      print("got notification ie not null");
+      if (notification != null) {
+        print("got notification ie not null");
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              iOS: DarwinNotificationDetails(
+                  presentAlert: true,
+                  presentBadge: true,
+                  presentSound: true,
+                  subtitle: "Dhanva",
+                  interruptionLevel: InterruptionLevel.critical),
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                color: Colors.white,
+                icon: "@mipmap/ic_launcher",
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      AppleNotification iphone = message.notification?.apple;
+      if (notification != null && android != null && iphone != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body)],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+  }
+
+  Future<void> _getFCMToken() async {
+    await Firebase.initializeApp();
+    String fcmToken = await FirebaseMessaging.instance.getToken();
+    print("started FCM ${fcmToken}");
+    SharedPreferenceService.saveString(key: FcmTokenKey, value: fcmToken);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,9 @@
+import 'package:dhanva_mobile_app/psychometrics_assesent_step3/psychometrics_assesent_step3_widget.dart';
+
 import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow/flutter_flow_widgets.dart';
 import '../psychometric_assesent_result_screen/psychometric_assesent_result_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -224,7 +227,7 @@ class _PsychometricsAssesentStep4WidgetState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '1. I am task oriented to achieve certain goals.',
+                            '31. I put my personal opinions aside in pursuit of fairness and justice.',
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Poppins',
@@ -236,7 +239,7 @@ class _PsychometricsAssesentStep4WidgetState
                             child: FlutterFlowRadioButton(
                               options: [
                                 'YEP! THAT IS ME',
-                                'I HAVE NO IDEA',
+                                'I AM REALLY INBETWEEN',
                                 'NOPE THAT CAN\'T BE ME'
                               ],
                               onChanged: (value) {
@@ -268,7 +271,7 @@ class _PsychometricsAssesentStep4WidgetState
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                             child: Text(
-                              '2. I get bored easily when discussing abstract things.',
+                              '32. I tend to sit at the back or corner of the room.',
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -282,7 +285,7 @@ class _PsychometricsAssesentStep4WidgetState
                             child: FlutterFlowRadioButton(
                               options: [
                                 'YEP! THAT IS ME',
-                                'I HAVE NO IDEA',
+                                'I AM REALLY INBETWEEN',
                                 'NOPE THAT CAN\'T BE ME'
                               ],
                               onChanged: (value) {
@@ -314,7 +317,7 @@ class _PsychometricsAssesentStep4WidgetState
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                             child: Text(
-                              '3. I like to try things out myself.',
+                              '33. I like being the centre of attention.',
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -328,7 +331,7 @@ class _PsychometricsAssesentStep4WidgetState
                             child: FlutterFlowRadioButton(
                               options: [
                                 'YEP! THAT IS ME',
-                                'I HAVE NO IDEA',
+                                'I AM REALLY INBETWEEN',
                                 'NOPE THAT CAN\'T BE ME'
                               ],
                               onChanged: (value) {
@@ -360,7 +363,7 @@ class _PsychometricsAssesentStep4WidgetState
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                             child: Text(
-                              '4. I like to know where I\'m going before leaving my house.',
+                              '34. I solve problems by leaping between different ideas and possibilities.',
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -374,7 +377,7 @@ class _PsychometricsAssesentStep4WidgetState
                             child: FlutterFlowRadioButton(
                               options: [
                                 'YEP! THAT IS ME',
-                                'I HAVE NO IDEA',
+                                'I AM REALLY INBETWEEN',
                                 'NOPE THAT CAN\'T BE ME'
                               ],
                               onChanged: (value) {
@@ -402,57 +405,468 @@ class _PsychometricsAssesentStep4WidgetState
                               verticalAlignment: WrapCrossAlignment.start,
                             ),
                           ),
-                          Align(
-                            alignment: AlignmentDirectional(0, 0),
-                            child: Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
-                              child: InkWell(
-                                onTap: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          PsychometricAssesentResultScreenWidget(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  height: 55,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF00A8A3),
-                                    borderRadius: BorderRadius.circular(22),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                            child: Text(
+                              '35. I like to complete my work before playing.',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF151515),
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Next',
-                                        style: FlutterFlowTheme.of(context)
-                                            .title1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Colors.white,
-                                            ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            12, 0, 0, 0),
-                                        child: Image.asset(
-                                          'assets/images/Layer_2.png',
-                                          width: 35,
-                                          height: 35,
-                                          fit: BoxFit.cover,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                            child: FlutterFlowRadioButton(
+                              options: [
+                                'YEP! THAT IS ME',
+                                'I AM REALLY INBETWEEN',
+                                'NOPE THAT CAN\'T BE ME'
+                              ],
+                              onChanged: (value) {
+                                setState(() => radioButtonValue4 = value);
+                              },
+                              optionHeight: 25,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                  ),
+                              selectedTextStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF314A51),
+                                  ),
+                              buttonPosition: RadioButtonPosition.left,
+                              direction: Axis.vertical,
+                              radioButtonColor: Color(0xFF00A8A3),
+                              inactiveRadioButtonColor: Color(0x8A314A51),
+                              toggleable: false,
+                              horizontalAlignment: WrapAlignment.start,
+                              verticalAlignment: WrapCrossAlignment.start,
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                            child: Text(
+                              '36. I don\'t let other people influence my thoughts or actions.',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF151515),
+                                  ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                            child: FlutterFlowRadioButton(
+                              options: [
+                                'YEP! THAT IS ME',
+                                'I AM REALLY INBETWEEN',
+                                'NOPE THAT CAN\'T BE ME'
+                              ],
+                              onChanged: (value) {
+                                setState(() => radioButtonValue4 = value);
+                              },
+                              optionHeight: 25,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                  ),
+                              selectedTextStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF314A51),
+                                  ),
+                              buttonPosition: RadioButtonPosition.left,
+                              direction: Axis.vertical,
+                              radioButtonColor: Color(0xFF00A8A3),
+                              inactiveRadioButtonColor: Color(0x8A314A51),
+                              toggleable: false,
+                              horizontalAlignment: WrapAlignment.start,
+                              verticalAlignment: WrapCrossAlignment.start,
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                            child: Text(
+                              '37. I use my sense of smell to help remember memories.',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF151515),
+                                  ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                            child: FlutterFlowRadioButton(
+                              options: [
+                                'YEP! THAT IS ME',
+                                'I AM REALLY INBETWEEN',
+                                'NOPE THAT CAN\'T BE ME'
+                              ],
+                              onChanged: (value) {
+                                setState(() => radioButtonValue4 = value);
+                              },
+                              optionHeight: 25,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                  ),
+                              selectedTextStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF314A51),
+                                  ),
+                              buttonPosition: RadioButtonPosition.left,
+                              direction: Axis.vertical,
+                              radioButtonColor: Color(0xFF00A8A3),
+                              inactiveRadioButtonColor: Color(0x8A314A51),
+                              toggleable: false,
+                              horizontalAlignment: WrapAlignment.start,
+                              verticalAlignment: WrapCrossAlignment.start,
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                            child: Text(
+                              '38. I make decisions based on my emotions.',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF151515),
+                                  ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                            child: FlutterFlowRadioButton(
+                              options: [
+                                'YEP! THAT IS ME',
+                                'I AM REALLY INBETWEEN',
+                                'NOPE THAT CAN\'T BE ME'
+                              ],
+                              onChanged: (value) {
+                                setState(() => radioButtonValue4 = value);
+                              },
+                              optionHeight: 25,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                  ),
+                              selectedTextStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF314A51),
+                                  ),
+                              buttonPosition: RadioButtonPosition.left,
+                              direction: Axis.vertical,
+                              radioButtonColor: Color(0xFF00A8A3),
+                              inactiveRadioButtonColor: Color(0x8A314A51),
+                              toggleable: false,
+                              horizontalAlignment: WrapAlignment.start,
+                              verticalAlignment: WrapCrossAlignment.start,
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                            child: Text(
+                              '39. I need time alone to recharge.',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF151515),
+                                  ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                            child: FlutterFlowRadioButton(
+                              options: [
+                                'YEP! THAT IS ME',
+                                'I AM REALLY INBETWEEN',
+                                'NOPE THAT CAN\'T BE ME'
+                              ],
+                              onChanged: (value) {
+                                setState(() => radioButtonValue4 = value);
+                              },
+                              optionHeight: 25,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                  ),
+                              selectedTextStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF314A51),
+                                  ),
+                              buttonPosition: RadioButtonPosition.left,
+                              direction: Axis.vertical,
+                              radioButtonColor: Color(0xFF00A8A3),
+                              inactiveRadioButtonColor: Color(0x8A314A51),
+                              toggleable: false,
+                              horizontalAlignment: WrapAlignment.start,
+                              verticalAlignment: WrapCrossAlignment.start,
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                            child: Text(
+                              '40. I like to keep my room organized and clean.',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xFF151515),
+                                  ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                            child: FlutterFlowRadioButton(
+                              options: [
+                                'YEP! THAT IS ME',
+                                'I AM REALLY INBETWEEN',
+                                'NOPE THAT CAN\'T BE ME'
+                              ],
+                              onChanged: (value) {
+                                setState(() => radioButtonValue4 = value);
+                              },
+                              optionHeight: 25,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black,
+                                  ),
+                              selectedTextStyle: FlutterFlowTheme.of(context)
+                                  .bodyText1
+                                  .override(
+                                    fontFamily: 'Open Sans',
+                                    color: Color(0xFF314A51),
+                                  ),
+                              buttonPosition: RadioButtonPosition.left,
+                              direction: Axis.vertical,
+                              radioButtonColor: Color(0xFF00A8A3),
+                              inactiveRadioButtonColor: Color(0x8A314A51),
+                              toggleable: false,
+                              horizontalAlignment: WrapAlignment.start,
+                              verticalAlignment: WrapCrossAlignment.start,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Align(
+                                alignment: AlignmentDirectional(0, 0),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 24, 0, 0),
+                                  child: FFButtonWidget(
+                                    onPressed: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PsychometricsAssesentStep3Widget(),
                                         ),
+                                      );
+                                    },
+                                    text: 'Back',
+                                    options: FFButtonOptions(
+                                      width: 130,
+                                      height: 40,
+                                      color: Color(0xFF00A8A3),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Colors.white,
+                                          ),
+                                      borderSide: BorderSide(
+                                        color: Colors.transparent,
+                                        width: 1,
                                       ),
-                                    ],
+                                      borderRadius: 12,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                              SizedBox(
+                                width: 50.0,
+                              ),
+                              Align(
+                                alignment: AlignmentDirectional(0, 0),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 24, 0, 0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PsychometricAssesentResultScreenWidget(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 130,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFF00A8A3),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Row(
+                                        // mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Finish',
+                                            style: FlutterFlowTheme.of(context)
+                                                .subtitle2
+                                                .override(
+                                                  fontFamily: 'Open Sans',
+                                                  color: Colors.white,
+                                                ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    12, 0, 0, 0),
+                                            child: Image.asset(
+                                              'assets/images/Layer_2.png',
+                                              width: 25,
+                                              height: 25,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              // Align(
+                              //   alignment: AlignmentDirectional(0, 0),
+                              //   child: Padding(
+                              //     padding: EdgeInsetsDirectional.fromSTEB(
+                              //         0, 24, 0, 0),
+                              //     child: InkWell(
+                              //       onTap: () async {
+                              //         await Navigator.push(
+                              //           context,
+                              //           MaterialPageRoute(
+                              //             builder: (context) =>
+                              //                 PsychometricAssesentResultScreenWidget(),
+                              //           ),
+                              //         );
+                              //       },
+                              //       child: Container(
+                              //         width: MediaQuery.of(context).size.width *
+                              //             0.7,
+                              //         height: 55,
+                              //         decoration: BoxDecoration(
+                              //           color: Color(0xFF00A8A3),
+                              //           borderRadius: BorderRadius.circular(22),
+                              //         ),
+                              //         child: Row(
+                              //           // mainAxisSize: MainAxisSize.max,
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.center,
+                              //           children: [
+                              //             Text(
+                              //               'Finish',
+                              //               style: FlutterFlowTheme.of(context)
+                              //                   .title1
+                              //                   .override(
+                              //                     fontFamily: 'Open Sans',
+                              //                     color: Colors.white,
+                              //                   ),
+                              //             ),
+                              //             Padding(
+                              //               padding:
+                              //                   EdgeInsetsDirectional.fromSTEB(
+                              //                       12, 0, 0, 0),
+                              //               child: Image.asset(
+                              //                 'assets/images/Layer_2.png',
+                              //                 width: 35,
+                              //                 height: 35,
+                              //                 fit: BoxFit.cover,
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+
+                              //   Align(
+                              //     alignment: AlignmentDirectional(0, 0),
+                              //     child: Padding(
+                              //       padding: EdgeInsetsDirectional.fromSTEB(
+                              //           0, 24, 0, 0),
+                              //       child: FFButtonWidget(
+                              //         onPressed: () async {
+                              //           await Navigator.push(
+                              //             context,
+                              //             MaterialPageRoute(
+                              //               builder: (context) =>
+                              //                   PsychometricAssesentResultScreenWidget(),
+                              //             ),
+                              //           );
+                              //         },
+                              //         text: 'Finish',
+                              //         options: FFButtonOptions(
+                              //           width: 130,
+                              //           height: 40,
+                              //           color: Color(0xFF00A8A3),
+                              //           textStyle: FlutterFlowTheme.of(context)
+                              //               .subtitle2
+                              //               .override(
+                              //                 fontFamily: 'Poppins',
+                              //                 color: Colors.white,
+                              //               ),
+                              //           borderSide: BorderSide(
+                              //             color: Colors.transparent,
+                              //             width: 1,
+                              //           ),
+                              //           borderRadius: 12,
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ),
+                            ],
                           ),
                         ],
                       ),
