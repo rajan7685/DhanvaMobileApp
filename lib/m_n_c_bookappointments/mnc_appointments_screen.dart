@@ -25,30 +25,30 @@ import 'package:google_fonts/google_fonts.dart';
 import '../global/services/api_services/api_service_base.dart';
 import '../h_v_t_assestment_screen/h_v_t_assestment_screen_widget.dart';
 import '../profile_screen/edit_profile_screen.dart';
-import 'hvt_check_screen.dart';
-import 'hvt_start_appointment.dart';
+import 'mnc_check_screen.dart';
+import 'mnc_start_appointment.dart';
 
-class HvtAppointmentsScreenWidget extends StatefulWidget {
+class MncAppointmentsScreenWidget extends StatefulWidget {
   final Map<String, dynamic> data;
   final bool shouldPopNormally;
-  const HvtAppointmentsScreenWidget(
+  const MncAppointmentsScreenWidget(
       {Key key, this.shouldPopNormally = true, @required this.data})
       : super(key: key);
 
   @override
-  _HvtAppointmentsScreenWidgetState createState() =>
-      _HvtAppointmentsScreenWidgetState();
+  _MncAppointmentsScreenWidgetState createState() =>
+      _MncAppointmentsScreenWidgetState();
 }
 
-class _HvtAppointmentsScreenWidgetState
-    extends State<HvtAppointmentsScreenWidget> {
+class _MncAppointmentsScreenWidgetState
+    extends State<MncAppointmentsScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool isDataLoading = true;
   List<dynamic> appointments = [];
   List<dynamic> resDatas;
 
-  Future<void> _loadhvtAppointments({bool init = false}) async {
+  Future<void> _loadmncAppointments({bool init = false}) async {
     print("calling the get API");
     if (!init)
       setState(() {
@@ -57,7 +57,7 @@ class _HvtAppointmentsScreenWidgetState
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/family/all/${patient.id}",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/family/all/${patient.id}",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -66,13 +66,13 @@ class _HvtAppointmentsScreenWidgetState
       isDataLoading = false;
     });
     print((res.data as List).length);
-    print("HVT${res.data}");
+    print("MNC${res.data}");
   }
 
   @override
   void initState() {
     super.initState();
-    _loadhvtAppointments(init: true);
+    _loadmncAppointments(init: true);
   }
 
   @override
@@ -164,7 +164,7 @@ class _HvtAppointmentsScreenWidgetState
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                   child: Text(
-                    'HVT Appointments',
+                    'MNC Appointments',
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
                           color: Color(0xFF00A8A3),
@@ -194,10 +194,10 @@ class _HvtAppointmentsScreenWidgetState
                       : (appointments.length == 0
                           ? Center(
                               child: Text(
-                                  'Nothing yet, Try booking an HVT appointment'))
+                                  'Nothing yet, Try booking an MNC appointment'))
                           : RefreshIndicator(
                               onRefresh: () async {
-                                // _loadhvtAppointments();
+                                // _loadmncAppointments();
                               },
                               child: ListView.builder(
                                 itemCount: appointments.length,
@@ -209,16 +209,16 @@ class _HvtAppointmentsScreenWidgetState
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (_) =>
-                                                hvtCheckScreenWidget(
+                                                mncCheckScreenWidget(
                                                   appointmentJson:
                                                       appointments[index],
-                                                  hvtId: appointments[index]
+                                                  mncId: appointments[index]
                                                       ["_id"],
-                                                  hvtStatus: int.parse(
+                                                  mncStatus: int.parse(
                                                     appointments[index]
                                                         ["status"],
                                                   ),
-                                                  isHvtPaused:
+                                                  isMncPaused:
                                                       appointments[index]
                                                           ["paused"],
                                                 )));
@@ -265,7 +265,7 @@ class _HvtAppointmentsScreenWidgetState
                                   );
                               },
                               child: Text(
-                                'Create HVT Program',
+                                'Create MNC Program',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(

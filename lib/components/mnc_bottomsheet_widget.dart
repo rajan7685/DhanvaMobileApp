@@ -17,18 +17,18 @@ import '../global/models/patient.dart';
 import '../global/services/api_services/api_service_base.dart';
 import '../global/services/shared_preference_service.dart';
 
-class HvtBottomsheetWidget extends StatefulWidget {
-  final String hvtId;
+class MncBottomsheetWidget extends StatefulWidget {
+  final String mncId;
   final String doctorId;
-  const HvtBottomsheetWidget(
-      {Key key, @required this.hvtId, @required this.doctorId})
+  const MncBottomsheetWidget(
+      {Key key, @required this.mncId, @required this.doctorId})
       : super(key: key);
 
   @override
-  _HvtBottomsheetWidgetState createState() => _HvtBottomsheetWidgetState();
+  _MncBottomsheetWidgetState createState() => _MncBottomsheetWidgetState();
 }
 
-class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
+class _MncBottomsheetWidgetState extends State<MncBottomsheetWidget> {
   TextEditingController textController1;
   TextEditingController textController2;
   TextEditingController reportDateController;
@@ -74,11 +74,11 @@ class _HvtBottomsheetWidgetState extends State<HvtBottomsheetWidget> {
       "receiver_id": widget.doctorId,
       "sender_type": "Patient",
       "docType": "Investigation",
-      "hvt_id": widget.hvtId,
+      "mnc_id": widget.mncId,
       'file': await MultipartFile.fromFile(file.path, filename: file.name)
     });
     Response res = await ApiService.dio.post(
-      '${ApiService.protocol}${ApiService.baseUrl2}hvtRecord/upload',
+      '${ApiService.protocol}${ApiService.baseUrl2}mncRecord/upload',
       data: data,
       options: Options(headers: {
         'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)

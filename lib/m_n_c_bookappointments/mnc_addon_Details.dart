@@ -25,30 +25,30 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../global/services/api_services/api_service_base.dart';
 import '../h_v_t_assestment_screen/h_v_t_assestment_screen_widget.dart';
-import 'hvt_check_screen.dart';
-import 'hvt_start_appointment.dart';
+import 'mnc_check_screen.dart';
+import 'mnc_start_appointment.dart';
 
-class HvtAddonDetailsScreenWidget extends StatefulWidget {
+class MncAddonDetailsScreenWidget extends StatefulWidget {
   final Map<String, dynamic> data;
-  final String hvtId;
+  final String mncId;
 
-  const HvtAddonDetailsScreenWidget(
-      {Key key, @required this.hvtId, @required this.data})
+  const MncAddonDetailsScreenWidget(
+      {Key key, @required this.mncId, @required this.data})
       : super(key: key);
 
   @override
-  _HvtAddonDetailsScreenWidgetState createState() =>
-      _HvtAddonDetailsScreenWidgetState();
+  _MncAddonDetailsScreenWidgetState createState() =>
+      _MncAddonDetailsScreenWidgetState();
 }
 
-class _HvtAddonDetailsScreenWidgetState
-    extends State<HvtAddonDetailsScreenWidget> {
+class _MncAddonDetailsScreenWidgetState
+    extends State<MncAddonDetailsScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool isDataLoading = true;
   List<dynamic> addons = [];
 
-  Future<void> _loadhvtAddonList({bool init = false}) async {
+  Future<void> _loadmncAddonList({bool init = false}) async {
     if (!init)
       setState(() {
         isDataLoading = true;
@@ -56,7 +56,7 @@ class _HvtAddonDetailsScreenWidgetState
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/list/addon/${widget.hvtId}",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/list/addon/${widget.mncId}",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -70,7 +70,7 @@ class _HvtAddonDetailsScreenWidgetState
   @override
   void initState() {
     super.initState();
-    _loadhvtAddonList(init: true);
+    _loadmncAddonList(init: true);
   }
 
   @override
@@ -127,7 +127,7 @@ class _HvtAddonDetailsScreenWidgetState
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
                   child: Text(
-                    'HVT Addon Payments',
+                    'MNC Addon Payments',
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
                           color: Color(0xFF00A8A3),
@@ -144,7 +144,7 @@ class _HvtAddonDetailsScreenWidgetState
                               child: Text('There\s no Addon payment pending'))
                           : RefreshIndicator(
                               onRefresh: () async {
-                                // _loadhvtAppointments();
+                                // _loadmncAppointments();
                               },
                               child: ListView.builder(
                                 itemCount: addons.length,
@@ -212,7 +212,7 @@ class _AddonCardState extends State<AddonCard> {
     super.dispose();
   }
 
-  Future<void> _sendHvtAddonPaymentDetails(
+  Future<void> _sendMncAddonPaymentDetails(
       {@required String transactionId}) async {
     print(transactionId);
     print("""
@@ -223,12 +223,12 @@ class _AddonCardState extends State<AddonCard> {
           "payment_status_string": "Success",
           "patient_id": ${Patient.fromJson(jsonDecode(SharedPreferenceService.loadString(key: PatientKey))).id},
           "status": "0",
-          "hvt_id":${widget.addonDetails["hvt_id"]},
+          "mnc_id":${widget.addonDetails["mnc_id"]},
           "addOnId":${widget.addonDetails["_id"]},
     //    
     //   """);
     Response res = await ApiService.dio.post(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/payment/addon",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/payment/addon",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
@@ -241,7 +241,7 @@ class _AddonCardState extends State<AddonCard> {
                   SharedPreferenceService.loadString(key: PatientKey)))
               .id,
           "status": "0",
-          "hvt_id": widget.addonDetails["hvt_id"],
+          "mnc_id": widget.addonDetails["mnc_id"],
           "addOnId": widget.addonDetails["_id"],
         });
     print("initial payment details${res.data}");
@@ -266,7 +266,7 @@ class _AddonCardState extends State<AddonCard> {
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     Navigator.pop(context);
-    _sendHvtAddonPaymentDetails(transactionId: response.paymentId);
+    _sendMncAddonPaymentDetails(transactionId: response.paymentId);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) async {

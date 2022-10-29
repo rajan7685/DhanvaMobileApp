@@ -3,32 +3,32 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>761242968692-lbpe5a8t4sm869jsd840fn91500dkq0d.apps.googleusercontent.com</string>
+	<string>421778500398-86qvt1n9i352h4epgce7o7mhascsii1o.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.761242968692-lbpe5a8t4sm869jsd840fn91500dkq0d</string>
+	<string>com.googleusercontent.apps.421778500398-86qvt1n9i352h4epgce7o7mhascsii1o</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAOUXV4aitufJuvURyNsWshyZjpZ2dQ4aA</string>
+	<string>AIzaSyDJH1k9w1yoO_OoZSkycwOMaySqGx220FQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>761242968692</string>
+	<string>421778500398</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.celestial.dhanva</string>
+	<string>com.dhanva.dhanvaios</string>
 	<key>PROJECT_ID</key>
-	<string>dhanva-fcm-chat</string>
+	<string>dhanva-9190d</string>
 	<key>STORAGE_BUCKET</key>
-	<string>dhanva-fcm-chat.appspot.com</string>
+	<string>dhanva-9190d.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:761242968692:ios:9b71d1a0708b948b33e721</string>
+	<string>1:421778500398:ios:c534f3431ab7a9a0b1e8bf</string>
 </dict>
 </plist>
