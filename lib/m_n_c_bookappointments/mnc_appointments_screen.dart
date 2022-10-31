@@ -23,7 +23,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../global/services/api_services/api_service_base.dart';
-import '../h_v_t_assestment_screen/h_v_t_assestment_screen_widget.dart';
+import '../m_n_c_assestment_screen/m_n_c_assestment_screen_widget.dart';
 import '../profile_screen/edit_profile_screen.dart';
 import 'mnc_check_screen.dart';
 import 'mnc_start_appointment.dart';
