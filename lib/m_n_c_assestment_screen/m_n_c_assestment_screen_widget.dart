@@ -13,15 +13,15 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../time_slot_screen/time_slot_screen_widget.dart';
 
-class HVTAssestmentScreenWidget extends StatefulWidget {
-  const HVTAssestmentScreenWidget({Key key}) : super(key: key);
+class MNCAssestmentScreenWidget extends StatefulWidget {
+  const MNCAssestmentScreenWidget({Key key}) : super(key: key);
 
   @override
-  _HVTAssestmentScreenWidgetState createState() =>
-      _HVTAssestmentScreenWidgetState();
+  _MNCAssestmentScreenWidgetState createState() =>
+      _MNCAssestmentScreenWidgetState();
 }
 
-class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
+class _MNCAssestmentScreenWidgetState extends State<MNCAssestmentScreenWidget> {
   String radioButtonValue1;
   TextEditingController textController;
   String radioButtonValue2;
@@ -103,7 +103,7 @@ class _HVTAssestmentScreenWidgetState extends State<HVTAssestmentScreenWidget> {
                           ),
                     ),
                     Text(
-                      'HVT Appointment',
+                      'MNC Appointment',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Color(0xFFF3F4F4),
