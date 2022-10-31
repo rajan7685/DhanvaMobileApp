@@ -20,16 +20,16 @@ import 'package:dio/dio.dart';
 import '../global/models/patient.dart';
 import '../global/models/patient_relation.dart';
 import '../global/services/shared_preference_service.dart';
-import 'hvt_bookdoctor_screen.dart';
+import 'mnc_bookdoctor_screen.dart';
 
-class HvtStartAppointmentWidget extends StatefulWidget {
-  const HvtStartAppointmentWidget({
+class MncStartAppointmentWidget extends StatefulWidget {
+  const MncStartAppointmentWidget({
     Key key,
   }) : super(key: key);
 
   @override
-  _HvtStartAppointmentWidgetState createState() =>
-      _HvtStartAppointmentWidgetState();
+  _MncStartAppointmentWidgetState createState() =>
+      _MncStartAppointmentWidgetState();
 }
 
 class MyCustomClipper extends CustomClipper<Path> {
@@ -50,7 +50,7 @@ class MyCustomClipper extends CustomClipper<Path> {
   }
 }
 
-class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
+class _MncStartAppointmentWidgetState extends State<MncStartAppointmentWidget> {
   String dropDownValue;
   String radioButtonValue1;
   String shapes;
@@ -93,7 +93,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
 
   // Future<void> _sendAppointmentDetails() async {
   //   Response res = await ApiService.dio.post(
-  //       "${ApiService.protocol}${ApiService.baseUrl2}/hvt/shapes",
+  //       "${ApiService.protocol}${ApiService.baseUrl2}/mnc/shapes",
   //       options: Options(headers: {
   //         'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
   //       }),
@@ -107,9 +107,9 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
   // }
 
   Future<void> _loadIntervals() async {
-    //print("${ApiService.protocol}${ApiService.baseUrl2}hvt/checkup-intervals");
+    //print("${ApiService.protocol}${ApiService.baseUrl2}mnc/checkup-intervals");
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/checkup-intervals",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/checkup-intervals",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -147,7 +147,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
 
   Future<void> _loadPaymentDetails() async {
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/assessment-service",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/assessment-service",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -233,7 +233,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                         ),
                   ),
                   Text(
-                    'HVT Appointment',
+                    'MNC Appointment',
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
                           color: Color(0xFFF3F4F4),
@@ -364,7 +364,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(5, 2, 0, 0),
                             child: Text(
-                              'HVT Pre Assessment',
+                              'MNC Pre Assessment',
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -596,7 +596,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                           //   padding:
                           //       EdgeInsetsDirectional.fromSTEB(5, 12, 0, 0),
                           //   child: Text(
-                          //     '3. Please enter your goal over HVT',
+                          //     '3. Please enter your goal over MNC',
                           //     style: FlutterFlowTheme.of(context)
                           //         .bodyText1
                           //         .override(
@@ -790,7 +790,7 @@ class _HvtStartAppointmentWidgetState extends State<HvtStartAppointmentWidget> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              hvt_bookdoctor_screen(
+                                              mnc_bookdoctor_screen(
                                             data: data,
                                           ),
                                         ));

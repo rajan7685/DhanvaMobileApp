@@ -7,7 +7,7 @@ import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/doctors_details_service.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_success_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_success_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dio/dio.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -19,7 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class hvtPaymentScreenWidget extends StatefulWidget {
+class mncPaymentScreenWidget extends StatefulWidget {
   Map<String, dynamic> data = {};
   String doctorId;
   String doctorName;
@@ -37,7 +37,7 @@ class hvtPaymentScreenWidget extends StatefulWidget {
   // DateTime date;
   // String timeString;
 
-  hvtPaymentScreenWidget(
+  mncPaymentScreenWidget(
       {Key key,
       @required this.data,
       @required this.doctorId,
@@ -57,10 +57,10 @@ class hvtPaymentScreenWidget extends StatefulWidget {
   // this.isOnline = true
 
   @override
-  _hvtPaymentScreenWidgetState createState() => _hvtPaymentScreenWidgetState();
+  _mncPaymentScreenWidgetState createState() => _mncPaymentScreenWidgetState();
 }
 
-class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
+class _mncPaymentScreenWidgetState extends State<mncPaymentScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Razorpay _rzPay;
   String _paymentValueType = "Online Payment";
@@ -87,7 +87,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
           "status": 0
         });
     Response bookingRes = await ApiService.dio.post(
-        '${ApiService.protocol}api2.dhanva.icu/hvt/book',
+        '${ApiService.protocol}api2.dhanva.icu/mnc/book',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
@@ -128,7 +128,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
     print('Payment success : $response');
     await _bookAppointment(transactionId: response.paymentId);
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => hvtSuccessScreenWidget()));
+        .push(MaterialPageRoute(builder: (_) => mncSuccessScreenWidget()));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) async {
@@ -157,7 +157,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
 
   Future<void> _sendAllDetails() async {
     Response assesmentRes = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/assessment-service",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/assessment-service",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -165,7 +165,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
 
   Future<void> _loadAssessmentService() async {
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/assessment-service",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/assessment-service",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -205,7 +205,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                     child: Text(
-                      'Your HVT Appointment',
+                      'Your MNC Appointment',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Color(0xFF606E87),
@@ -339,7 +339,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                           padding:
                               EdgeInsetsDirectional.fromSTEB(12, 12, 12, 0),
                           child: Text(
-                            'HVT Goal',
+                            'MNC Goal',
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',
@@ -430,7 +430,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => hvtSuccessScreenWidget(),
+                          builder: (context) => mncSuccessScreenWidget(),
                         ),
                       );
                     },
@@ -450,7 +450,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(
-                          //       builder: (context) => hvtSuccessScreenWidget(),
+                          //       builder: (context) => mncSuccessScreenWidget(),
                           //     ));
                           if (_paymentValueType == null) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -467,7 +467,7 @@ class _hvtPaymentScreenWidgetState extends State<hvtPaymentScreenWidget> {
                                 SnackBar(content: Text('Booked')),
                               );
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => hvtSuccessScreenWidget()));
+                                  builder: (_) => mncSuccessScreenWidget()));
                             } else {
                               // through UPI/Debit
                               _makePayment();

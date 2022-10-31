@@ -3,14 +3,14 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class hvtAmountBreakupWidget extends StatefulWidget {
-  const hvtAmountBreakupWidget({Key key}) : super(key: key);
+class mncAmountBreakupWidget extends StatefulWidget {
+  const mncAmountBreakupWidget({Key key}) : super(key: key);
 
   @override
-  _hvtAmountBreakupWidgetState createState() => _hvtAmountBreakupWidgetState();
+  _mncAmountBreakupWidgetState createState() => _mncAmountBreakupWidgetState();
 }
 
-class _hvtAmountBreakupWidgetState extends State<hvtAmountBreakupWidget> {
+class _mncAmountBreakupWidgetState extends State<mncAmountBreakupWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(

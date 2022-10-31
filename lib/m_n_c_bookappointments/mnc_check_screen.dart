@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_payment_breakage_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_logs_investigation.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_payment_breakage_screen.dart';
 import 'package:dio/dio.dart';
 
 import '../components/notification_icon_button.dart';
@@ -15,26 +15,26 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../global/services/shared_preference_service.dart';
-import 'hvt_check_payment.dart';
+import 'mnc_check_payment.dart';
 
-class hvtCheckScreenWidget extends StatefulWidget {
+class mncCheckScreenWidget extends StatefulWidget {
   final Map<String, dynamic> appointmentJson;
-  final String hvtId;
-  final int hvtStatus;
-  final bool isHvtPaused;
-  const hvtCheckScreenWidget(
+  final String mncId;
+  final int mncStatus;
+  final bool isMncPaused;
+  const mncCheckScreenWidget(
       {Key key,
       @required this.appointmentJson,
-      @required this.hvtId,
-      @required this.isHvtPaused,
-      @required this.hvtStatus})
+      @required this.mncId,
+      @required this.isMncPaused,
+      @required this.mncStatus})
       : super(key: key);
 
   @override
-  _hvtCheckScreenWidgetState createState() => _hvtCheckScreenWidgetState();
+  _mncCheckScreenWidgetState createState() => _mncCheckScreenWidgetState();
 }
 
-class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
+class _mncCheckScreenWidgetState extends State<mncCheckScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Map<String, dynamic> resData = {};
 
@@ -46,7 +46,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
 
   Future<void> _loadPlanNotesDetails() async {
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/${widget.appointmentJson["_id"]}",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/${widget.appointmentJson["_id"]}",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -120,7 +120,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'HVT Appointments',
+                      'MNC Appointments',
                       textAlign: TextAlign.start,
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
@@ -130,7 +130,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                           ),
                     ),
                     Text(
-                      'Your HVT\'s',
+                      'Your MNC\'s',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Color(0xFFF3F4F4),
@@ -255,7 +255,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                             children: [
                                               Flexible(
                                                 child: Text(
-                                                  'HVT Goal: ${widget.appointmentJson["goal"]}',
+                                                  'MNC Goal: ${widget.appointmentJson["goal"]}',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyText1
@@ -280,7 +280,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                             children: [
                                               if (resData["plan_name"] != null)
                                                 Text(
-                                                  'HVT Plan: ${resData["plan_name"]}',
+                                                  'MNC Plan: ${resData["plan_name"]}',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .bodyText1
@@ -311,7 +311,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Text(
-                                'HVT Consultation Notes',
+                                'MNC Consultation Notes',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -398,14 +398,14 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              hvtCheckPaymentScreenWidget(
+                                              mncCheckPaymentScreenWidget(
                                             data: widget.appointmentJson,
-                                            hvtPayment: int.parse(
+                                            mncPayment: int.parse(
                                               resData["initial_amount"],
                                             ),
-                                            hvtId: resData["_id"],
-                                            hvtStatus: resData["status"],
-                                            isHvtPaused: resData["paused"],
+                                            mncId: resData["_id"],
+                                            mncStatus: resData["status"],
+                                            isMncPaused: resData["paused"],
                                           ),
                                         ));
                                   },
@@ -413,9 +413,9 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      if (resData["hvtPayments"] != null &&
+                                      if (resData["mncPayments"] != null &&
                                           resData["initial_amount"] != null &&
-                                          !resData["hvtPayments"]
+                                          !resData["mncPayments"]
                                               .containsKey("initial_payment"))
                                         Text(
                                           'Pay \u20B9${resData["initial_amount"]}',
@@ -456,12 +456,12 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              hvtLogsInvestigationWidget(
+                                              mncLogsInvestigationWidget(
                                             appointmentJson:
                                                 widget.appointmentJson,
-                                            hvtId: resData["_id"],
-                                            hvtStatus: resData["status"],
-                                            isHvtpaused: resData["paused"],
+                                            mncId: resData["_id"],
+                                            mncStatus: resData["status"],
+                                            isMncpaused: resData["paused"],
                                           ),
                                         ));
                                   },
@@ -469,8 +469,8 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      if (resData["hvtPayments"] != null &&
-                                          resData["hvtPayments"]
+                                      if (resData["mncPayments"] != null &&
+                                          resData["mncPayments"]
                                               .containsKey("initial_payment"))
                                         Padding(
                                           padding: const EdgeInsets.all(10.0),
@@ -518,7 +518,7 @@ class _hvtCheckScreenWidgetState extends State<hvtCheckScreenWidget> {
                               //                       .size
                               //                       .height *
                               //                   0.45,
-                              //               child: hvtAmountBreakupWidget(),
+                              //               child: mncAmountBreakupWidget(),
                               //             ),
                               //           );
                               //         },
