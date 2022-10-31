@@ -8,3 +8,8 @@ Razorpay id:
 dhanvahcs@gmail.com
 Password:
 Dhanva123
+
+
+PlayStore / App Store password 
+
+dhanvahcs@gmail.com /  Yoyoyo21!
