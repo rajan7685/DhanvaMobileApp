@@ -4,7 +4,7 @@ import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_start_appointment.d
 import '../app_guide_screen1/app_guide_screen1_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../h_v_t_assestment_screen/h_v_t_assestment_screen_widget.dart';
+import '../m_n_c_assestment_screen/m_n_c_assestment_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
