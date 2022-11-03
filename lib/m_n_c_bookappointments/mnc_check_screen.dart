@@ -417,16 +417,19 @@ class _mncCheckScreenWidgetState extends State<mncCheckScreenWidget> {
                                           resData["initial_amount"] != null &&
                                           !resData["mncPayments"]
                                               .containsKey("initial_payment"))
-                                        Text(
-                                          'Pay \u20B9${resData["initial_amount"]}',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Open Sans',
-                                                color: Colors.white,
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Text(
+                                            'Pay \u20B9${resData["initial_amount"]}',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText1
+                                                .override(
+                                                  fontFamily: 'Open Sans',
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
                                         ),
                                       // Padding(
                                       //   padding: EdgeInsetsDirectional.fromSTEB(

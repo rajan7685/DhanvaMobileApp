@@ -123,67 +123,67 @@ class _StartBookingScreen2WidgetState
               ),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(
                         Icons.arrow_back_rounded,
                         color: Colors.white,
                         size: 34,
                       ),
-                      Expanded(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                              child: Container(
-                                width: 45,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFEEEEEE),
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: Image.network(
-                                      'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
-                                    ).image,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: Color(0xFF00FFF9),
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                            child: Container(
                               width: 45,
                               height: 45,
                               decoration: BoxDecoration(
-                                color: Color(0xFF00827F),
+                                color: Color(0xFFEEEEEE),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: Image.network(
+                                    'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
+                                  ).image,
+                                ),
                                 borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Align(
-                                alignment: AlignmentDirectional(0, 0),
-                                child: Icon(
-                                  Icons.notifications_outlined,
-                                  color: Color(0xFFF3F4F4),
-                                  size: 24,
+                                border: Border.all(
+                                  color: Color(0xFF00FFF9),
+                                  width: 2,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          Container(
+                            width: 45,
+                            height: 45,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF00827F),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Align(
+                              alignment: AlignmentDirectional(0, 0),
+                              child: Icon(
+                                Icons.notifications_outlined,
+                                color: Color(0xFFF3F4F4),
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
@@ -415,6 +415,11 @@ class _StartBookingScreen2WidgetState
                                   return Center(
                                     child: CircularProgressIndicator(),
                                   );
+                                  // } else if (_docRecords.doctors.length == 0) {
+                                  //   return Center(
+                                  //     child: Text(
+                                  //         "No Doctors available Please go with available doctors"),
+                                  //   );
                                 } else {
                                   return DoctorCardListView(
                                     doctors: _docRecords.doctors,
@@ -440,7 +445,7 @@ class _StartBookingScreen2WidgetState
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
-                                                'Please enter patient\'s symptomps')));
+                                                'Please enter patient\'s symptoms')));
                                   } else if (radioButtonValue == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
@@ -450,8 +455,13 @@ class _StartBookingScreen2WidgetState
                                       _selectedDoctor == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
-                                            content: Text(
-                                                'Please select a doctor')));
+                                            content: Text(ref
+                                                        .read(_doctorsProvider)
+                                                        .doctors
+                                                        .length !=
+                                                    0
+                                                ? 'Please select a doctor'
+                                                : 'Go with available doctors')));
                                   } else {
                                     Navigator.push(
                                         context,

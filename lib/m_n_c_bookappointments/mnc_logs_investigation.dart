@@ -181,17 +181,21 @@ class _mncLogsInvestigationWidgetState
           ? null
           : await MultipartFile.fromFile(_file.path, filename: _file.name)
     });
-    Response res = await ApiService.dio.post(
-      '${ApiService.protocol}${ApiService.baseUrl2}mnc/post/message',
-      data: data,
-      options: Options(headers: {
-        'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
-      }),
-    );
+    try {
+      Response res = await ApiService.dio.post(
+        '${ApiService.protocol}${ApiService.baseUrl2}mnc/post/message',
+        data: data,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }),
+      );
+      print("Chat res data${res.data}");
+    } catch (e) {
+      print("bla bla $e");
+    }
     _chatController.clear();
     _file = null;
     _loadChats();
-    print("Chat res data${res.data}");
   }
 
   @override
