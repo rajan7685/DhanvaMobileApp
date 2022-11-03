@@ -8,7 +8,7 @@ import 'package:dhanva_mobile_app/global/models/date_time_slot.dart';
 import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/providers/time_slot_provider.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_payment_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_payment_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -61,12 +61,12 @@ String _time24to12Format(String time) {
 ChangeNotifierProvider<TimeSlotProvider> _timeSotProvider =
     ChangeNotifierProvider((ref) => TimeSlotProvider());
 
-class hvtTimeSlot extends ConsumerStatefulWidget {
+class mncTimeSlot extends ConsumerStatefulWidget {
   final bool isUniversalTimeSlot;
   final Doctor doctor;
   final Map<String, dynamic> data;
 
-  const hvtTimeSlot(
+  const mncTimeSlot(
       {Key key,
       @required this.data,
       @required this.isUniversalTimeSlot,
@@ -74,10 +74,10 @@ class hvtTimeSlot extends ConsumerStatefulWidget {
       : super(key: key);
 
   @override
-  ConsumerState<hvtTimeSlot> createState() => _TimeSlotScreenWidgetState();
+  ConsumerState<mncTimeSlot> createState() => _TimeSlotScreenWidgetState();
 }
 
-class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
+class _TimeSlotScreenWidgetState extends ConsumerState<mncTimeSlot> {
   List<UniversalDateTimeSlot> universalTimeSlots = [];
   List<DateTimeSlot> doctorTimeSlots = [];
   bool _isTimeSlotDataLoading = true;
@@ -96,7 +96,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
 
   Future<void> _loadAllTimeSlots() async {
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/available/time-slots/alternate",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/available/time-slots/alternate",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -111,7 +111,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
 
   Future<void> _loadDoctorTimeSlots() async {
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/time-slots/${widget.doctor.id}",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/time-slots/${widget.doctor.id}",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -207,7 +207,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<hvtTimeSlot> {
                 // print(_dateTimeSelectedId.split(',')[0]);
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => hvtPaymentScreenWidget(
+                    builder: (context) => mncPaymentScreenWidget(
                         // goal: widget.data["goal"],
                         doctorId: widget.doctor == null
                             ? _selectedDoctorId

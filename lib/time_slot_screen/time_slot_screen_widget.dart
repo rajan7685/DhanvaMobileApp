@@ -177,19 +177,25 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
 
             InkWell(
               onTap: () {
-                print(_dateTimeSelectedId.split(',')[0]);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AppointmentBookedScreenWidget(
-                        patientRelationType: widget.patientRelationType,
-                        hospitalId: widget.hospitalId,
-                        isOnline: widget.isOnline,
-                        symtopms: widget.symptopms,
-                        timeString: _dateTimeSelectedString,
-                        patientId: widget.patientId,
-                        date: DateTime.parse(_dateTimeSelectedId.split(',')[0]),
-                        doctorName: _selectedDoctorName,
-                        doctorId: _selectedDoctorId,
-                        service: widget.service)));
+                if (_dateTimeSelectedId == "") {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Please select a time slot")));
+                } else {
+                  print("validation issue${_dateTimeSelectedId.split(',')[0]}");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AppointmentBookedScreenWidget(
+                          patientRelationType: widget.patientRelationType,
+                          hospitalId: widget.hospitalId,
+                          isOnline: widget.isOnline,
+                          symtopms: widget.symptopms,
+                          timeString: _dateTimeSelectedString,
+                          patientId: widget.patientId,
+                          date:
+                              DateTime.parse(_dateTimeSelectedId.split(',')[0]),
+                          doctorName: _selectedDoctorName,
+                          doctorId: _selectedDoctorId,
+                          service: widget.service)));
+                }
               },
               child: Container(
                   width: 225,

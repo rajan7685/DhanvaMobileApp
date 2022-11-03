@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "761242968692",
-    "project_id": "dhanva-fcm-chat",
-    "storage_bucket": "dhanva-fcm-chat.appspot.com"
+    "project_number": "421778500398",
+    "project_id": "dhanva-9190d",
+    "storage_bucket": "dhanva-9190d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:761242968692:android:b108f178a55b193e33e721",
+        "mobilesdk_app_id": "1:421778500398:android:629b32b0c58961cdb1e8bf",
         "android_client_info": {
           "package_name": "com.celestial.dhanva"
         }
       },
       "oauth_client": [
         {
-          "client_id": "761242968692-3fgf56in0ievi5umim1v02o7s328dmu4.apps.googleusercontent.com",
+          "client_id": "421778500398-kv2ej5r6ijihdvt59sjoqt9s116nms56.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDN0eL2VZNDFi53F2MYKNBWoCW8vR0U3dI"
+          "current_key": "AIzaSyCEjxWIVIUjsjm-XeWGvUp_GukqO39hsYU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "761242968692-3fgf56in0ievi5umim1v02o7s328dmu4.apps.googleusercontent.com",
+              "client_id": "421778500398-kv2ej5r6ijihdvt59sjoqt9s116nms56.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "761242968692-lbpe5a8t4sm869jsd840fn91500dkq0d.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.celestial.dhanva"
-              }
             }
           ]
         }

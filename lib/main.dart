@@ -32,6 +32,7 @@ void main() async {
   await SharedPreferenceService.init();
 
 //firebase messaging
+  print("starting firebase service");
   await Firebase.initializeApp()
       .then((FirebaseApp value) => print('Firebase Service init $value.'));
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);

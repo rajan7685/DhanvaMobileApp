@@ -8,8 +8,8 @@ import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/doctors_details_service.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_success_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_logs_investigation.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_success_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
 import 'package:dio/dio.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -23,28 +23,28 @@ import 'package:google_fonts/google_fonts.dart';
 
 Doctor _selectedDoctor;
 
-class hvtCheckPaymentScreenWidget extends StatefulWidget {
+class mncCheckPaymentScreenWidget extends StatefulWidget {
   final Map<String, dynamic> data;
-  final int hvtPayment;
-  final String hvtId;
-  final String hvtStatus;
-  final bool isHvtPaused;
-  hvtCheckPaymentScreenWidget(
+  final int mncPayment;
+  final String mncId;
+  final String mncStatus;
+  final bool isMncPaused;
+  mncCheckPaymentScreenWidget(
       {Key key,
       @required this.data,
-      @required this.hvtPayment,
-      @required this.hvtId,
-       @required this.isHvtPaused,
-      @required this.hvtStatus})
+      @required this.mncPayment,
+      @required this.mncId,
+      @required this.isMncPaused,
+      @required this.mncStatus})
       : super(key: key);
 
   @override
-  _hvtCheckPaymentScreenWidgetState createState() =>
-      _hvtCheckPaymentScreenWidgetState();
+  _mncCheckPaymentScreenWidgetState createState() =>
+      _mncCheckPaymentScreenWidgetState();
 }
 
-class _hvtCheckPaymentScreenWidgetState
-    extends State<hvtCheckPaymentScreenWidget> {
+class _mncCheckPaymentScreenWidgetState
+    extends State<mncCheckPaymentScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   Razorpay _rzPay;
@@ -58,7 +58,7 @@ class _hvtCheckPaymentScreenWidgetState
   Future<void> _makePayment() async {
     var options = {
       'key': 'rzp_test_xbbqVc7yVFG9f6',
-      'amount': widget.hvtPayment * 100,
+      'amount': widget.mncPayment * 100,
       'name': "Inital payment",
       'description': 'Service',
       'prefill': {'contact': p.phone, 'email': p.email}
@@ -72,7 +72,7 @@ class _hvtCheckPaymentScreenWidgetState
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => hvtLogsInvestigationWidget()));
+        .push(MaterialPageRoute(builder: (_) => mncLogsInvestigationWidget()));
     _sendInitialPaymentDetails(transactionId: response.paymentId);
   }
 
@@ -102,7 +102,7 @@ class _hvtCheckPaymentScreenWidgetState
     print(transactionId);
     print("""
     //   booking req body
-    "amount":${widget.hvtPayment.toString()},
+    "amount":${widget.mncPayment.toString()},
           "transaction_id": ${transactionId},
           "meta_info": {"payment_type": "Card", "isOnline": true},
           "payment_status_string": "Success",
@@ -111,25 +111,25 @@ class _hvtCheckPaymentScreenWidgetState
         SharedPreferenceService.loadString(key: PatientKey),
       ),
     ).id}
-          "status":${widget.hvtStatus},
-          "hvt_id": ${widget.hvtId},
+          "status":${widget.mncStatus},
+          "mnc_id": ${widget.mncId},
     //    
     //   """);
     Response res = await ApiService.dio.post(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/payment/initial",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/payment/initial",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
         data: {
-          "amount": widget.hvtPayment.toString(),
+          "amount": widget.mncPayment.toString(),
           "transaction_id": transactionId,
           "meta_info": {"payment_type": "Card", "isOnline": true},
           "payment_status_string": "Success",
           "patient_id": Patient.fromJson(jsonDecode(
                   SharedPreferenceService.loadString(key: PatientKey)))
               .id,
-          "status": widget.hvtStatus,
-          "hvt_id": widget.hvtId,
+          "status": widget.mncStatus,
+          "mnc_id": widget.mncId,
         });
     print("initial payment details${res.data}");
   }
@@ -166,7 +166,7 @@ class _hvtCheckPaymentScreenWidgetState
                   child: Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                     child: Text(
-                      'Your HVT Appointment',
+                      'Your MNC Appointment',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Color(0xFF606E87),
@@ -290,7 +290,7 @@ class _hvtCheckPaymentScreenWidgetState
                           padding:
                               EdgeInsetsDirectional.fromSTEB(12, 12, 12, 0),
                           child: Text(
-                            'HVT Goal',
+                            'MNC Goal',
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Open Sans',
@@ -382,7 +382,7 @@ class _hvtCheckPaymentScreenWidgetState
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => hvtLogsInvestigationWidget(
+                          builder: (context) => mncLogsInvestigationWidget(
                             appointmentJson: widget.data,
                           ),
                         ),
@@ -408,7 +408,7 @@ class _hvtCheckPaymentScreenWidgetState
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Pay \u20B9${widget.hvtPayment.toString()}',
+                              'Pay \u20B9${widget.mncPayment.toString()}',
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(

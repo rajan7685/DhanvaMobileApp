@@ -136,7 +136,7 @@ class _AddFamilyMembersScreenWidgetState
         "gender": gender,
         "parent": patient.id
       };
-      print("MY RESPONSE: ${d}");
+      print("MY request: ${d}");
       Response res = await ApiService.dio.post(_patientRelationAddApi,
           data: d,
           options: Options(headers: {
@@ -162,10 +162,12 @@ class _AddFamilyMembersScreenWidgetState
         setState(() {
           // update data in ui
         });
-      }
-      print('_patientRelationAddApi ${res.data}');
+      } else if (res.statusCode == 400)
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Please use a djkashksjd')));
     } catch (e) {
-      print('_patientRelationAddApi ${e.toString()}');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Something went wrong : ${e.toString()}')));
     }
   }
 

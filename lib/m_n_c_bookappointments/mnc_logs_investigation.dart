@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_addon_Details.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_bookdoctor_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_addon_Details.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_appointments_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_bookdoctor_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/home_screen_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 
-import '../components/hvt_bottomsheet_widget.dart';
+import '../components/mnc_bottomsheet_widget.dart';
 // import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -23,27 +23,27 @@ import '../global/services/shared_preference_service.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
-class hvtLogsInvestigationWidget extends StatefulWidget {
+class mncLogsInvestigationWidget extends StatefulWidget {
   final Map<String, dynamic> appointmentJson;
-  final String hvtId;
-  final String hvtStatus;
-  final bool isHvtpaused;
+  final String mncId;
+  final String mncStatus;
+  final bool isMncpaused;
 
-  const hvtLogsInvestigationWidget(
+  const mncLogsInvestigationWidget(
       {Key key,
       @required this.appointmentJson,
-      @required this.hvtId,
-      @required this.isHvtpaused,
-      @required this.hvtStatus})
+      @required this.mncId,
+      @required this.isMncpaused,
+      @required this.mncStatus})
       : super(key: key);
 
   @override
-  _hvtLogsInvestigationWidgetState createState() =>
-      _hvtLogsInvestigationWidgetState();
+  _mncLogsInvestigationWidgetState createState() =>
+      _mncLogsInvestigationWidgetState();
 }
 
-class _hvtLogsInvestigationWidgetState
-    extends State<hvtLogsInvestigationWidget> {
+class _mncLogsInvestigationWidgetState
+    extends State<mncLogsInvestigationWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   int tabIndex;
   TextEditingController _chatController;
@@ -83,7 +83,7 @@ class _hvtLogsInvestigationWidgetState
             jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
         .id;
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvt/get/logs/${widget.hvtId}/$patientId",
+        "${ApiService.protocol}${ApiService.baseUrl2}mnc/get/logs/${widget.mncId}/$patientId",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -104,7 +104,7 @@ class _hvtLogsInvestigationWidgetState
             jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
         .id;
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvtRecord/get/investigation/${widget.hvtId}/$patientId",
+        "${ApiService.protocol}${ApiService.baseUrl2}mncRecord/get/investigation/${widget.mncId}/$patientId",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -125,7 +125,7 @@ class _hvtLogsInvestigationWidgetState
             jsonDecode(SharedPreferenceService.loadString(key: PatientKey)))
         .id;
     Response res = await ApiService.dio.get(
-        "${ApiService.protocol}${ApiService.baseUrl2}hvtRecord/get/observation/${widget.hvtId}/$patientId",
+        "${ApiService.protocol}${ApiService.baseUrl2}mncRecord/get/observation/${widget.mncId}/$patientId",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -176,22 +176,26 @@ class _hvtLogsInvestigationWidgetState
       "receiver_id": widget.appointmentJson["doctor"]["_id"],
       "sender_type": "Patient",
       "message": _chatController.text,
-      "hvt_id": widget.hvtId,
+      "mnc_id": widget.mncId,
       'document': _file == null
           ? null
           : await MultipartFile.fromFile(_file.path, filename: _file.name)
     });
-    Response res = await ApiService.dio.post(
-      '${ApiService.protocol}${ApiService.baseUrl2}hvt/post/message',
-      data: data,
-      options: Options(headers: {
-        'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
-      }),
-    );
+    try {
+      Response res = await ApiService.dio.post(
+        '${ApiService.protocol}${ApiService.baseUrl2}mnc/post/message',
+        data: data,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }),
+      );
+      print("Chat res data${res.data}");
+    } catch (e) {
+      print("bla bla $e");
+    }
     _chatController.clear();
     _file = null;
     _loadChats();
-    print("Chat res data${res.data}");
   }
 
   @override
@@ -479,8 +483,8 @@ class _hvtLogsInvestigationWidgetState
                       padding: MediaQuery.of(context).viewInsets,
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.3,
-                        child: HvtBottomsheetWidget(
-                          hvtId: widget.hvtId,
+                        child: MncBottomsheetWidget(
+                          mncId: widget.mncId,
                           doctorId: widget.appointmentJson["doctor"]["_id"],
                         ),
                       ),
@@ -526,7 +530,7 @@ class _hvtLogsInvestigationWidgetState
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => HvtAppointmentsScreenWidget(
+                            builder: (context) => MncAppointmentsScreenWidget(
                               shouldPopNormally: false,
                             ),
                           ),
@@ -559,8 +563,8 @@ class _hvtLogsInvestigationWidgetState
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    HvtAddonDetailsScreenWidget(
-                                  hvtId: widget.hvtId,
+                                    MncAddonDetailsScreenWidget(
+                                  mncId: widget.mncId,
                                 ),
                               ),
                             );
@@ -585,7 +589,7 @@ class _hvtLogsInvestigationWidgetState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Start Your HVT',
+                    'Start Your MNC',
                     textAlign: TextAlign.start,
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
@@ -697,8 +701,8 @@ class _hvtLogsInvestigationWidgetState
                                                       shrinkWrap: true,
                                                     )),
                                         ),
-                                        if (widget.hvtStatus != "2" ||
-                                            widget.isHvtpaused == true)
+                                        if (widget.mncStatus != "2" ||
+                                            widget.isMncpaused == true)
                                           Padding(
                                             padding: const EdgeInsets.all(8),
                                             child: Row(
