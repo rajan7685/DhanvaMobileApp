@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_logs_investigation.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../app_guide_screen2/app_guide_screen2_widget.dart';
@@ -21,21 +21,21 @@ import '../global/providers/doctor_record_provider.dart';
 import '../global/services/api_services/api_service_base.dart';
 
 import '../start_booking_screen2/start_booking_screen2_widget.dart';
-import 'hvt_timeslot_screen.dart';
+import 'mnc_timeslot_screen.dart';
 
 Doctor _selectedDoctor;
 ChangeNotifierProvider<DoctorRecordProvider> _doctorsProvider =
     ChangeNotifierProvider((ref) => DoctorRecordProvider());
 
-class hvt_bookdoctor_screen extends StatefulWidget {
+class mnc_bookdoctor_screen extends StatefulWidget {
   final Map<String, dynamic> data;
-  const hvt_bookdoctor_screen({Key key, @required this.data}) : super(key: key);
+  const mnc_bookdoctor_screen({Key key, @required this.data}) : super(key: key);
 
   @override
-  _hvt_bookdoctor_screenState createState() => _hvt_bookdoctor_screenState();
+  _mnc_bookdoctor_screenState createState() => _mnc_bookdoctor_screenState();
 }
 
-class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
+class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
   String radioButtonValue;
   TextEditingController textController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -54,7 +54,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
 
   Future<void> _sendDoctorBookDetails() async {
     Response res = await ApiService.dio.post(
-        "${ApiService.protocol}${ApiService.baseUrl2}/hvt/get_doctors",
+        "${ApiService.protocol}${ApiService.baseUrl2}/mnc/get_doctors",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }),
@@ -69,7 +69,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
       _isDoctorsDataLoading = true;
     });
     Response res = await ApiService.dio.get(
-      "${ApiService.protocol}${ApiService.baseUrl2}hvt/get_doctors",
+      "${ApiService.protocol}${ApiService.baseUrl2}mnc/get_doctors",
       options: Options(headers: {
         'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
       }),
@@ -147,7 +147,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'HVT Doctors',
+                    'MNC Doctors',
                     textAlign: TextAlign.start,
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
@@ -197,7 +197,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
                               child: Text(
-                                'Please enter your goal over HVT',
+                                'Please enter your goal over MNC',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
@@ -378,7 +378,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                             //       onPressed: () {
                             //         Navigator.of(context)
                             //             .push(MaterialPageRoute(
-                            //           builder: (_) => hvtScreen2Widget(),
+                            //           builder: (_) => mncScreen2Widget(),
                             //         ));
                             //       },
                             //       text: 'Next',
@@ -425,7 +425,7 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                             //           context,
                             //           MaterialPageRoute(
                             //               builder: (context) =>
-                            //                   hvtScreen2Widget()));
+                            //                   mncScreen2Widget()));
                             //     }
                             //   },
                             child: Align(
@@ -455,12 +455,11 @@ class _hvt_bookdoctor_screenState extends State<hvt_bookdoctor_screen> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => hvtTimeSlot(
+                                              builder: (context) => mncTimeSlot(
                                                     isUniversalTimeSlot:
                                                         _selectedDoctor == null
                                                             ? true
                                                             : false,
-                                                          
                                                     doctor: _selectedDoctor,
                                                     data: {
                                                       "goal":

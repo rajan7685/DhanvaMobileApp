@@ -1,8 +1,8 @@
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_bookdoctor_screen.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_logs_investigation.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_payment_screen.dart';
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_timeslot_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_appointments_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_bookdoctor_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_logs_investigation.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_payment_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_timeslot_screen.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -12,14 +12,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class hvtSuccessScreenWidget extends StatefulWidget {
-  const hvtSuccessScreenWidget({Key key}) : super(key: key);
+class mncSuccessScreenWidget extends StatefulWidget {
+  const mncSuccessScreenWidget({Key key}) : super(key: key);
 
   @override
-  _hvtSuccessScreenWidgetState createState() => _hvtSuccessScreenWidgetState();
+  _mncSuccessScreenWidgetState createState() => _mncSuccessScreenWidgetState();
 }
 
-class _hvtSuccessScreenWidgetState extends State<hvtSuccessScreenWidget> {
+class _mncSuccessScreenWidgetState extends State<mncSuccessScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -97,7 +97,7 @@ class _hvtSuccessScreenWidgetState extends State<hvtSuccessScreenWidget> {
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(0, 2, 0, 0),
                         child: Text(
-                          'Your HVT Appointment has been Scheduled',
+                          'Your MNC Appointment has been Scheduled',
                           style:
                               FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Open Sans',
@@ -114,7 +114,7 @@ class _hvtSuccessScreenWidgetState extends State<hvtSuccessScreenWidget> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    HvtAppointmentsScreenWidget(),
+                                    MncAppointmentsScreenWidget(),
                               ),
                             );
                           },

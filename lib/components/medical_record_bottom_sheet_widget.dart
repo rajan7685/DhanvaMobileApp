@@ -39,6 +39,7 @@ class _MedicalRecordBottomSheetWidgetState
   // List<PlatformFile> _pickedFiles = [];
   DateTime _datetime;
   DateTime _time;
+  bool _validateFile = false;
 
   PlatformFile _selectedFile;
   bool _isFileLoading = false;
@@ -246,7 +247,7 @@ class _MedicalRecordBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
-    _loadPatientInformation();
+    // _loadPatientInformation();
     patientNameController = TextEditingController(
         text: widget.newRecord ? '' : widget.medicalRecord.fileName);
     reportTypeController =
@@ -610,6 +611,14 @@ class _MedicalRecordBottomSheetWidgetState
                 height: 6,
               ),
               _filesListView(),
+              if (_selectedFile == null && _validateFile)
+                Text(
+                  "Please select the file",
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+
               if (!widget.newRecord)
                 InkWell(
                   onTap: () {
@@ -691,15 +700,23 @@ class _MedicalRecordBottomSheetWidgetState
                     child: InkWell(
                       onTap: () async {
                         setState(() {
-                          _isFileUploading = true;
+                          _validateFile = true;
                         });
-                        uploadFile(_selectedFile);
-                        setState(() {
-                          _isFileUploading = false;
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Record Saved")));
-                        Navigator.pop(context);
+                        if (_selectedFile != null) {
+                          setState(() {
+                            _isFileUploading = true;
+                            _validateFile = false;
+                          });
+                          uploadFile(_selectedFile);
+                          setState(() {
+                            _isFileUploading = false;
+                          });
+                          if (_selectedFile != null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Record Saved")));
+                            Navigator.pop(context);
+                          }
+                        }
                       },
                       child: !_isFileUploading
                           ? Row(

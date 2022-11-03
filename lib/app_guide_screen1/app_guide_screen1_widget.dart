@@ -1,4 +1,4 @@
-import 'package:dhanva_mobile_app/h_v_t_bookappointments/hvt_appointments_screen.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_appointments_screen.dart';
 
 import '../app_guide_screen2/app_guide_screen2_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -189,7 +189,7 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        HvtAppointmentsScreenWidget(),
+                                        MncAppointmentsScreenWidget(),
                                   ),
                                 );
                               },
@@ -257,7 +257,7 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'What is HVT?',
+                      'What is MNC?',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Colors.white,
@@ -266,7 +266,7 @@ class _AppGuideScreen1WidgetState extends State<AppGuideScreen1Widget> {
                           ),
                     ),
                     Text(
-                      'Heruistic Victual Therapy',
+                      'Medical Nutrition Care',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Colors.white,
