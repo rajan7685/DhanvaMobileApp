@@ -164,22 +164,22 @@ class _StartBookingScreen2WidgetState
                               ),
                             ),
                           ),
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF00827F),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional(0, 0),
-                              child: Icon(
-                                Icons.notifications_outlined,
-                                color: Color(0xFFF3F4F4),
-                                size: 24,
-                              ),
-                            ),
-                          ),
+                          // Container(
+                          //   width: 45,
+                          //   height: 45,
+                          //   decoration: BoxDecoration(
+                          //     color: Color(0xFF00827F),
+                          //     borderRadius: BorderRadius.circular(12),
+                          //   ),
+                          //   // child: Align(
+                          //   //   alignment: AlignmentDirectional(0, 0),
+                          //   //   child: Icon(
+                          //   //     Icons.notifications_outlined,
+                          //   //     color: Color(0xFFF3F4F4),
+                          //   //     size: 24,
+                          //   //   ),
+                          //   // ),
+                          // ),
                         ],
                       ),
                     ),
