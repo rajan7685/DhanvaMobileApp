@@ -39,7 +39,7 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> {
                       size: 32,
                     ),
                   ),
-                  NotificationIconButton()
+                  // NotificationIconButton()
                 ],
               ),
             ),

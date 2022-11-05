@@ -171,10 +171,10 @@ class _ServicesByHospitalScreenState
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    NotificationIconButton()
+                    // SizedBox(
+                    //   width: 12,
+                    // ),
+                    // NotificationIconButton()
                   ],
                 ),
               ),

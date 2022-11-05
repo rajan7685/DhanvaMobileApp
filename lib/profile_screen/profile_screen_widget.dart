@@ -142,8 +142,9 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                 color: Color(0xFFEEEEEE),
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image:
-                                      AssetImage('assets/images/Group_524.png'),
+                                  image: Image.network(
+                                    'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
+                                  ).image,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
@@ -161,7 +162,9 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Profile',
+                                    _patientFirstName.isNotEmpty
+                                        ? 'Hey $_patientFirstName'
+                                        : '',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -172,7 +175,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                         ),
                                   ),
                                   Text(
-                                    'Hey $_patientFirstName, how are you today?',
+                                    'how are you today?',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -490,55 +493,55 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => NewsesScreenWidget(),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/Layer_54.png',
-                                  width: 18,
-                                  height: 18,
-                                  fit: BoxFit.contain,
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      12, 0, 0, 0),
-                                  child: Text(
-                                    'Favorites',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: Color(0xFF434343),
-                                          fontSize: 20,
-                                        ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: AlignmentDirectional(1, 0),
-                                    child: Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      color: Color(0xFF5A5A5A),
-                                      size: 34,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                        //   child: InkWell(
+                        //     onTap: () async {
+                        //       await Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //           builder: (context) => NewsesScreenWidget(),
+                        //         ),
+                        //       );
+                        //     },
+                        //     child: Row(
+                        //       mainAxisSize: MainAxisSize.max,
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       children: [
+                        //         Image.asset(
+                        //           'assets/images/Layer_54.png',
+                        //           width: 18,
+                        //           height: 18,
+                        //           fit: BoxFit.contain,
+                        //         ),
+                        //         Padding(
+                        //           padding: EdgeInsetsDirectional.fromSTEB(
+                        //               12, 0, 0, 0),
+                        //           child: Text(
+                        //             'Favorites',
+                        //             style: FlutterFlowTheme.of(context)
+                        //                 .bodyText1
+                        //                 .override(
+                        //                   fontFamily: 'Poppins',
+                        //                   color: Color(0xFF434343),
+                        //                   fontSize: 20,
+                        //                 ),
+                        //           ),
+                        //         ),
+                        //         Expanded(
+                        //           child: Align(
+                        //             alignment: AlignmentDirectional(1, 0),
+                        //             child: Icon(
+                        //               Icons.arrow_forward_ios_rounded,
+                        //               color: Color(0xFF5A5A5A),
+                        //               size: 34,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                           child: InkWell(

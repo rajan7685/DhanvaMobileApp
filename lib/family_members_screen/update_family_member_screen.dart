@@ -247,6 +247,9 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                             if (name.isEmpty) return 'Name is required';
                             return null;
                           },
+                          onChanged: (val) {
+                            _formKey.currentState.validate();
+                          },
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: 'Patient Name',
@@ -417,14 +420,21 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     controller: _emergencyPhoneController,
                                     validator: (String phone) {
                                       if (phone.isEmpty)
-                                        return 'Contact is required';
-                                      if (phone.length < 10 ||
-                                          phone.length > 11)
-                                        return 'Must be a valid phone number';
+                                        return 'Contact is Required';
+                                      if (phone.length < 10)
+                                        return 'Enter valid number';
+                                      if (phone.length > 11)
+                                        return 'Enter valid number';
+
                                       return null;
+                                    },
+                                    maxLength: 11,
+                                    onChanged: (val) {
+                                      _formKey.currentState.validate();
                                     },
                                     obscureText: false,
                                     decoration: InputDecoration(
+                                      errorMaxLines: 2,
                                       labelText: 'Emergency Contact',
                                       labelStyle: FlutterFlowTheme.of(context)
                                           .bodyText1
@@ -477,14 +487,21 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     controller: _patientPhoneController,
                                     validator: (String phone) {
                                       if (phone.isEmpty)
-                                        return 'Phone is required';
-                                      if (phone.length < 10 ||
-                                          phone.length > 11)
-                                        return 'Must be a valid phone number';
+                                        return 'Phone No is Required';
+                                      if (phone.length < 10)
+                                        return 'Enter valid number';
+                                      if (phone.length > 11)
+                                        return 'Enter valid number';
+
                                       return null;
+                                    },
+                                    maxLength: 11,
+                                    onChanged: (val) {
+                                      _formKey.currentState.validate();
                                     },
                                     obscureText: false,
                                     decoration: InputDecoration(
+                                      errorMaxLines: 2,
                                       labelText: 'Phone',
                                       labelStyle: FlutterFlowTheme.of(context)
                                           .bodyText1
@@ -548,6 +565,9 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                         return 'Please enter the valid email';
                                       return null;
                                     },
+                                    onChanged: (val) {
+                                      _formKey.currentState.validate();
+                                    },
                                     obscureText: false,
                                     decoration: InputDecoration(
                                       labelText: 'Email',
@@ -609,6 +629,9 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
 
                                       return null;
                                     },
+                                    onChanged: (val) {
+                                      _formKey.currentState.validate();
+                                    },
                                     obscureText: false,
                                     decoration: InputDecoration(
                                       suffix: Text('cm'),
@@ -666,6 +689,9 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                       if (phone.isEmpty) return 'Weight*';
 
                                       return null;
+                                    },
+                                    onChanged: (val) {
+                                      _formKey.currentState.validate();
                                     },
                                     obscureText: false,
                                     decoration: InputDecoration(
@@ -873,6 +899,9 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                 if (relation.isEmpty)
                                   return 'Please provide your date of birth';
                                 return null;
+                              },
+                              onChanged: (val) {
+                                _formKey.currentState.validate();
                               },
                               obscureText: false,
                               decoration: InputDecoration(
