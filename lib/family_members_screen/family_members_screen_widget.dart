@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../profile_screen/edit_profile_screen.dart';
+
 class FamilyMembersScreenWidget extends StatefulWidget {
   const FamilyMembersScreenWidget({Key key}) : super(key: key);
 
@@ -155,12 +157,23 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                       ),
                     ),
                     child: InkWell(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        Patient _patient = Patient.fromJson(jsonDecode(
+                            SharedPreferenceService.loadString(
+                                key: PatientKey)));
+                        if (_patient.name == null)
+                          await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    AddFamilyMembersScreenWidget()));
+                              builder: (_) => EditProfileScreenWidget(),
+                            ),
+                          );
+                        else
+                          await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AddFamilyMembersScreenWidget()));
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.max,

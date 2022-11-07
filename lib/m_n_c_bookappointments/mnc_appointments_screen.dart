@@ -63,7 +63,7 @@ class _MncAppointmentsScreenWidgetState
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
     appointments = res.data;
-    print(res.data[0]);
+   // print(res.data[0]);
     setState(() {
       isDataLoading = false;
     });

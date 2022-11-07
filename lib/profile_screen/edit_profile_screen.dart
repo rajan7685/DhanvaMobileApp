@@ -384,7 +384,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                         child: DropdownButtonFormField(
                                           validator: (String type) {
                                             if (type == null)
-                                              return 'Blood group Required';
+                                              return 'Blood group is Required';
                                             return null;
                                           },
                                           decoration: InputDecoration(
@@ -514,7 +514,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
 
                                             return null;
                                           },
-                                          maxLength: 11,
+                                          maxLength: 10,
                                           onChanged: (val) {
                                             _formKey.currentState.validate();
                                           },

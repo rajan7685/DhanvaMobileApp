@@ -239,7 +239,6 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                           },
                           obscureText: false,
                           decoration: InputDecoration(
-                            errorMaxLines: 2,
                             labelText: 'Mobile Number',
                             labelStyle:
                                 FlutterFlowTheme.of(context).bodyText1.override(

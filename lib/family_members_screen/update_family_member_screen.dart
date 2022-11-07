@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_radio_button.dart';
@@ -320,94 +321,79 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                               Row(
                                 children: [
                                   Expanded(
-                                      child: FlutterFlowRadioButton(
-                                    initialValue: gender,
-                                    options: ['Male', 'Female'],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        gender = value;
-                                      });
-                                    },
-                                    optionHeight: 25,
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Open Sans',
-                                          color: Color(0xFF606E87),
-                                        ),
-                                    selectedTextStyle:
-                                        FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF606E87),
-                                            ),
-                                    buttonPosition: RadioButtonPosition.left,
-                                    direction: Axis.horizontal,
-                                    radioButtonColor: Color(0xFF00A8A3),
-                                    inactiveRadioButtonColor: Color(0x8A314A51),
-                                    toggleable: false,
-                                    horizontalAlignment: WrapAlignment.start,
-                                    verticalAlignment: WrapCrossAlignment.start,
-                                  )),
-                                  Expanded(
-                                    child: TextFormField(
-                                      controller: _patientAgeController,
-                                      enabled: false,
-                                      validator: (String number) {
-                                        if (number.isEmpty)
-                                          return 'Age is required';
-                                        return null;
+                                    flex: 2,
+                                    child: FlutterFlowRadioButton(
+                                      initialValue: gender,
+                                      options: ['Male', 'Female'],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          gender = value;
+                                        });
                                       },
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Age',
-                                        labelStyle: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF9A9A9A),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                        hintStyle: FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF606E87),
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Color(0xFFC1C1C1),
-                                            width: 1,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Color(0xFFC1C1C1),
-                                            width: 1,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                      ),
-                                      style: FlutterFlowTheme.of(context)
+                                      optionHeight: 25,
+                                      textStyle: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(
                                             fontFamily: 'Open Sans',
                                             color: Color(0xFF606E87),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
                                           ),
-                                      textAlign: TextAlign.start,
-                                      keyboardType: TextInputType.number,
+                                      selectedTextStyle:
+                                          FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Open Sans',
+                                                color: Color(0xFF606E87),
+                                              ),
+                                      buttonPosition: RadioButtonPosition.left,
+                                      direction: Axis.horizontal,
+                                      radioButtonColor: Color(0xFF00A8A3),
+                                      inactiveRadioButtonColor:
+                                          Color(0x8A314A51),
+                                      toggleable: false,
+                                      horizontalAlignment: WrapAlignment.start,
+                                      verticalAlignment:
+                                          WrapCrossAlignment.start,
                                     ),
-                                  )
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: DropdownButtonFormField(
+                                      validator: (String type) {
+                                        if (type == null)
+                                          return 'Blood group Required';
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.red),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              const Radius.circular(26),
+                                            ),
+                                          ),
+                                          filled: true,
+                                          hintStyle: TextStyle(
+                                            color: Color(0xFF9A9A9A),
+                                          ),
+                                          hintText: "Blood Group",
+                                          fillColor: Colors.white),
+                                      value: bloodGroupType,
+                                      items: _bloodGroupTypes
+                                          .map((type) => DropdownMenuItem(
+                                                child: Text(type),
+                                                value: type,
+                                              ))
+                                          .toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          bloodGroupType = value;
+                                        });
+                                      },
+                                      iconEnabledColor: Color(0xFF606E87),
+                                      iconDisabledColor: Color(0xFF606E87),
+                                    ),
+                                  ),
                                 ],
                               ),
                               SizedBox(
@@ -495,7 +481,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
 
                                       return null;
                                     },
-                                    maxLength: 11,
+                                    maxLength: 10,
                                     onChanged: (val) {
                                       _formKey.currentState.validate();
                                     },
@@ -809,77 +795,128 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                         Row(
                           children: [
                             Expanded(
-                              child: DropdownButtonFormField(
-                                validator: (String type) {
-                                  if (type == null)
-                                    return 'Blood group Required';
-                                  return null;
+                              flex: 2,
+                              child: InkWell(
+                                onTap: () {
+                                  _selectDob();
                                 },
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.red),
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(26),
+                                child: IgnorePointer(
+                                  child: TextFormField(
+                                    controller: _dobController,
+                                    validator: (String relation) {
+                                      if (relation.isEmpty)
+                                        return 'Please provide your date of birth';
+                                      return null;
+                                    },
+                                    onChanged: (val) {
+                                      _formKey.currentState.validate();
+                                    },
+                                    obscureText: false,
+                                    decoration: InputDecoration(
+                                      labelText: 'DOB',
+                                      labelStyle: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFF9A9A9A),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                      hintStyle: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Open Sans',
+                                            color: Color(0xFF606E87),
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0xFFC1C1C1),
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Color(0xFFC1C1C1),
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
                                     ),
-                                    filled: true,
-                                    hintStyle: TextStyle(
-                                      color: Color(0xFF9A9A9A),
-                                    ),
-                                    hintText: "Blood Group",
-                                    fillColor: Colors.white),
-                                value: bloodGroupType,
-                                items: _bloodGroupTypes
-                                    .map((type) => DropdownMenuItem(
-                                          child: Text(type),
-                                          value: type,
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    bloodGroupType = value;
-                                  });
-                                },
-                                iconEnabledColor: Color(0xFF606E87),
-                                iconDisabledColor: Color(0xFF606E87),
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Open Sans',
+                                          color: Color(0xFF606E87),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                    textAlign: TextAlign.start,
+                                    keyboardType: TextInputType.text,
+                                  ),
+                                ),
                               ),
                             ),
                             SizedBox(
                               width: 6,
                             ),
                             Expanded(
-                              child: DropdownButtonFormField(
-                                validator: (String type) {
-                                  if (type == null)
-                                    return 'Relation Type Required';
+                              flex: 2,
+                              child: TextFormField(
+                                controller: _patientAgeController,
+                                enabled: false,
+                                validator: (String number) {
+                                  if (number.isEmpty) return 'Age is required';
                                   return null;
                                 },
+                                obscureText: false,
                                 decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.red),
-                                      borderRadius: const BorderRadius.all(
-                                        const Radius.circular(26),
+                                  labelText: 'Age',
+                                  labelStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Color(0xFF9A9A9A),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
                                       ),
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Color(0xFF606E87),
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFFC1C1C1),
+                                      width: 1,
                                     ),
-                                    filled: true,
-                                    hintStyle:
-                                        TextStyle(color: Color(0xFF606E87)),
-                                    hintText: "Relation Type",
-                                    fillColor: Colors.white),
-                                value: patientRelationType,
-                                items: relationList
-                                    .map((String type) => DropdownMenuItem(
-                                          child: Text(type),
-                                          value: type,
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  setState(() {
-                                    patientRelationType = value;
-                                  });
-                                },
-                                iconEnabledColor: Color(0xFF606E87),
-                                iconDisabledColor: Color(0xFF606E87),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFFC1C1C1),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF606E87),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                textAlign: TextAlign.start,
+                                keyboardType: TextInputType.number,
                               ),
                             ),
                             SizedBox(
@@ -888,68 +925,36 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                             ),
                           ],
                         ),
-                        InkWell(
-                          onTap: () {
-                            _selectDob();
+                        DropdownButtonFormField(
+                          validator: (String type) {
+                            if (type == null) return 'Relation Type Required';
+                            return null;
                           },
-                          child: IgnorePointer(
-                            child: TextFormField(
-                              controller: _dobController,
-                              validator: (String relation) {
-                                if (relation.isEmpty)
-                                  return 'Please provide your date of birth';
-                                return null;
-                              },
-                              onChanged: (val) {
-                                _formKey.currentState.validate();
-                              },
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                labelText: 'DOB',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFF9A9A9A),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                hintStyle: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFF606E87),
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFC1C1C1),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(16),
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                                borderRadius: const BorderRadius.all(
+                                  const Radius.circular(26),
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFC1C1C1),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
                               ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF606E87),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                              textAlign: TextAlign.start,
-                              keyboardType: TextInputType.text,
-                            ),
-                          ),
+                              filled: true,
+                              hintStyle: TextStyle(color: Color(0xFF606E87)),
+                              hintText: "Relation Type",
+                              fillColor: Colors.white),
+                          value: patientRelationType,
+                          items: relationList
+                              .map((String type) => DropdownMenuItem(
+                                    child: Text(type),
+                                    value: type,
+                                  ))
+                              .toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              patientRelationType = value;
+                            });
+                          },
+                          iconEnabledColor: Color(0xFF606E87),
+                          iconDisabledColor: Color(0xFF606E87),
                         ),
                         SizedBox(
                           height: 18,
