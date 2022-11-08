@@ -74,19 +74,25 @@ class _mncCheckPaymentScreenWidgetState
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => widget.mncStatus == 1.toString()
-          ? mncLogsInvestigationWidget(
-              mncId: widget.mncId,
-              isMncpaused: widget.isMncPaused,
-              mncStatus: widget.mncStatus,
-              appointmentJson: widget.data,
-            )
-          : mncCheckScreenWidget(
-              mncId: widget.mncId,
-              isMncPaused: widget.isMncPaused,
-              mncStatus: int.parse(widget.mncStatus),
-              appointmentJson: widget.data,
-            ),
+      builder: (_) => mncLogsInvestigationWidget(
+        mncId: widget.mncId,
+        isMncpaused: widget.isMncPaused,
+        mncStatus: widget.mncStatus,
+        appointmentJson: widget.data,
+      ),
+      // widget.mncStatus == 1.toString()
+      //     ? mncLogsInvestigationWidget(
+      //         mncId: widget.mncId,
+      //         isMncpaused: widget.isMncPaused,
+      //         mncStatus: widget.mncStatus,
+      //         appointmentJson: widget.data,
+      //       )
+      //     : mncCheckScreenWidget(
+      //         mncId: widget.mncId,
+      //         isMncPaused: widget.isMncPaused,
+      //         mncStatus: int.parse(widget.mncStatus),
+      //         appointmentJson: widget.data,
+      //       ),
     ));
     _sendInitialPaymentDetails(transactionId: response.paymentId);
   }

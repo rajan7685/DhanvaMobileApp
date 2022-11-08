@@ -135,15 +135,16 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
 
   void _selectDob() async {
     final DateTime pickedDate = await showDatePicker(
-        helpText: 'Select your Date of Birth',
-        cancelText: 'Cancel',
-        confirmText: 'Done',
-        context: context,
-        initialDate: _dob ??
-            DateTime(
-                DateTime.now().year, DateTime.now().month, DateTime.now().day),
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2025));
+      helpText: 'Select your Date of Birth',
+      cancelText: 'Cancel',
+      confirmText: 'Done',
+      context: context,
+      initialDate: _dob ??
+          DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
     if (pickedDate != null && pickedDate != _dob)
       setState(() {
         _dob = pickedDate;

@@ -112,6 +112,7 @@ class _VerificationScreenWidgetState
   @override
   void dispose() {
     subscription.cancel();
+
     super.dispose();
   }
 

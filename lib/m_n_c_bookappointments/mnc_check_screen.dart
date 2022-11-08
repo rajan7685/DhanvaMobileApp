@@ -106,15 +106,16 @@ class _mncCheckScreenWidgetState extends State<mncCheckScreenWidget> {
                   children: [
                     InkWell(
                       onTap: () async {
-                        if (resData["mncPayments"] != null &&
-                            !resData["mncPayments"]
-                                .containsKey("initial_payment")) {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        } else {
-                          Navigator.pop(context);
-                        }
+                        Navigator.pop(context);
+                        // if (resData["mncPayments"] != null &&
+                        //     !resData["mncPayments"]
+                        //         .containsKey("initial_payment")) {
+                        //   Navigator.pop(context);
+                        //   Navigator.pop(context);
+                        //   Navigator.pop(context);
+                        // } else {
+                        //   Navigator.pop(context);
+                        // }
                       },
                       child: Icon(
                         Icons.arrow_back_rounded,

@@ -284,7 +284,7 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
