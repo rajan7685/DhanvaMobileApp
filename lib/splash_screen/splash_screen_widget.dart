@@ -1,4 +1,5 @@
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
+import 'package:dhanva_mobile_app/help_screen/help_screen.dart';
 import 'package:dhanva_mobile_app/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -29,6 +30,12 @@ class _SplashScreenWidgetState extends ConsumerState<SplashScreenWidget> {
       await Future.delayed(const Duration(milliseconds: 3000));
       print('AuthToken : ${ref.read(_authProvider).authToken}');
       _token = ref.read(_authProvider).authToken;
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => HelpScreenWidget(),
+      //   ),
+      // );
       await Navigator.pushAndRemoveUntil(
         context,
         PageTransition(
