@@ -112,7 +112,6 @@ class _VerificationScreenWidgetState
   @override
   void dispose() {
     subscription.cancel();
-
     super.dispose();
   }
 
@@ -256,9 +255,9 @@ class _VerificationScreenWidgetState
                             .verifyLoginOtp(mobile: widget.mobile, otp: _otp);
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text(res)));
-                        print('hai $res ');
+                        //print('hai $res ');
                         if (res == 'Logged in successfully') {
-                          print('hai');
+                          // print('hai');
                           await Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -274,7 +273,7 @@ class _VerificationScreenWidgetState
                             SnackBar(content: Text('Please enter the OTP')));
                       }
 
-                      print(_otp);
+                      //print(_otp);
                     },
                     text: 'Verify',
                     options: FFButtonOptions(

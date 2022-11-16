@@ -292,7 +292,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     fontWeight: FontWeight.w600,
                                   ),
                           textAlign: TextAlign.start,
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.name,
                         ),
                         SizedBox(
                           height: 8,
@@ -360,7 +360,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     child: DropdownButtonFormField(
                                       validator: (String type) {
                                         if (type == null)
-                                          return 'Blood group Required';
+                                          return 'Blood group required';
                                         return null;
                                       },
                                       decoration: InputDecoration(
@@ -406,7 +406,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     controller: _emergencyPhoneController,
                                     validator: (String phone) {
                                       if (phone.isEmpty)
-                                        return 'Contact is Required';
+                                        return 'Contact is required';
                                       if (phone.length < 10)
                                         return 'Enter valid number';
                                       if (phone.length > 11)
@@ -473,7 +473,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     controller: _patientPhoneController,
                                     validator: (String phone) {
                                       if (phone.isEmpty)
-                                        return 'Phone No is Required';
+                                        return 'Phone No is required';
                                       if (phone.length < 10)
                                         return 'Enter valid number';
                                       if (phone.length > 11)
@@ -544,7 +544,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     controller: _patientEmailController,
                                     validator: (String email) {
                                       if (email.isEmpty)
-                                        return 'Email is Required';
+                                        return 'Email is required';
                                       else if (!RegExp(
                                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                           .hasMatch(email))
@@ -805,7 +805,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     controller: _dobController,
                                     validator: (String relation) {
                                       if (relation.isEmpty)
-                                        return 'Please provide your date of birth';
+                                        return 'Select the date of birth';
                                       return null;
                                     },
                                     onChanged: (val) {
@@ -927,7 +927,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                         ),
                         DropdownButtonFormField(
                           validator: (String type) {
-                            if (type == null) return 'Relation Type Required';
+                            if (type == null) return 'Select the Relation Type';
                             return null;
                           },
                           decoration: InputDecoration(

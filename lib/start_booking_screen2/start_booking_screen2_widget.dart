@@ -96,6 +96,12 @@ class _StartBookingScreen2WidgetState
     _loadRelations();
     _selectedPatientId = patient.id;
     textController2 = TextEditingController();
+    _selectedDoctor = null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -151,9 +157,9 @@ class _StartBookingScreen2WidgetState
                               decoration: BoxDecoration(
                                 color: Color(0xFFEEEEEE),
                                 image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: Image.network(
-                                    'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
+                                  fit: BoxFit.contain,
+                                  image: Image.asset(
+                                    'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
                                   ).image,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
@@ -441,6 +447,7 @@ class _StartBookingScreen2WidgetState
                             ),
                             child: InkWell(
                                 onTap: () {
+                                  print("selected doctor ${_selectedDoctor}");
                                   if (textController2.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(

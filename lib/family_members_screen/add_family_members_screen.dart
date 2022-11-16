@@ -21,6 +21,7 @@ class AddFamilyMembersScreenWidget extends StatefulWidget {
 class _AddFamilyMembersScreenWidgetState
     extends State<AddFamilyMembersScreenWidget> {
   String valueChoose;
+  bool genderVal = false;
   final _formKey = GlobalKey<FormState>();
   String gender;
   String patientRelationType;
@@ -227,7 +228,7 @@ class _AddFamilyMembersScreenWidgetState
                       TextFormField(
                         controller: _patientNameController,
                         validator: (String name) {
-                          if (name.isEmpty) return 'Name is Required';
+                          if (name.isEmpty) return 'Name is required';
                           return null;
                         },
                         onChanged: (val) {
@@ -273,7 +274,7 @@ class _AddFamilyMembersScreenWidgetState
                               fontWeight: FontWeight.w600,
                             ),
                         textAlign: TextAlign.start,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.name,
                       ),
                       SizedBox(
                         height: 8,
@@ -299,77 +300,99 @@ class _AddFamilyMembersScreenWidgetState
                                 ],
                               ),
                             ),
-                            Row(
+                            Column(
                               children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: FlutterFlowRadioButton(
-                                    options: ['Male', 'Female'],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        gender = value;
-                                      });
-                                    },
-                                    optionHeight: 25,
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Open Sans',
-                                          color: Color(0xFF606E87),
-                                        ),
-                                    selectedTextStyle:
-                                        FlutterFlowTheme.of(context)
-                                            .bodyText1
-                                            .override(
-                                              fontFamily: 'Open Sans',
-                                              color: Color(0xFF606E87),
-                                            ),
-                                    buttonPosition: RadioButtonPosition.left,
-                                    direction: Axis.horizontal,
-                                    radioButtonColor: Color(0xFF00A8A3),
-                                    inactiveRadioButtonColor: Color(0x8A314A51),
-                                    toggleable: false,
-                                    horizontalAlignment: WrapAlignment.start,
-                                    verticalAlignment: WrapCrossAlignment.start,
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: DropdownButtonFormField(
-                                    validator: (String type) {
-                                      if (type == null)
-                                        return 'Blood group Required';
-                                      return null;
-                                    },
-                                    decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderSide:
-                                              BorderSide(color: Colors.red),
-                                          borderRadius: const BorderRadius.all(
-                                            const Radius.circular(26),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 2,
+                                      child: Column(
+                                        children: [
+                                          FlutterFlowRadioButton(
+                                            options: ['Male', 'Female'],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                gender = value;
+                                              });
+                                            },
+                                            optionHeight: 25,
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText1
+                                                    .override(
+                                                      fontFamily: 'Open Sans',
+                                                      color: Color(0xFF606E87),
+                                                    ),
+                                            selectedTextStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyText1
+                                                    .override(
+                                                      fontFamily: 'Open Sans',
+                                                      color: Color(0xFF606E87),
+                                                    ),
+                                            buttonPosition:
+                                                RadioButtonPosition.left,
+                                            direction: Axis.horizontal,
+                                            radioButtonColor: Color(0xFF00A8A3),
+                                            inactiveRadioButtonColor:
+                                                Color(0x8A314A51),
+                                            toggleable: false,
+                                            horizontalAlignment:
+                                                WrapAlignment.start,
+                                            verticalAlignment:
+                                                WrapCrossAlignment.start,
                                           ),
-                                        ),
-                                        filled: true,
-                                        hintStyle: TextStyle(
-                                          color: Color(0xFF9A9A9A),
-                                        ),
-                                        hintText: "Blood Group",
-                                        fillColor: Colors.white),
-                                    value: bloodGroupType,
-                                    items: _bloodGroupTypes
-                                        .map((type) => DropdownMenuItem(
-                                              child: Text(type),
-                                              value: type,
-                                            ))
-                                        .toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        bloodGroupType = value;
-                                      });
-                                    },
-                                    iconEnabledColor: Color(0xFF606E87),
-                                    iconDisabledColor: Color(0xFF606E87),
-                                  ),
+                                          if (genderVal && gender == null)
+                                            Text(
+                                              "Please select Gender",
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontSize: 13,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: DropdownButtonFormField(
+                                        validator: (String type) {
+                                          if (type == null)
+                                            return 'Blood group required';
+                                          return null;
+                                        },
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderSide:
+                                                  BorderSide(color: Colors.red),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                const Radius.circular(26),
+                                              ),
+                                            ),
+                                            filled: true,
+                                            hintStyle: TextStyle(
+                                              color: Color(0xFF9A9A9A),
+                                            ),
+                                            hintText: "Blood Group",
+                                            fillColor: Colors.white),
+                                        value: bloodGroupType,
+                                        items: _bloodGroupTypes
+                                            .map((type) => DropdownMenuItem(
+                                                  child: Text(type),
+                                                  value: type,
+                                                ))
+                                            .toList(),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            bloodGroupType = value;
+                                          });
+                                        },
+                                        iconEnabledColor: Color(0xFF606E87),
+                                        iconDisabledColor: Color(0xFF606E87),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -383,7 +406,7 @@ class _AddFamilyMembersScreenWidgetState
                                   controller: _emergencyPhoneController,
                                   validator: (String phone) {
                                     if (phone.isEmpty)
-                                      return 'Contact is Required';
+                                      return 'Contact is required';
                                     if (phone.length < 10)
                                       return 'Enter valid number';
                                     if (phone.length > 11)
@@ -450,7 +473,7 @@ class _AddFamilyMembersScreenWidgetState
                                   controller: _patientPhoneController,
                                   validator: (String phone) {
                                     if (phone.isEmpty)
-                                      return 'Phone No is Required';
+                                      return 'Phone no is required';
                                     if (phone.length < 10)
                                       return 'Enter valid number';
                                     if (phone.length > 11)
@@ -465,7 +488,7 @@ class _AddFamilyMembersScreenWidgetState
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     errorMaxLines: 2,
-                                    labelText: 'Phone',
+                                    labelText: 'Phone Number',
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -521,7 +544,7 @@ class _AddFamilyMembersScreenWidgetState
                                   controller: _patientEmailController,
                                   validator: (String email) {
                                     if (email.isEmpty)
-                                      return 'Email is Required';
+                                      return 'Email is required';
                                     else if (!RegExp(
                                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                         .hasMatch(email))
@@ -782,7 +805,7 @@ class _AddFamilyMembersScreenWidgetState
                                   controller: _dobController,
                                   validator: (String relation) {
                                     if (relation.isEmpty)
-                                      return 'Please provide your date of birth';
+                                      return 'Select date of birth';
                                     return null;
                                   },
                                   onChanged: (val) {
@@ -846,7 +869,7 @@ class _AddFamilyMembersScreenWidgetState
                               controller: _patientAgeController,
                               enabled: false,
                               validator: (String number) {
-                                if (number.isEmpty) return 'Age is Required';
+                                if (number.isEmpty) return 'Age is required';
                                 return null;
                               },
                               obscureText: false,
@@ -904,7 +927,7 @@ class _AddFamilyMembersScreenWidgetState
 
                       DropdownButtonFormField(
                         validator: (String type) {
-                          if (type == null) return 'Relation Type Required';
+                          if (type == null) return 'Select the Relation Type';
                           return null;
                         },
                         decoration: InputDecoration(
@@ -930,6 +953,7 @@ class _AddFamilyMembersScreenWidgetState
                         onChanged: (value) {
                           setState(() {
                             patientRelationType = value;
+                            _formKey.currentState.validate();
                           });
                         },
                         iconEnabledColor: Color(0xFF606E87),
@@ -941,18 +965,22 @@ class _AddFamilyMembersScreenWidgetState
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 28),
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            setState(() {
+                              genderVal = true;
+                            });
                             if (_formKey.currentState.validate()) {
                               if (gender == null)
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
                                             Text('Please select your gender')));
-                              Navigator.pop(context);
+
                               // Add member call here
                               if (gender != null) {
                                 print('all OK');
-                                _addMember();
+                                await _addMember();
+                                Navigator.pop(context);
                               }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(

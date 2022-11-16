@@ -29,7 +29,11 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
   bool isLoading = true;
   List<dynamic> _familyMemberList;
   Patient patient;
-  Future<void> _loadMembersData() async {
+  Future<void> _loadMembersData({bool init = false}) async {
+    if (!init)
+      setState(() {
+        isLoading = true;
+      });
     await SharedPreferenceService.init();
 
     patient = Patient.fromJson(
@@ -51,7 +55,7 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
 
   @override
   void initState() {
-    _loadMembersData();
+    _loadMembersData(init: true);
     super.initState();
   }
 
@@ -168,12 +172,14 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                               builder: (_) => EditProfileScreenWidget(),
                             ),
                           );
-                        else
+                        else {
                           await Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
                                       AddFamilyMembersScreenWidget()));
+                          _loadMembersData();
+                        }
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.max,

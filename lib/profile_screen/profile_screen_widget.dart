@@ -141,9 +141,11 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               decoration: BoxDecoration(
                                 color: Color(0xFFEEEEEE),
                                 image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: Image.network(
-                                    'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
+                                  fit: BoxFit.contain,
+                                  image: Image.asset(
+                                    'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
+                                    // width: 30,
+                                    // height: 30,
                                   ).image,
                                 ),
                                 borderRadius: BorderRadius.circular(12),

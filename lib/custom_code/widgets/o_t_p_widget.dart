@@ -36,7 +36,7 @@ class OTPWidget extends StatefulWidget {
 
 class _OTPWidgetState extends State<OTPWidget> {
   final List<TextEditingController> _controllers = [];
-  List<int> otp = List.filled(4, 0);
+  List<int> otp = List.filled(4, -1);
   final String _hollowCirleUnicode = '\u25cb';
   final String _filledCirleUnicode = '\u25cf';
 
@@ -73,6 +73,7 @@ class _OTPWidgetState extends State<OTPWidget> {
     void _feedOtp(String v, int id) {
       otp[id] = int.parse(v);
     }
+    
 
     for (int i = 0; i < widget.otpLength; i++) {
       fields.add(

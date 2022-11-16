@@ -69,7 +69,8 @@ class _MedicalRecordScreenWidgetState
               );
             },
           );
-          await ref.read(_medicalRecordsProvider).fetchMedicalRecords();
+          // await Future.delayed(Duration(seconds: 2));
+          ref.read(_medicalRecordsProvider).fetchMedicalRecords();
         },
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         elevation: 8,
@@ -110,17 +111,17 @@ class _MedicalRecordScreenWidgetState
                             fontSize: 18,
                           ),
                     ),
-                    Expanded(
-                      child: Align(
-                        alignment: AlignmentDirectional(0.65, 0),
-                        child: Image.asset(
-                          'assets/images/Group_608.png',
-                          width: 35,
-                          height: 35,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: Align(
+                    //     alignment: AlignmentDirectional(0.65, 0),
+                    //     child: Image.asset(
+                    //       'assets/images/Group_608.png',
+                    //       width: 35,
+                    //       height: 35,
+                    //       fit: BoxFit.contain,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 Expanded(child: Consumer(
@@ -240,7 +241,7 @@ class MedicalRecordCard extends StatelessWidget {
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                       child: Text(
-                        DateFormat('MMM d, yyyy h:mma')
+                        DateFormat('MMM d, yyyy')
                             .format(medicalRecord.createdAt),
                         style: FlutterFlowTheme.of(context).bodyText1.override(
                               fontFamily: 'Open Sans',
