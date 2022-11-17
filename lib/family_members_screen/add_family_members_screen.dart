@@ -164,11 +164,14 @@ class _AddFamilyMembersScreenWidgetState
           // update data in ui
         });
       } else if (res.statusCode == 400)
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Please use a djkashksjd')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Please use different phone number')));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Something went wrong : ${e.toString()}')));
+        SnackBar(
+          content: Text('Mobile number already exists'),
+        ),
+      );
     }
   }
 
@@ -228,7 +231,10 @@ class _AddFamilyMembersScreenWidgetState
                       TextFormField(
                         controller: _patientNameController,
                         validator: (String name) {
-                          if (name.isEmpty) return 'Name is required';
+                          if (name.isEmpty)
+                            return 'Name is required';
+                          else if (!RegExp(r"^[a-z A-Z]*$").hasMatch(name))
+                            return 'Please enter the valid name';
                           return null;
                         },
                         onChanged: (val) {
@@ -358,7 +364,7 @@ class _AddFamilyMembersScreenWidgetState
                                       child: DropdownButtonFormField(
                                         validator: (String type) {
                                           if (type == null)
-                                            return 'Blood group required';
+                                            return 'Blood group is required';
                                           return null;
                                         },
                                         decoration: InputDecoration(

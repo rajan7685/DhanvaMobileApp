@@ -245,7 +245,10 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                         TextFormField(
                           controller: _patientNameController,
                           validator: (String name) {
-                            if (name.isEmpty) return 'Name is required';
+                            if (name.isEmpty)
+                              return 'Name is required';
+                            else if (!RegExp(r"^[a-z A-Z]*$").hasMatch(name))
+                              return 'Please enter the valid name';
                             return null;
                           },
                           onChanged: (val) {
@@ -360,7 +363,7 @@ class _UpdateFamilyMemberWidgetState extends State<UpdateFamilyMemberWidget> {
                                     child: DropdownButtonFormField(
                                       validator: (String type) {
                                         if (type == null)
-                                          return 'Blood group required';
+                                          return 'Blood group is required';
                                         return null;
                                       },
                                       decoration: InputDecoration(
