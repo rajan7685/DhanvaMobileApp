@@ -9,6 +9,7 @@ import 'package:dhanva_mobile_app/login_screen/login_screen_widget.dart';
 import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
 
+import '../about_screen/about_page.dart';
 import '../appointments_screen/appointments_screen_widget.dart';
 import '../family_members_screen/family_members_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -404,7 +405,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AboutScreenWidget(),
+                                  builder: (context) => aboutPage(),
                                 ),
                               );
                             },
