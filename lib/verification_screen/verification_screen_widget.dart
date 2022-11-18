@@ -13,7 +13,6 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-
 ChangeNotifierProvider<AuthenticationProvider> _authProvider =
     ChangeNotifierProvider((ref) => AuthenticationProvider.instance);
 
@@ -110,12 +109,11 @@ class _VerificationScreenWidgetState
         ),
       );
 
-       @override
+  @override
   void dispose() {
     subscription.cancel();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +139,6 @@ class _VerificationScreenWidgetState
       backgroundColor: Color(0xFFF3F4F4),
       body: SafeArea(
         child: GestureDetector(
-          
           onTap: () => FocusScope.of(context).unfocus(),
           child: Padding(
             padding: EdgeInsetsDirectional.fromSTEB(18, 0, 18, 0),
@@ -163,7 +160,7 @@ class _VerificationScreenWidgetState
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 38, 0),
                   child: Text(
-                    'Please Check your Message for a  four-digit security code and enter below',
+                    'Please Check your Message for a four-digit security code and enter below',
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
                           color: Color(0xFF606E87),
@@ -258,9 +255,9 @@ class _VerificationScreenWidgetState
                             .verifyLoginOtp(mobile: widget.mobile, otp: _otp);
                         ScaffoldMessenger.of(context)
                             .showSnackBar(SnackBar(content: Text(res)));
-                        print('hai $res ');
+                        //print('hai $res ');
                         if (res == 'Logged in successfully') {
-                          print('hai');
+                          // print('hai');
                           await Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
@@ -270,12 +267,13 @@ class _VerificationScreenWidgetState
                             (r) => false,
                           );
                         }
-                      } else {
+                      }
+                      if (_otp.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Please enter the OTP')));
                       }
 
-                      print(_otp);
+                      //print(_otp);
                     },
                     text: 'Verify',
                     options: FFButtonOptions(

@@ -52,7 +52,7 @@ class _SplashScreenWidgetState extends ConsumerState<SplashScreenWidget> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Image.asset(
-          'assets/images/Splash.png',
+          'assets/images/Splash2.png',
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 1,
           fit: BoxFit.cover,

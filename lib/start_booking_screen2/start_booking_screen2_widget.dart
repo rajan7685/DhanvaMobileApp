@@ -96,6 +96,12 @@ class _StartBookingScreen2WidgetState
     _loadRelations();
     _selectedPatientId = patient.id;
     textController2 = TextEditingController();
+    _selectedDoctor = null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -142,44 +148,44 @@ class _StartBookingScreen2WidgetState
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                            child: Container(
-                              width: 45,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFEEEEEE),
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: Image.network(
-                                    'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
-                                  ).image,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Color(0xFF00FFF9),
-                                  width: 2,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 45,
-                            height: 45,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF00827F),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Align(
-                              alignment: AlignmentDirectional(0, 0),
-                              child: Icon(
-                                Icons.notifications_outlined,
-                                color: Color(0xFFF3F4F4),
-                                size: 24,
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding:
+                          //       EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                          //   child: Container(
+                          //     width: 45,
+                          //     height: 45,
+                          //     decoration: BoxDecoration(
+                          //       color: Color(0xFFEEEEEE),
+                          //       image: DecorationImage(
+                          //         fit: BoxFit.contain,
+                          //         image: Image.asset(
+                          //           'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
+                          //         ).image,
+                          //       ),
+                          //       borderRadius: BorderRadius.circular(12),
+                          //       border: Border.all(
+                          //         color: Color(0xFF00FFF9),
+                          //         width: 2,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          // Container(
+                          //   width: 45,
+                          //   height: 45,
+                          //   decoration: BoxDecoration(
+                          //     color: Color(0xFF00827F),
+                          //     borderRadius: BorderRadius.circular(12),
+                          //   ),
+                          //   // child: Align(
+                          //   //   alignment: AlignmentDirectional(0, 0),
+                          //   //   child: Icon(
+                          //   //     Icons.notifications_outlined,
+                          //   //     color: Color(0xFFF3F4F4),
+                          //   //     size: 24,
+                          //   //   ),
+                          //   // ),
+                          // ),
                         ],
                       ),
                     ),
@@ -441,6 +447,7 @@ class _StartBookingScreen2WidgetState
                             ),
                             child: InkWell(
                                 onTap: () {
+                                  print("selected doctor ${_selectedDoctor}");
                                   if (textController2.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(

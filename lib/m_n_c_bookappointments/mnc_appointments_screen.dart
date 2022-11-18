@@ -56,12 +56,14 @@ class _MncAppointmentsScreenWidgetState
       });
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    print("object: ${patient.id}");
     Response res = await ApiService.dio.get(
         "${ApiService.protocol}${ApiService.baseUrl2}mnc/family/all/${patient.id}",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
     appointments = res.data;
+    // print(res.data[0]);
     setState(() {
       isDataLoading = false;
     });
@@ -148,16 +150,16 @@ class _MncAppointmentsScreenWidgetState
                           size: 35,
                         ),
                       ),
-                      Expanded(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            //
-                            NotificationIconButton()
-                          ],
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: Row(
+                      //     mainAxisSize: MainAxisSize.max,
+                      //     mainAxisAlignment: MainAxisAlignment.end,
+                      //     children: [
+                      //       //
+                      //       NotificationIconButton()
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -197,7 +199,7 @@ class _MncAppointmentsScreenWidgetState
                                   'Nothing yet, Try booking an MNC appointment'))
                           : RefreshIndicator(
                               onRefresh: () async {
-                                // _loadmncAppointments();
+                                _loadmncAppointments();
                               },
                               child: ListView.builder(
                                 itemCount: appointments.length,
@@ -336,8 +338,8 @@ class AppointmentCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvDVXm8awuyibcdpoTSPoePE6-OKncWYyNK9QF-YO66FyUIWHrlF8hbvBU7Gml5eoeeGw&usqp=CAU',
+              child: Image.asset(
+                'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
                 width: 70,
                 height: 85,
                 fit: BoxFit.contain,
