@@ -766,11 +766,22 @@ class _mncLogsInvestigationWidgetState
                                                               else
                                                                 _sendMessage();
                                                             },
-                                                            child: Image.asset(
-                                                              'assets/images/7830587_send_email_icon.png',
-                                                              width: 20,
-                                                              height: 20,
-                                                              fit: BoxFit.cover,
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                          15,
+                                                                          0,
+                                                                          0,
+                                                                          0),
+                                                              child:
+                                                                  Image.asset(
+                                                                'assets/images/7830587_send_email_icon.png',
+                                                                width: 20,
+                                                                height: 20,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
                                                             ),
                                                           ),
                                                         ],

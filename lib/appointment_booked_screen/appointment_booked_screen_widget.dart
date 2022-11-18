@@ -184,7 +184,7 @@ class _AppointmentBookedScreenWidgetState
                       'Your Appointment',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
-                            color: Color(0xFF282828),
+                            color: Color(0xFF606E87),
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                           ),
@@ -199,7 +199,7 @@ class _AppointmentBookedScreenWidgetState
                       'Will be booked with',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
-                            color: Color(0xFF282828),
+                            color: Color(0xFF606E87),
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -238,7 +238,7 @@ class _AppointmentBookedScreenWidgetState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      widget.doctorName,
+                                      "Dr.${widget.doctorName}",
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(

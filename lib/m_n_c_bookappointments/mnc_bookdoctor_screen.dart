@@ -126,16 +126,16 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                       size: 34,
                     ),
                   ),
-                  Expanded(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        //
-                        NotificationIconButton()
-                      ],
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: Row(
+                  //     mainAxisSize: MainAxisSize.max,
+                  //     mainAxisAlignment: MainAxisAlignment.end,
+                  //     children: [
+                  //       //
+                  //       NotificationIconButton()
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),

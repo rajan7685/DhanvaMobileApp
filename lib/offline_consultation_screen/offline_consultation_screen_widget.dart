@@ -239,13 +239,13 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
                           color: Colors.black,
                         ),
                   ),
-                  Text(
-                    '2km away',
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Poppins',
-                          fontSize: 12,
-                        ),
-                  ),
+                  // Text(
+                  //   '2km away',
+                  //   style: FlutterFlowTheme.of(context).bodyText1.override(
+                  //         fontFamily: 'Poppins',
+                  //         fontSize: 12,
+                  //       ),
+                  // ),
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                     child: Text(

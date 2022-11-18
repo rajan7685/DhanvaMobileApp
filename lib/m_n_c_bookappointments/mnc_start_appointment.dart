@@ -202,16 +202,16 @@ class _MncStartAppointmentWidgetState extends State<MncStartAppointmentWidget> {
                       size: 34,
                     ),
                   ),
-                  Expanded(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        //
-                        NotificationIconButton()
-                      ],
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: Row(
+                  //     mainAxisSize: MainAxisSize.max,
+                  //     mainAxisAlignment: MainAxisAlignment.end,
+                  //     // children: [
+                  //     //   //
+                  //     //   NotificationIconButton()
+                  //     // ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),

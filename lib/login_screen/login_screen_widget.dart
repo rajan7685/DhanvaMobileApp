@@ -233,6 +233,10 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                             }
                             return null;
                           },
+                          maxLength: 10,
+                          onChanged: (val) {
+                            _formKey.currentState.validate();
+                          },
                           obscureText: false,
                           decoration: InputDecoration(
                             labelText: 'Mobile Number',
@@ -280,12 +284,14 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           await ref.read(_authProvider).attemptLogin(
-                              mobile: mobileNumberController.text, fcm : SharedPreferenceService.loadString(key: FcmTokenKey));
+                              mobile: mobileNumberController.text,
+                              fcm: SharedPreferenceService.loadString(
+                                  key: FcmTokenKey));
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
