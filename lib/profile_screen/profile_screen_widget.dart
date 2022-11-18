@@ -4,6 +4,7 @@ import 'package:dhanva_mobile_app/about_screen/about_screen.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/help_screen/help_page.dart';
 import 'package:dhanva_mobile_app/help_screen/help_screen.dart';
 import 'package:dhanva_mobile_app/login_screen/login_screen_widget.dart';
 import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
@@ -552,7 +553,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => HelpScreenWidget()));
+                                      builder: (_) => helpPage()));
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,

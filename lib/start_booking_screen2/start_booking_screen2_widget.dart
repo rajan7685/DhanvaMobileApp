@@ -148,28 +148,28 @@ class _StartBookingScreen2WidgetState
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                            child: Container(
-                              width: 45,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFEEEEEE),
-                                image: DecorationImage(
-                                  fit: BoxFit.contain,
-                                  image: Image.asset(
-                                    'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
-                                  ).image,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Color(0xFF00FFF9),
-                                  width: 2,
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding:
+                          //       EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                          //   child: Container(
+                          //     width: 45,
+                          //     height: 45,
+                          //     decoration: BoxDecoration(
+                          //       color: Color(0xFFEEEEEE),
+                          //       image: DecorationImage(
+                          //         fit: BoxFit.contain,
+                          //         image: Image.asset(
+                          //           'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
+                          //         ).image,
+                          //       ),
+                          //       borderRadius: BorderRadius.circular(12),
+                          //       border: Border.all(
+                          //         color: Color(0xFF00FFF9),
+                          //         width: 2,
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           // Container(
                           //   width: 45,
                           //   height: 45,
