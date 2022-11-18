@@ -18,10 +18,11 @@ import 'package:flutter/material.dart';
 
 class MedicalRecordBottomSheetWidget extends StatefulWidget {
   final MedicalRecord medicalRecord;
+  final VoidCallback onDone;
   final bool newRecord;
 
   const MedicalRecordBottomSheetWidget(
-      {Key key, this.newRecord = false, this.medicalRecord})
+      {Key key, this.newRecord = false, this.onDone, this.medicalRecord})
       : super(key: key);
 
   @override
@@ -715,6 +716,7 @@ class _MedicalRecordBottomSheetWidgetState
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text("Record Saved")));
                             Navigator.pop(context);
+                            if (widget.onDone != null) widget.onDone();
                           }
                         }
                       },

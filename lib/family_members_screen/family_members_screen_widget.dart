@@ -61,11 +61,11 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
         backgroundColor: Color(0xFFF3F4F4),
         iconTheme: IconThemeData(color: Color(0xFF00A8A3)),
         automaticallyImplyLeading: true,
-        actions: [
-          Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
-              child: NotificationIconButton()),
-        ],
+        // actions: [
+        //   Padding(
+        //       padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
+        //       child: NotificationIconButton()),
+        // ],
         centerTitle: true,
         elevation: 0,
       ),

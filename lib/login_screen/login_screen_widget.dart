@@ -233,8 +233,13 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                             }
                             return null;
                           },
+                          maxLength: 10,
+                          onChanged: (val) {
+                            _formKey.currentState.validate();
+                          },
                           obscureText: false,
                           decoration: InputDecoration(
+                            errorMaxLines: 2,
                             labelText: 'Mobile Number',
                             labelStyle:
                                 FlutterFlowTheme.of(context).bodyText1.override(
@@ -285,7 +290,9 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           await ref.read(_authProvider).attemptLogin(
-                              mobile: mobileNumberController.text, fcm : SharedPreferenceService.loadString(key: FcmTokenKey));
+                              mobile: mobileNumberController.text,
+                              fcm: SharedPreferenceService.loadString(
+                                  key: FcmTokenKey));
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
