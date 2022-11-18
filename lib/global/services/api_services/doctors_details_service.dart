@@ -9,14 +9,16 @@ import 'package:dio/dio.dart';
 class DoctorDetailsService {
   DoctorDetailsService._();
   static final String _allDoctorsUri =
-      '${ApiService.protocol}${ApiService.baseUrl}${ApiService.allDoctorsApi}${SharedPreferenceService.loadString(key: OnlineHospitalKey)}/';
+      '${ApiService.protocol}${ApiService.baseUrl}${ApiService.allDoctorsApi}';
 
-  static Future<List<dynamic>> fetchAllDoctors({String serviceId}) async {
+  static Future<List<dynamic>> fetchAllDoctors(
+      {String hospitalId, String serviceId}) async {
     await SharedPreferenceService.init();
     Patient p = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    print('doctor list rreq - $_allDoctorsUri$serviceId');
-    Response res = await ApiService.dio.get('$_allDoctorsUri$serviceId',
+    print('doctor list api- $_allDoctorsUri/$hospitalId/$serviceId');
+    Response res = await ApiService.dio.get(
+        '$_allDoctorsUri$hospitalId/$serviceId',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));

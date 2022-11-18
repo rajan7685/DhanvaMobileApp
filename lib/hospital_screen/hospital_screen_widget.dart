@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
+import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dhanva_mobile_app/start_booking_screen2/start_booking_screen2_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -30,7 +34,7 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
 
   Future<void> _loadServicesData() async {
     Response res = await ApiService.dio.get(
-        'http://api2.dhanva.icu/services/get_online',
+        '${ApiService.protocol}api2.dhanva.icu/services/get_online',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -61,17 +65,27 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
             child: InkWell(
               onTap: () async {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => StartBookingScreen2Widget(
-                      isOnline: false,
-                      hospitalId: _hospitalId,
-                      pageTitle: 'Start Online Booking',
-                      service: QuickServiceUiModel.fromJson(model),
+                Patient _patient = Patient.fromJson(jsonDecode(
+                    SharedPreferenceService.loadString(key: PatientKey)));
+                if (_patient.name == null)
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => EditProfileScreenWidget(),
                     ),
-                  ),
-                );
+                  );
+                else
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => StartBookingScreen2Widget(
+                        isOnline: false,
+                        hospitalId: _hospitalId,
+                        pageTitle: 'Start Online Booking',
+                        service: QuickServiceUiModel.fromJson(model),
+                      ),
+                    ),
+                  );
               },
               child: Container(
                 width: 85,
@@ -145,9 +159,9 @@ class _HospitalScreenWidgetState extends State<HospitalScreenWidget> {
                       decoration: BoxDecoration(
                         color: Color(0xFFEEEEEE),
                         image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: Image.network(
-                            'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
+                          fit: BoxFit.contain,
+                          image: Image.asset(
+                            'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
                           ).image,
                         ),
                         borderRadius: BorderRadius.circular(12),

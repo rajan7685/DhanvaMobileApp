@@ -118,8 +118,20 @@ class _PsychometricsAssesmentScreenState
               height: 16,
             ),
             Expanded(
+              // child: Stepper(
+              //   elevation: 0,
+              //   type: StepperType.horizontal,
+              //   currentStep: _currentStep,
+              //   physics: BouncingScrollPhysics(),
+              //   onStepContinue: () {
+              //     _currentStep < 3 ? setState(() => _currentStep += 1) : null;
+              //   },
+              //   onStepCancel: () {
+              //     _currentStep > 0 ? setState(() => _currentStep -= 1) : null;
+              //   },
               child: Stepper(
                 elevation: 0,
+
                 type: StepperType.horizontal,
                 currentStep: _currentStep,
                 physics: BouncingScrollPhysics(),
@@ -128,6 +140,27 @@ class _PsychometricsAssesmentScreenState
                 },
                 onStepCancel: () {
                   _currentStep > 0 ? setState(() => _currentStep -= 1) : null;
+                },
+                controlsBuilder:
+                    (BuildContext context, ControlsDetails controls) {
+                  return Row(
+                    children: <Widget>[
+                      TextButton(
+                        onPressed: controls.onStepCancel,
+                        child: const Text(
+                          'BACK',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: controls.onStepContinue,
+                        child: const Text(
+                          'NEXT',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  );
                 },
                 steps: List.generate(
                   4,

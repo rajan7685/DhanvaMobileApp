@@ -4,11 +4,13 @@ import 'package:dhanva_mobile_app/about_screen/about_screen.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/help_screen/help_page.dart';
 import 'package:dhanva_mobile_app/help_screen/help_screen.dart';
 import 'package:dhanva_mobile_app/login_screen/login_screen_widget.dart';
 import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
 
+import '../about_screen/about_page.dart';
 import '../appointments_screen/appointments_screen_widget.dart';
 import '../family_members_screen/family_members_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -20,6 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class ProfileScreenWidget extends StatefulWidget {
   const ProfileScreenWidget({Key key}) : super(key: key);
@@ -31,21 +35,43 @@ class ProfileScreenWidget extends StatefulWidget {
 class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  // demo bug fix
   Future<void> initSharedService() async {
     await SharedPreferenceService.init();
   }
+
+  // Future<void> _checkNetworkConnectivity() async {
+  //   ConnectivityResult connectivityResult =
+  //       await Connectivity().checkConnectivity();
+  //   print(connectivityResult.name);
+  //   print(connectivityResult.name);
+  //   if (connectivityResult == ConnectivityResult.mobile) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //     SnackBar(content: Text('You are connected to a mobile network')));
+  //     // // I am connected to a mobile network.
+  //   } else if (connectivityResult == ConnectivityResult.wifi) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //     SnackBar(content: Text('You are connected to a wifi network')));
+  //     // // I am connected to a wifi network.
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('You are not connected to internet')));
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
     initSharedService();
+    // _checkNetworkConnectivity();
   }
 
   @override
   Widget build(BuildContext context) {
     Patient patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    String _patientFirstName = patient.name.split(' ')[0];
+    String _patientFirstName =
+        patient.name != null ? patient.name.split(' ')[0] : '';
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFFF5F5F5),
@@ -117,9 +143,12 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               decoration: BoxDecoration(
                                 color: Color(0xFFEEEEEE),
                                 image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image:
-                                      AssetImage('assets/images/Group_524.png'),
+                                  fit: BoxFit.contain,
+                                  image: Image.asset(
+                                    'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
+                                    // width: 30,
+                                    // height: 30,
+                                  ).image,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
@@ -137,7 +166,9 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Profile',
+                                    _patientFirstName.isNotEmpty
+                                        ? 'Hey $_patientFirstName'
+                                        : '',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
@@ -148,13 +179,13 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                         ),
                                   ),
                                   Text(
-                                    'Hey $_patientFirstName, how are you today?',
+                                    'how are you today?',
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
                                           fontFamily: 'Open Sans',
                                           color: Color(0xFFF3F4F4),
-                                          fontSize: 15,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w300,
                                         ),
                                   ),
@@ -375,7 +406,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AboutScreenWidget(),
+                                  builder: (context) => aboutPage(),
                                 ),
                               );
                             },
@@ -466,55 +497,55 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                          child: InkWell(
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => NewsesScreenWidget(),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/Layer_54.png',
-                                  width: 18,
-                                  height: 18,
-                                  fit: BoxFit.contain,
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      12, 0, 0, 0),
-                                  child: Text(
-                                    'Favorites',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyText1
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: Color(0xFF434343),
-                                          fontSize: 20,
-                                        ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: AlignmentDirectional(1, 0),
-                                    child: Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      color: Color(0xFF5A5A5A),
-                                      size: 34,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                        //   child: InkWell(
+                        //     onTap: () async {
+                        //       await Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //           builder: (context) => NewsesScreenWidget(),
+                        //         ),
+                        //       );
+                        //     },
+                        //     child: Row(
+                        //       mainAxisSize: MainAxisSize.max,
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       children: [
+                        //         Image.asset(
+                        //           'assets/images/Layer_54.png',
+                        //           width: 18,
+                        //           height: 18,
+                        //           fit: BoxFit.contain,
+                        //         ),
+                        //         Padding(
+                        //           padding: EdgeInsetsDirectional.fromSTEB(
+                        //               12, 0, 0, 0),
+                        //           child: Text(
+                        //             'Favorites',
+                        //             style: FlutterFlowTheme.of(context)
+                        //                 .bodyText1
+                        //                 .override(
+                        //                   fontFamily: 'Poppins',
+                        //                   color: Color(0xFF434343),
+                        //                   fontSize: 20,
+                        //                 ),
+                        //           ),
+                        //         ),
+                        //         Expanded(
+                        //           child: Align(
+                        //             alignment: AlignmentDirectional(1, 0),
+                        //             child: Icon(
+                        //               Icons.arrow_forward_ios_rounded,
+                        //               color: Color(0xFF5A5A5A),
+                        //               size: 34,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                           child: InkWell(
@@ -522,7 +553,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => HelpScreenWidget()));
+                                      builder: (_) => helpPage()));
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,

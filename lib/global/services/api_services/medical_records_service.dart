@@ -17,6 +17,8 @@ class MedicalRecordsService {
   static Future<List<dynamic>> fetchMedicalRecords(
       {String patientId = ''}) async {
     await SharedPreferenceService.init();
+    print(
+        "add medical rec api${ApiService.protocol}${ApiService.baseUrl}${ApiService.medicalRecordsApi}");
     Patient p = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
     Response res = await ApiService.dio.get('$_medicalRecordsUri${p.id}',

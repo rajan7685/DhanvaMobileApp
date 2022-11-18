@@ -29,15 +29,16 @@ class _ServicesByHospitalScreenState
   List<dynamic> _servicesList;
 
   Future<void> _loadServicesData() async {
+    print(widget.hospitalDetails["_id"]);
     Response res = await ApiService.dio.post(
-        'http://api2.dhanva.icu/hospital/get_services',
+        '${ApiService.protocol}api2.dhanva.icu/hospital/get_services',
         data: {"id": widget.hospitalDetails["_id"]},
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
 
     _servicesList = res.data;
-    print(_servicesList);
+    print("online services:${_loadServicesData}");
     setState(() {
       _isDataLoading = false;
     });
@@ -158,9 +159,9 @@ class _ServicesByHospitalScreenState
                       decoration: BoxDecoration(
                         color: Color(0xFFEEEEEE),
                         image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: Image.network(
-                            'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
+                          fit: BoxFit.contain,
+                          image: Image.asset(
+                            'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
                           ).image,
                         ),
                         borderRadius: BorderRadius.circular(12),
@@ -170,10 +171,10 @@ class _ServicesByHospitalScreenState
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    NotificationIconButton()
+                    // SizedBox(
+                    //   width: 12,
+                    // ),
+                    // NotificationIconButton()
                   ],
                 ),
               ),

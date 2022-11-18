@@ -35,63 +35,61 @@ class _HelpScreenWidgetState extends State<HelpScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                // SizedBox(
-                //   width: 4,
-                // ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Icon(Icons.arrow_back_rounded,
-                      size: 26, color: Color(0xff00A8A3)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  // SizedBox(
+                  //   width: 4,
+                  // ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(Icons.arrow_back_rounded,
+                        size: 26, color: Color(0xff00A8A3)),
+                  ),
+                  Spacer(),
+                  Text("Help",
+                      style: TextStyle(
+                          color: Color(0xff00A8A3),
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold)),
+                  Spacer(),
+                ],
+              ),
+              SizedBox(
+                height: 55,
+              ),
+              Text(
+                _appName ?? '',
+                style: TextStyle(
+                    color: Color(0xff00A8A3),
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'App Version : ${_appVersion ?? '__._._'}',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
                 ),
-                Spacer(),
-                Text("Help",
-                    style: TextStyle(
-                        color: Color(0xff00A8A3),
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold)),
-                Spacer(),
-              ],
-            ),
-            SizedBox(
-              height: 55,
-            ),
-            Text(
-              _appName ?? '',
-              style: TextStyle(
-                  color: Color(0xff00A8A3),
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Text(
-                  'App Version : ${_appVersion ?? '__._._'}',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 6,
-            ),
-            Row(
-              children: [
-                Text(
-                  'App Build Number : ${_appBuildNumber ?? '___'}',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-              ],
-            )
-          ],
+              ),
+              SizedBox(
+                height: 6,
+              ),
+              Text(
+                'App Build Number : ${_appBuildNumber ?? '___'}',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
       ),
     );

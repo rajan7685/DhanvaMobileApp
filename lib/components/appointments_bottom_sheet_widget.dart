@@ -27,7 +27,7 @@ class AppointmentsBottomSheetWidget extends StatefulWidget {
 class _AppointmentsBottomSheetWidgetState
     extends State<AppointmentsBottomSheetWidget> {
   final String _prescriptionDownloadUri =
-      'http://api2.dhanva.icu/files/download/';
+      '${ApiService.protocol}api2.dhanva.icu/files/download/';
   String _consultationNotes;
 
   HTML.Document _data;
@@ -35,7 +35,8 @@ class _AppointmentsBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
-
+    print("appointment checkup ${widget.appointmentJson}");
+    print("appointment ${widget.appointmentJson['doctor']}");
     if (widget.appointmentJson['hasConsultation']) _loadConsultaionNotes();
   }
 
@@ -83,7 +84,8 @@ class _AppointmentsBottomSheetWidgetState
   }
 
   void _loadConsultaionNotes() async {
-    String consultationNoteUri = 'http://api2.dhanva.icu/prescription/get/';
+    String consultationNoteUri =
+        '${ApiService.protocol}api2.dhanva.icu/prescription/get/';
     Response res = await ApiService.dio.get(
         '$consultationNoteUri${widget.appointmentJson['_id']}',
         options: Options(headers: {

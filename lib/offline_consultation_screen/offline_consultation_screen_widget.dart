@@ -3,11 +3,15 @@ import 'dart:convert';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/doctors_by_hospital_screen/doctors_by_hospital_screen_widget.dart';
 import 'package:dhanva_mobile_app/flutter_flow/flutter_flow_theme.dart';
+import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/offline_consultation_screen/services_by_hospital_screen.dart';
+import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class OfflineConsultationScreen extends StatefulWidget {
   const OfflineConsultationScreen({Key key}) : super(key: key);
@@ -21,7 +25,26 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isDataLoading = true;
   List<dynamic> _hospitalJsonList;
-  String _hospitalListApi = 'http://api2.dhanva.icu/hospital/get_all';
+  String _hospitalListApi = 'https://api2.dhanva.icu/hospital/get_all';
+
+  // Future<void> _checkNetworkConnectivity() async {
+  //   ConnectivityResult connectivityResult =
+  //       await Connectivity().checkConnectivity();
+  //   print(connectivityResult.name);
+  //   print(connectivityResult.name);
+  //   if (connectivityResult == ConnectivityResult.mobile) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //     SnackBar(content: Text('You are connected to a mobile network')));
+  //     // // I am connected to a mobile network.
+  //   } else if (connectivityResult == ConnectivityResult.wifi) {
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //     SnackBar(content: Text('You are connected to a wifi network')));
+  //     // // I am connected to a wifi network.
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('You are not connected to internet')));
+  //   }
+  // }
 
   // ignore: unused_field
   Map<String, dynamic> _hospitalListData;
@@ -46,6 +69,7 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   void initState() {
     super.initState();
     _loadHospitalData();
+    // _checkNetworkConnectivity();
   }
 
   @override
@@ -179,14 +203,24 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
       ),
       child: InkWell(
         onTap: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ServicesByHospitalScreen(
-                hospitalDetails: _hospitalJsonList[index],
+          Patient _patient = Patient.fromJson(
+              jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+          if (_patient.name == null)
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => EditProfileScreenWidget(),
               ),
-            ),
-          );
+            );
+          else
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ServicesByHospitalScreen(
+                  hospitalDetails: _hospitalJsonList[index],
+                ),
+              ),
+            );
         },
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -205,13 +239,13 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
                           color: Colors.black,
                         ),
                   ),
-                  Text(
-                    '2km away',
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
-                          fontFamily: 'Poppins',
-                          fontSize: 12,
-                        ),
-                  ),
+                  // Text(
+                  //   '2km away',
+                  //   style: FlutterFlowTheme.of(context).bodyText1.override(
+                  //         fontFamily: 'Poppins',
+                  //         fontSize: 12,
+                  //       ),
+                  // ),
                   Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                     child: Text(

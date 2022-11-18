@@ -42,11 +42,11 @@ class _MedicalRecordScreenWidgetState
         backgroundColor: Color(0xFFF3F4F4),
         iconTheme: IconThemeData(color: Color(0xFF00A8A3)),
         automaticallyImplyLeading: true,
-        actions: [
-          Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
-              child: NotificationIconButton()),
-        ],
+        // actions: [
+        //   Padding(
+        //       padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
+        //       child: NotificationIconButton()),
+        // ],
         centerTitle: true,
         elevation: 0,
       ),
@@ -69,6 +69,8 @@ class _MedicalRecordScreenWidgetState
               );
             },
           );
+          // await Future.delayed(Duration(seconds: 2));
+          ref.read(_medicalRecordsProvider).fetchMedicalRecords();
         },
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         elevation: 8,
@@ -109,17 +111,17 @@ class _MedicalRecordScreenWidgetState
                             fontSize: 18,
                           ),
                     ),
-                    Expanded(
-                      child: Align(
-                        alignment: AlignmentDirectional(0.65, 0),
-                        child: Image.asset(
-                          'assets/images/Group_608.png',
-                          width: 35,
-                          height: 35,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
+                    // Expanded(
+                    //   child: Align(
+                    //     alignment: AlignmentDirectional(0.65, 0),
+                    //     child: Image.asset(
+                    //       'assets/images/Group_608.png',
+                    //       width: 35,
+                    //       height: 35,
+                    //       fit: BoxFit.contain,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 Expanded(child: Consumer(
@@ -144,7 +146,7 @@ class _MedicalRecordScreenWidgetState
                           itemBuilder: (context, index) {
                             return InkWell(
                                 onTap: () async {
-                                  await showModalBottomSheet(
+                                  showModalBottomSheet(
                                     isScrollControlled: true,
                                     backgroundColor: Colors.transparent,
                                     context: context,
@@ -239,7 +241,7 @@ class MedicalRecordCard extends StatelessWidget {
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                       child: Text(
-                        DateFormat('MMM d, yyyy h:mma')
+                        DateFormat('MMM d, yyyy')
                             .format(medicalRecord.createdAt),
                         style: FlutterFlowTheme.of(context).bodyText1.override(
                               fontFamily: 'Open Sans',

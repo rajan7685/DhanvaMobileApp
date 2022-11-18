@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../profile_screen/edit_profile_screen.dart';
+
 class FamilyMembersScreenWidget extends StatefulWidget {
   const FamilyMembersScreenWidget({Key key}) : super(key: key);
 
@@ -27,24 +29,33 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
   bool isLoading = true;
   List<dynamic> _familyMemberList;
   Patient patient;
-  Future<void> _loadMembersData() async {
+  Future<void> _loadMembersData({bool init = false}) async {
+    if (!init)
+      setState(() {
+        isLoading = true;
+      });
     await SharedPreferenceService.init();
+
     patient = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    print(
+        "${ApiService.protocol}api3.dhanva.icu/patient/getPatientRelations/${patient.id}");
     Response res = await ApiService.dio.get(
-        "http://api3.dhanva.icu/patient/getPatientRelations/${patient.id}",
+        "${ApiService.protocol}api3.dhanva.icu/patient/getPatientRelations/${patient.id}",
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
+    print("get patient${res.data}");
     _familyMemberList = res.data;
     setState(() {
       isLoading = false;
     });
+    print("Response data: ${res.data}");
   }
 
   @override
   void initState() {
-    _loadMembersData();
+    _loadMembersData(init: true);
     super.initState();
   }
 
@@ -56,11 +67,11 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
         backgroundColor: Color(0xFFF3F4F4),
         iconTheme: IconThemeData(color: Color(0xFF00A8A3)),
         automaticallyImplyLeading: true,
-        actions: [
-          Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
-              child: NotificationIconButton()),
-        ],
+        // actions: [
+        //   Padding(
+        //       padding: EdgeInsetsDirectional.fromSTEB(0, 2, 14, 2),
+        //       child: NotificationIconButton()),
+        // ],
         centerTitle: true,
         elevation: 0,
       ),
@@ -116,17 +127,22 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                           scrollDirection: Axis.vertical,
                           itemCount: _familyMemberList.length,
                           itemBuilder: (_, int index) {
-                            return InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              UpdateFamilyMemberWidget(
-                                                  memberData: _familyMemberList[
-                                                      index])));
-                                },
-                                child: _buildFamilyMember(context, index));
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 10),
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                UpdateFamilyMemberWidget(
+                                                    memberData:
+                                                        _familyMemberList[
+                                                            index])));
+                                  },
+                                  child: _buildFamilyMember(context, index)),
+                            );
                           },
                         ),
                       ),
@@ -145,12 +161,25 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
                       ),
                     ),
                     child: InkWell(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        Patient _patient = Patient.fromJson(jsonDecode(
+                            SharedPreferenceService.loadString(
+                                key: PatientKey)));
+                        if (_patient.name == null)
+                          await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    AddFamilyMembersScreenWidget()));
+                              builder: (_) => EditProfileScreenWidget(),
+                            ),
+                          );
+                        else {
+                          await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AddFamilyMembersScreenWidget()));
+                          _loadMembersData();
+                        }
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
@@ -212,7 +241,7 @@ class _FamilyMembersScreenWidgetState extends State<FamilyMembersScreenWidget> {
               children: [
                 // if (index != 0)
                 Text(
-                  _familyMemberList[index]['type'],
+                  _familyMemberList[index]['type'].toString(),
                   style: FlutterFlowTheme.of(context).bodyText1.override(
                         fontFamily: 'Poppins',
                         color: Color(0xFF6D6D6D),

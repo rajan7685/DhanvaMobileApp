@@ -26,7 +26,8 @@ class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
   bool isLoading = true;
 
   Future<void> _fetchNewses() async {
-    Response res = await ApiService.dio.get('http://api3.dhanva.icu/feeds/get',
+    Response res = await ApiService.dio.get(
+        '${ApiService.protocol}api3.dhanva.icu/feeds/get',
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
@@ -56,7 +57,13 @@ class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.3,
                 decoration: BoxDecoration(
-                  color: Color(0xFF13B8B4),
+                  color: Color(0xFFEEEEEE),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: Image.asset(
+                      'assets/images/page_bgbg.png',
+                    ).image,
+                  ),
                 ),
               ),
               Padding(
@@ -88,7 +95,7 @@ class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
                     //     size: 24,
                     //   ),
                     // ),
-                    NotificationIconButton()
+                    //NotificationIconButton()
                   ],
                 ),
               ),
@@ -100,7 +107,7 @@ class _NewsesScreenWidgetState extends State<NewsesScreenWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'News',
+                      'News And Feeds',
                       textAlign: TextAlign.start,
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
