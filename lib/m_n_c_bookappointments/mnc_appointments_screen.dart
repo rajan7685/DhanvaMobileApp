@@ -63,7 +63,7 @@ class _MncAppointmentsScreenWidgetState
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
     appointments = res.data;
-    print(res.data[0]);
+    // print(res.data[0]);
     setState(() {
       isDataLoading = false;
     });
@@ -338,8 +338,8 @@ class AppointmentCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
+              child: Image.asset(
+                'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
                 width: 70,
                 height: 85,
                 fit: BoxFit.contain,

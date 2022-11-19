@@ -8,6 +8,7 @@ import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/doctors_details_service.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_check_screen.dart';
 import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_logs_investigation.dart';
 import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_success_screen.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
@@ -25,6 +26,7 @@ Doctor _selectedDoctor;
 
 class mncCheckPaymentScreenWidget extends StatefulWidget {
   final Map<String, dynamic> data;
+
   final int mncPayment;
   final String mncId;
   final String mncStatus;
@@ -71,8 +73,27 @@ class _mncCheckPaymentScreenWidgetState
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => mncLogsInvestigationWidget()));
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => mncLogsInvestigationWidget(
+        mncId: widget.mncId,
+        isMncpaused: widget.isMncPaused,
+        mncStatus: widget.mncStatus,
+        appointmentJson: widget.data,
+      ),
+      // widget.mncStatus == 1.toString()
+      //     ? mncLogsInvestigationWidget(
+      //         mncId: widget.mncId,
+      //         isMncpaused: widget.isMncPaused,
+      //         mncStatus: widget.mncStatus,
+      //         appointmentJson: widget.data,
+      //       )
+      //     : mncCheckScreenWidget(
+      //         mncId: widget.mncId,
+      //         isMncPaused: widget.isMncPaused,
+      //         mncStatus: int.parse(widget.mncStatus),
+      //         appointmentJson: widget.data,
+      //       ),
+    ));
     _sendInitialPaymentDetails(transactionId: response.paymentId);
   }
 
@@ -223,7 +244,7 @@ class _mncCheckPaymentScreenWidgetState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      widget.data["doctor"]["name"],
+                                      "Dr.${widget.data["doctor"]["name"]}",
                                       // "${}",
 
                                       style: FlutterFlowTheme.of(context)

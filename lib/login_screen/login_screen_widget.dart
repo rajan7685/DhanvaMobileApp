@@ -239,7 +239,6 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                           },
                           obscureText: false,
                           decoration: InputDecoration(
-                            errorMaxLines: 2,
                             labelText: 'Mobile Number',
                             labelStyle:
                                 FlutterFlowTheme.of(context).bodyText1.override(
@@ -285,7 +284,7 @@ class _LoginScreenWidgetState extends ConsumerState<LoginScreenWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 0),
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 50, 0, 0),
                     child: FFButtonWidget(
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {

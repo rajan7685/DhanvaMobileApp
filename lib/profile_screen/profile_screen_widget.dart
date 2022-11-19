@@ -4,11 +4,13 @@ import 'package:dhanva_mobile_app/about_screen/about_screen.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
+import 'package:dhanva_mobile_app/help_screen/help_page.dart';
 import 'package:dhanva_mobile_app/help_screen/help_screen.dart';
 import 'package:dhanva_mobile_app/login_screen/login_screen_widget.dart';
 import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
 
+import '../about_screen/about_page.dart';
 import '../appointments_screen/appointments_screen_widget.dart';
 import '../family_members_screen/family_members_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -141,9 +143,11 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               decoration: BoxDecoration(
                                 color: Color(0xFFEEEEEE),
                                 image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: Image.network(
-                                    'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
+                                  fit: BoxFit.contain,
+                                  image: Image.asset(
+                                    'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
+                                    // width: 30,
+                                    // height: 30,
                                   ).image,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
@@ -402,7 +406,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AboutScreenWidget(),
+                                  builder: (context) => aboutPage(),
                                 ),
                               );
                             },
@@ -549,7 +553,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => HelpScreenWidget()));
+                                      builder: (_) => helpPage()));
                             },
                             child: Row(
                               mainAxisSize: MainAxisSize.max,

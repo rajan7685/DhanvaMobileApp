@@ -64,7 +64,7 @@ class _AboutScreenWidgetState extends State<AboutScreenWidget> {
                   _controller = webViewController;
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
