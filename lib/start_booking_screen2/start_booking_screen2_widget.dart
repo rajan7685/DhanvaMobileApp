@@ -23,6 +23,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 Doctor _selectedDoctor;
 
+
 ChangeNotifierProvider<DoctorRecordProvider> _doctorsProvider =
     ChangeNotifierProvider((ref) => DoctorRecordProvider());
 
@@ -486,6 +487,7 @@ class _StartBookingScreen2WidgetState
                                                   isUniversalTimeSlot:
                                                       radioButtonValue != 'Yes',
                                                   doctor: _selectedDoctor,
+                                                  
                                                 )));
                                   }
                                 },

@@ -389,7 +389,7 @@ class _EditProfileScreenWidgetState extends State<EditProfileScreenWidget> {
                                                 ),
                                                 if (genderVal && gender == null)
                                                   Text(
-                                                    "select Gender",
+                                                    "Select Gender",
                                                     style: TextStyle(
                                                       color: Colors.red,
                                                       fontSize: 13,
