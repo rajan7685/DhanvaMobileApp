@@ -249,7 +249,8 @@ class _AppointmentBookedScreenWidgetState
                                           ),
                                     ),
                                     Text(
-                                      '',
+                                      "",
+                                      //widget.education,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(

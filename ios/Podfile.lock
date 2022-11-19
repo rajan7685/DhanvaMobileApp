@@ -126,7 +126,7 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
-  - open_file (0.0.1):
+  - open_file_safe (0.0.1):
     - Flutter
   - package_info_plus (0.4.5):
     - Flutter
@@ -158,13 +158,14 @@ PODS:
 DEPENDENCIES:
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
+  - Firebase/Messaging
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
-  - open_file (from `.symlinks/plugins/open_file/ios`)
+  - open_file_safe (from `.symlinks/plugins/open_file_safe/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -216,8 +217,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in_ios:
     :path: ".symlinks/plugins/google_sign_in_ios/ios"
-  open_file:
-    :path: ".symlinks/plugins/open_file/ios"
+  open_file_safe:
+    :path: ".symlinks/plugins/open_file_safe/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_ios:
@@ -260,7 +261,7 @@ SPEC CHECKSUMS:
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: ffbb25ec00ebcb5201adab0a56d808f6f1902d9f
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
-  open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
+  open_file_safe: 84c01ac91378bd9166ab570d7f22f4fb3532141a
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
@@ -276,6 +277,6 @@ SPEC CHECKSUMS:
   url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 1b1522b922ab84db26f90075db96cc9fcabb22e4
 
 COCOAPODS: 1.11.3
