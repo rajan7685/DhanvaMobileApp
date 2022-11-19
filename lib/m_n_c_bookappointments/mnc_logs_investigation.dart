@@ -181,17 +181,21 @@ class _mncLogsInvestigationWidgetState
           ? null
           : await MultipartFile.fromFile(_file.path, filename: _file.name)
     });
-    Response res = await ApiService.dio.post(
-      '${ApiService.protocol}${ApiService.baseUrl2}mnc/post/message',
-      data: data,
-      options: Options(headers: {
-        'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
-      }),
-    );
+    try {
+      Response res = await ApiService.dio.post(
+        '${ApiService.protocol}${ApiService.baseUrl2}mnc/post/message',
+        data: data,
+        options: Options(headers: {
+          'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
+        }),
+      );
+      print("Chat res data${res.data}");
+    } catch (e) {
+      print("bla bla $e");
+    }
     _chatController.clear();
     _file = null;
     _loadChats();
-    print("Chat res data${res.data}");
   }
 
   @override
@@ -762,11 +766,22 @@ class _mncLogsInvestigationWidgetState
                                                               else
                                                                 _sendMessage();
                                                             },
-                                                            child: Image.asset(
-                                                              'assets/images/7830587_send_email_icon.png',
-                                                              width: 20,
-                                                              height: 20,
-                                                              fit: BoxFit.cover,
+                                                            child: Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .fromLTRB(
+                                                                          15,
+                                                                          0,
+                                                                          0,
+                                                                          0),
+                                                              child:
+                                                                  Image.asset(
+                                                                'assets/images/7830587_send_email_icon.png',
+                                                                width: 20,
+                                                                height: 20,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
                                                             ),
                                                           ),
                                                         ],

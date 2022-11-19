@@ -153,28 +153,28 @@ class _ServicesByHospitalScreenState
                       ),
                     ),
                     Spacer(),
-                    Container(
-                      width: 45,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFEEEEEE),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: Image.network(
-                            'https://www.pngkey.com/png/detail/1010-10107790_kathi-online-avatar-maker.png',
-                          ).image,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Color(0xFF00FFF9),
-                          width: 2,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    NotificationIconButton()
+                    // Container(
+                    //   width: 45,
+                    //   height: 45,
+                    //   decoration: BoxDecoration(
+                    //     color: Color(0xFFEEEEEE),
+                    //     image: DecorationImage(
+                    //       fit: BoxFit.contain,
+                    //       image: Image.asset(
+                    //         'assets/images/4781820_avatar_male_man_people_person_icon_active.png',
+                    //       ).image,
+                    //     ),
+                    //     borderRadius: BorderRadius.circular(12),
+                    //     border: Border.all(
+                    //       color: Color(0xFF00FFF9),
+                    //       width: 2,
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   width: 12,
+                    // ),
+                    // NotificationIconButton()
                   ],
                 ),
               ),

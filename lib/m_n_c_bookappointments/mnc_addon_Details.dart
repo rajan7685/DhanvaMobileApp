@@ -378,7 +378,7 @@ class _AddonCardState extends State<AddonCard> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
                         child: widget.addonDetails["payment"] != null
                             ? Text(
-                                "Transcation date : ${DateFormat('MMM d, yyyy').format(
+                                "Transaction date : ${DateFormat('MMM d, yyyy').format(
                                   DateTime.parse(
                                     widget.addonDetails["payment"]
                                         ['transaction_date'],

@@ -48,7 +48,7 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
     setState(() {
       isDataLoading = false;
     });
-    print("get response $resData.sort((a, b)");
+    // print("get response $resData.sort((a, b)");
   }
 
   @override
@@ -65,11 +65,11 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
         backgroundColor: Color(0xFFF3F4F4),
         iconTheme: IconThemeData(color: Color(0xFF00A8A3)),
         automaticallyImplyLeading: true,
-        actions: [
-          Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-              child: NotificationIconButton()),
-        ],
+        // actions: [
+        //   Padding(
+        //       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+        //       child: NotificationIconButton()),
+        // ],
         centerTitle: true,
         elevation: 0,
       ),

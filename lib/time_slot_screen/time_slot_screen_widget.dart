@@ -17,7 +17,7 @@ String _selectedDoctorId;
 String _selectedDoctorName;
 
 String _to24HourTime(String time) {
-  print("Given time $time");
+  //print("Given time $time");
   String timeMaridane = time.split(' ')[1];
   String hourTime = time.split(' ')[0];
   int hour = int.parse(hourTime.split(':')[0]);
@@ -30,10 +30,10 @@ String _to24HourTime(String time) {
     return '$hour:00';
   }
   if (hour.toString().length == 1) {
-    print('Formatted time 0$hour:$minute');
+    // print('Formatted time 0$hour:$minute');
     return '0$hour:$minute';
   }
-  print('Formatted time $hour:$minute');
+  //print('Formatted time $hour:$minute');
   return '$hour:$minute';
 }
 
@@ -177,19 +177,25 @@ class _TimeSlotScreenWidgetState extends ConsumerState<TimeSlotScreenWidget> {
 
             InkWell(
               onTap: () {
-                print(_dateTimeSelectedId.split(',')[0]);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AppointmentBookedScreenWidget(
-                        patientRelationType: widget.patientRelationType,
-                        hospitalId: widget.hospitalId,
-                        isOnline: widget.isOnline,
-                        symtopms: widget.symptopms,
-                        timeString: _dateTimeSelectedString,
-                        patientId: widget.patientId,
-                        date: DateTime.parse(_dateTimeSelectedId.split(',')[0]),
-                        doctorName: _selectedDoctorName,
-                        doctorId: _selectedDoctorId,
-                        service: widget.service)));
+                if (_dateTimeSelectedId == "") {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Please select a time slot")));
+                } else {
+                  print("validation issue${_dateTimeSelectedId.split(',')[0]}");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AppointmentBookedScreenWidget(
+                          patientRelationType: widget.patientRelationType,
+                          hospitalId: widget.hospitalId,
+                          isOnline: widget.isOnline,
+                          symtopms: widget.symptopms,
+                          timeString: _dateTimeSelectedString,
+                          patientId: widget.patientId,
+                          date:
+                              DateTime.parse(_dateTimeSelectedId.split(',')[0]),
+                          doctorName: _selectedDoctorName,
+                          doctorId: _selectedDoctorId,
+                          service: widget.service)));
+                }
               },
               child: Container(
                   width: 225,
@@ -233,7 +239,7 @@ class _UniversalTimeSlotListState extends State<UniversalTimeSlotList> {
 
   @override
   Widget build(BuildContext context) {
-    print('main list len ${widget.timeSlots}');
+    // print('main list len ${widget.timeSlots}');
     return SizedBox(
       width: double.maxFinite,
       child: Row(
@@ -330,7 +336,7 @@ class DoctorTimeSlotList extends StatefulWidget {
 class _DoctorTimeSlotListState extends State<DoctorTimeSlotList> {
   @override
   Widget build(BuildContext context) {
-    print("time list${widget.slots}");
+    // print("time list${widget.slots}");
     return SizedBox(
       width: double.maxFinite,
       child: Row(

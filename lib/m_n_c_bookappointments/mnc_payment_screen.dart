@@ -263,7 +263,7 @@ class _mncPaymentScreenWidgetState extends State<mncPaymentScreenWidget> {
                                   children: [
                                     Text(
                                       //"Esskay",
-                                      "${widget.doctorName}",
+                                      "Dr.${widget.doctorName}",
                                       style: FlutterFlowTheme.of(context)
                                           .bodyText1
                                           .override(

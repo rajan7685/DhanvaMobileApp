@@ -18,10 +18,11 @@ import 'package:flutter/material.dart';
 
 class MedicalRecordBottomSheetWidget extends StatefulWidget {
   final MedicalRecord medicalRecord;
+  final VoidCallback onDone;
   final bool newRecord;
 
-  const MedicalRecordBottomSheetWidget(
-      {Key key, this.newRecord = false, this.medicalRecord})
+  MedicalRecordBottomSheetWidget(
+      {Key key, this.newRecord = false, this.onDone, this.medicalRecord})
       : super(key: key);
 
   @override
@@ -31,6 +32,7 @@ class MedicalRecordBottomSheetWidget extends StatefulWidget {
 
 class _MedicalRecordBottomSheetWidgetState
     extends State<MedicalRecordBottomSheetWidget> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController patientNameController;
   TextEditingController reportTypeController;
   TextEditingController doctorNameController;
@@ -39,6 +41,7 @@ class _MedicalRecordBottomSheetWidgetState
   // List<PlatformFile> _pickedFiles = [];
   DateTime _datetime;
   DateTime _time;
+  bool _validateFile = false;
 
   PlatformFile _selectedFile;
   bool _isFileLoading = false;
@@ -133,11 +136,9 @@ class _MedicalRecordBottomSheetWidgetState
         cancelText: 'Cancel',
         confirmText: 'Done',
         context: context,
-        initialDate: _datetime ??
-            DateTime(
-                DateTime.now().year, DateTime.now().month, DateTime.now().day),
+        initialDate: _datetime ?? DateTime.now(),
         firstDate: DateTime(1900),
-        lastDate: DateTime(2025));
+        lastDate: DateTime.now());
     if (pickedDate != null && pickedDate != _datetime)
       setState(() {
         _datetime = pickedDate;
@@ -161,7 +162,7 @@ class _MedicalRecordBottomSheetWidgetState
       });
   }
 
-  void updateRecord() async {
+  Future<void> updateRecord() async {
     String filePath = await _downloadFileAndPreview(autopreview: false);
     if (filePath.isNotEmpty) {
       await deleteRecord(autopop: false);
@@ -246,7 +247,7 @@ class _MedicalRecordBottomSheetWidgetState
   @override
   void initState() {
     super.initState();
-    _loadPatientInformation();
+    // _loadPatientInformation();
     patientNameController = TextEditingController(
         text: widget.newRecord ? '' : widget.medicalRecord.fileName);
     reportTypeController =
@@ -357,444 +358,484 @@ class _MedicalRecordBottomSheetWidgetState
       child: Padding(
         padding: EdgeInsetsDirectional.fromSTEB(12, 16, 12, 0),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              // TextFormField(
-              //   controller: patientNameController,
-              //   obscureText: false,
-              //   decoration: InputDecoration(
-              //     labelText: 'Patient Name',
-              //     labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-              //           fontFamily: 'Open Sans',
-              //           color: Color(0xFF9A9A9A),
-              //         ),
-              //     enabledBorder: OutlineInputBorder(
-              //       borderSide: BorderSide(
-              //         color: Color(0xFFC1C1C1),
-              //         width: 1,
-              //       ),
-              //       borderRadius: BorderRadius.circular(12),
-              //     ),
-              //     focusedBorder: OutlineInputBorder(
-              //       borderSide: BorderSide(
-              //         color: Color(0xFFC1C1C1),
-              //         width: 1,
-              //       ),
-              //       borderRadius: BorderRadius.circular(12),
-              //     ),
-              //     filled: true,
-              //     fillColor: Colors.white,
-              //   ),
-              //   style: FlutterFlowTheme.of(context).bodyText1.override(
-              //         fontFamily: 'Open Sans',
-              //         color: Color(0xFF485163),
-              //         fontWeight: FontWeight.w500,
-              //       ),
-              // ),
-              // DropdownButtonHideUnderline(
-              //   child: DropdownButtonFormField(
-              //     items: patientNames,
-              //     value: _selectedPatientId,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                // TextFormField(
+                //   controller: patientNameController,
+                //   obscureText: false,
+                //   decoration: InputDecoration(
+                //     labelText: 'Patient Name',
+                //     labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                //           fontFamily: 'Open Sans',
+                //           color: Color(0xFF9A9A9A),
+                //         ),
+                //     enabledBorder: OutlineInputBorder(
+                //       borderSide: BorderSide(
+                //         color: Color(0xFFC1C1C1),
+                //         width: 1,
+                //       ),
+                //       borderRadius: BorderRadius.circular(12),
+                //     ),
+                //     focusedBorder: OutlineInputBorder(
+                //       borderSide: BorderSide(
+                //         color: Color(0xFFC1C1C1),
+                //         width: 1,
+                //       ),
+                //       borderRadius: BorderRadius.circular(12),
+                //     ),
+                //     filled: true,
+                //     fillColor: Colors.white,
+                //   ),
+                //   style: FlutterFlowTheme.of(context).bodyText1.override(
+                //         fontFamily: 'Open Sans',
+                //         color: Color(0xFF485163),
+                //         fontWeight: FontWeight.w500,
+                //       ),
+                // ),
+                // DropdownButtonHideUnderline(
+                //   child: DropdownButtonFormField(
+                //     items: patientNames,
+                //     value: _selectedPatientId,
 
-              //     onChanged: (value) {
-              //       setState(() {
-              //         _selectedPatientId = value;
-              //       });
-              //       int idx = _relations.indexWhere(
-              //           (element) => _selectedPatientId == element.patientId);
-              //       patientRelationType =
-              //           idx == -1 ? "Self" : _relations[idx].type;
-              //       // print(patientRelationType);
-              //     },
-              //     decoration: InputDecoration(
-              //       filled: true,
-              //       fillColor: Color(0x00000000),
-              //       labelText: 'Patient Name',
-              //       // border:
-              //     ),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-              //   child: TextFormField(
-              //     controller: reportTypeController,
-              //     enabled: false,
-              //     obscureText: false,
-              //     decoration: InputDecoration(
-              //       labelText: 'Type of scan or test',
-              //       labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-              //             fontFamily: 'Open Sans',
-              //             color: Color(0xFF9A9A9A),
-              //           ),
-              //       enabledBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(
-              //           color: Color(0xFFC1C1C1),
-              //           width: 1,
-              //         ),
-              //         borderRadius: BorderRadius.circular(12),
-              //       ),
-              //       focusedBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(
-              //           color: Color(0xFFC1C1C1),
-              //           width: 1,
-              //         ),
-              //         borderRadius: BorderRadius.circular(12),
-              //       ),
-              //       filled: true,
-              //       fillColor: Colors.white,
-              //     ),
-              //     style: FlutterFlowTheme.of(context).bodyText1.override(
-              //           fontFamily: 'Open Sans',
-              //           color: Color(0xFF485163),
-              //           fontWeight: FontWeight.w500,
-              //         ),
-              //   ),
-              // ),
-              // Padding(
-              //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-              //   child: TextFormField(
-              //     controller: doctorNameController,
-              //     obscureText: false,
-              //     decoration: InputDecoration(
-              //       labelText: 'Doctor Name',
-              //       labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
-              //             fontFamily: 'Open Sans',
-              //             color: Color(0xFF9A9A9A),
-              //           ),
-              //       enabledBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(
-              //           color: Color(0xFFC1C1C1),
-              //           width: 1,
-              //         ),
-              //         borderRadius: BorderRadius.circular(12),
-              //       ),
-              //       focusedBorder: OutlineInputBorder(
-              //         borderSide: BorderSide(
-              //           color: Color(0xFFC1C1C1),
-              //           width: 1,
-              //         ),
-              //         borderRadius: BorderRadius.circular(12),
-              //       ),
-              //       filled: true,
-              //       fillColor: Colors.white,
-              //     ),
-              //     style: FlutterFlowTheme.of(context).bodyText1.override(
-              //           fontFamily: 'Open Sans',
-              //           color: Color(0xFF485163),
-              //           fontWeight: FontWeight.w500,
-              //         ),
-              //   ),
-              // ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
-                        child: InkWell(
-                          onTap: _selectReportDate,
-                          child: IgnorePointer(
-                            child: TextFormField(
-                              controller: reportDateController,
-                              obscureText: false,
-                              decoration: InputDecoration(
-                                enabled: true,
-                                labelText: 'Report Date',
-                                labelStyle: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Open Sans',
-                                      color: Color(0xFF9A9A9A),
-                                    ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFC1C1C1),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Color(0xFFC1C1C1),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                              ),
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF485163),
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                //     onChanged: (value) {
+                //       setState(() {
+                //         _selectedPatientId = value;
+                //       });
+                //       int idx = _relations.indexWhere(
+                //           (element) => _selectedPatientId == element.patientId);
+                //       patientRelationType =
+                //           idx == -1 ? "Self" : _relations[idx].type;
+                //       // print(patientRelationType);
+                //     },
+                //     decoration: InputDecoration(
+                //       filled: true,
+                //       fillColor: Color(0x00000000),
+                //       labelText: 'Patient Name',
+                //       // border:
+                //     ),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                //   child: TextFormField(
+                //     controller: reportTypeController,
+                //     enabled: false,
+                //     obscureText: false,
+                //     decoration: InputDecoration(
+                //       labelText: 'Type of scan or test',
+                //       labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                //             fontFamily: 'Open Sans',
+                //             color: Color(0xFF9A9A9A),
+                //           ),
+                //       enabledBorder: OutlineInputBorder(
+                //         borderSide: BorderSide(
+                //           color: Color(0xFFC1C1C1),
+                //           width: 1,
+                //         ),
+                //         borderRadius: BorderRadius.circular(12),
+                //       ),
+                //       focusedBorder: OutlineInputBorder(
+                //         borderSide: BorderSide(
+                //           color: Color(0xFFC1C1C1),
+                //           width: 1,
+                //         ),
+                //         borderRadius: BorderRadius.circular(12),
+                //       ),
+                //       filled: true,
+                //       fillColor: Colors.white,
+                //     ),
+                //     style: FlutterFlowTheme.of(context).bodyText1.override(
+                //           fontFamily: 'Open Sans',
+                //           color: Color(0xFF485163),
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                //   child: TextFormField(
+                //     controller: doctorNameController,
+                //     obscureText: false,
+                //     decoration: InputDecoration(
+                //       labelText: 'Doctor Name',
+                //       labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                //             fontFamily: 'Open Sans',
+                //             color: Color(0xFF9A9A9A),
+                //           ),
+                //       enabledBorder: OutlineInputBorder(
+                //         borderSide: BorderSide(
+                //           color: Color(0xFFC1C1C1),
+                //           width: 1,
+                //         ),
+                //         borderRadius: BorderRadius.circular(12),
+                //       ),
+                //       focusedBorder: OutlineInputBorder(
+                //         borderSide: BorderSide(
+                //           color: Color(0xFFC1C1C1),
+                //           width: 1,
+                //         ),
+                //         borderRadius: BorderRadius.circular(12),
+                //       ),
+                //       filled: true,
+                //       fillColor: Colors.white,
+                //     ),
+                //     style: FlutterFlowTheme.of(context).bodyText1.override(
+                //           fontFamily: 'Open Sans',
+                //           color: Color(0xFF485163),
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //   ),
+                // ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      // Expanded(
+                      //   child: Padding(
+                      //     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 12, 0),
+                      //     child: InkWell(
+                      //       onTap: _selectReportDate,
+                      //       child: IgnorePointer(
+                      //         child: TextFormField(
+                      //           validator: (String dateSelect) {
+                      //             if (dateSelect.isEmpty)
+                      //               return 'Please Select the date';
+
+                      //             return null;
+                      //           },
+                      //           controller: reportDateController,
+                      //           obscureText: false,
+                      //           decoration: InputDecoration(
+                      //             enabled: true,
+                      //             labelText: 'Report Date',
+                      //             labelStyle: FlutterFlowTheme.of(context)
+                      //                 .bodyText1
+                      //                 .override(
+                      //                   fontFamily: 'Open Sans',
+                      //                   color: Color(0xFF9A9A9A),
+                      //                 ),
+                      //             enabledBorder: OutlineInputBorder(
+                      //               borderSide: BorderSide(
+                      //                 color: Color(0xFFC1C1C1),
+                      //                 width: 1,
+                      //               ),
+                      //               borderRadius: BorderRadius.circular(12),
+                      //             ),
+                      //             focusedBorder: OutlineInputBorder(
+                      //               borderSide: BorderSide(
+                      //                 color: Color(0xFFC1C1C1),
+                      //                 width: 1,
+                      //               ),
+                      //               borderRadius: BorderRadius.circular(12),
+                      //             ),
+                      //             filled: true,
+                      //             fillColor: Colors.white,
+                      //           ),
+                      //           style: FlutterFlowTheme.of(context)
+                      //               .bodyText1
+                      //               .override(
+                      //                 fontFamily: 'Open Sans',
+                      //                 color: Color(0xFF485163),
+                      //                 fontWeight: FontWeight.w500,
+                      //               ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // Expanded(
+                      //   child: Padding(
+                      //     padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                      //     child: InkWell(
+                      //       onTap: _selectReportTime,
+                      //       child: IgnorePointer(
+                      //         child: TextFormField(
+                      //           controller: reportTimeController,
+                      //           enabled: false,
+                      //           obscureText: false,
+                      //           decoration: InputDecoration(
+                      //             enabled: true,
+                      //             labelText: 'Report Time',
+                      //             labelStyle: FlutterFlowTheme.of(context)
+                      //                 .bodyText1
+                      //                 .override(
+                      //                   fontFamily: 'Open Sans',
+                      //                   color: Color(0xFF9A9A9A),
+                      //                 ),
+                      //             enabledBorder: OutlineInputBorder(
+                      //               borderSide: BorderSide(
+                      //                 color: Color(0xFFC1C1C1),
+                      //                 width: 1,
+                      //               ),
+                      //               borderRadius: BorderRadius.circular(12),
+                      //             ),
+                      //             focusedBorder: OutlineInputBorder(
+                      //               borderSide: BorderSide(
+                      //                 color: Color(0xFFC1C1C1),
+                      //                 width: 1,
+                      //               ),
+                      //               borderRadius: BorderRadius.circular(12),
+                      //             ),
+                      //             filled: true,
+                      //             fillColor: Colors.white,
+                      //           ),
+                      //           style: FlutterFlowTheme.of(context)
+                      //               .bodyText1
+                      //               .override(
+                      //                 fontFamily: 'Open Sans',
+                      //                 color: Color(0xFF485163),
+                      //                 fontWeight: FontWeight.w500,
+                      //               ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        'Upload your Report',
+                        style: FlutterFlowTheme.of(context).bodyText1.override(
+                              fontFamily: 'Open Sans',
+                              color: Color(0xFF1E1E1E),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
                             ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                _filesListView(),
+                if (_selectedFile == null && _validateFile)
+                  Text(
+                    "Please select the file",
+                    style: TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+
+                if (!widget.newRecord)
+                  InkWell(
+                    onTap: () {
+                      _downloadFileAndPreview();
+                    },
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            'Download File',
+                            style:
+                                FlutterFlowTheme.of(context).bodyText1.override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF00A8A3),
+                                      fontWeight: FontWeight.w500,
+                                    ),
                           ),
-                        ),
+                          SizedBox(
+                            width: 18,
+                          ),
+                          if (_isFileLoading)
+                            CircularProgressIndicator(
+                              strokeWidth: 2,
+                            )
+                        ],
                       ),
                     ),
-                    // Expanded(
-                    //   child: Padding(
-                    //     padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                    //     child: InkWell(
-                    //       onTap: _selectReportTime,
-                    //       child: IgnorePointer(
-                    //         child: TextFormField(
-                    //           controller: reportTimeController,
-                    //           enabled: false,
-                    //           obscureText: false,
-                    //           decoration: InputDecoration(
-                    //             enabled: true,
-                    //             labelText: 'Report Time',
-                    //             labelStyle: FlutterFlowTheme.of(context)
-                    //                 .bodyText1
-                    //                 .override(
-                    //                   fontFamily: 'Open Sans',
-                    //                   color: Color(0xFF9A9A9A),
-                    //                 ),
-                    //             enabledBorder: OutlineInputBorder(
-                    //               borderSide: BorderSide(
-                    //                 color: Color(0xFFC1C1C1),
-                    //                 width: 1,
-                    //               ),
-                    //               borderRadius: BorderRadius.circular(12),
-                    //             ),
-                    //             focusedBorder: OutlineInputBorder(
-                    //               borderSide: BorderSide(
-                    //                 color: Color(0xFFC1C1C1),
-                    //                 width: 1,
-                    //               ),
-                    //               borderRadius: BorderRadius.circular(12),
-                    //             ),
-                    //             filled: true,
-                    //             fillColor: Colors.white,
-                    //           ),
-                    //           style: FlutterFlowTheme.of(context)
-                    //               .bodyText1
-                    //               .override(
-                    //                 fontFamily: 'Open Sans',
-                    //                 color: Color(0xFF485163),
-                    //                 fontWeight: FontWeight.w500,
-                    //               ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      'Upload your Report',
-                      style: FlutterFlowTheme.of(context).bodyText1.override(
-                            fontFamily: 'Open Sans',
-                            color: Color(0xFF1E1E1E),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              _filesListView(),
-              if (!widget.newRecord)
-                InkWell(
-                  onTap: () {
-                    _downloadFileAndPreview();
-                  },
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'Download File',
-                          style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
-                                    fontFamily: 'Open Sans',
-                                    color: Color(0xFF00A8A3),
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                        ),
-                        SizedBox(
-                          width: 18,
-                        ),
-                        if (_isFileLoading)
-                          CircularProgressIndicator(
-                            strokeWidth: 2,
-                          )
-                      ],
-                    ),
                   ),
-                ),
-              // if (!widget.newRecord)
-              //   Padding(
-              //     padding: EdgeInsetsDirectional.fromSTEB(0, 42, 0, 0),
-              //     child: Container(
-              //       width: MediaQuery.of(context).size.width * 0.78,
-              //       height: 55,
-              //       decoration: BoxDecoration(
-              //         color: Color(0xFF00A8A3),
-              //         borderRadius: BorderRadius.circular(24),
-              //       ),
-              //       child: InkWell(
-              //         onTap: updateRecord,
-              //         child: Row(
-              //           mainAxisSize: MainAxisSize.max,
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           children: [
-              //             Text(
-              //               'Update Record',
-              //               style: FlutterFlowTheme.of(context).title1.override(
-              //                     fontFamily: 'Poppins',
-              //                     color: Colors.white,
-              //                   ),
-              //             ),
-              //             Padding(
-              //               padding:
-              //                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-              //               child: Image.asset(
-              //                 'assets/images/Layer_2.png',
-              //                 width: 35,
-              //                 height: 35,
-              //                 fit: BoxFit.cover,
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              if (widget.newRecord)
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 42, 0, 0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.78,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: Color(0xFF00A8A3),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: InkWell(
-                      onTap: () async {
-                        setState(() {
-                          _isFileUploading = true;
-                        });
-                        uploadFile(_selectedFile);
-                        setState(() {
-                          _isFileUploading = false;
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Record Saved")));
-                        Navigator.pop(context);
-                      },
-                      child: !_isFileUploading
-                          ? Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Save Record',
-                                  style: FlutterFlowTheme.of(context)
-                                      .title1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      12, 0, 0, 0),
-                                  child: Image.asset(
-                                    'assets/images/Layer_2.png',
-                                    width: 35,
-                                    height: 35,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                              ),
-                            ),
-                    ),
-                  ),
-                ),
-              if (!widget.newRecord)
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
-                  child: InkWell(
-                    onTap: () async {
-                      Navigator.pop(context);
-                    },
+                // if (!widget.newRecord)
+                //   Padding(
+                //     padding: EdgeInsetsDirectional.fromSTEB(0, 42, 0, 0),
+                //     child: Container(
+                //       width: MediaQuery.of(context).size.width * 0.78,
+                //       height: 55,
+                //       decoration: BoxDecoration(
+                //         color: Color(0xFF00A8A3),
+                //         borderRadius: BorderRadius.circular(24),
+                //       ),
+                //       child: InkWell(
+                //         onTap: updateRecord,
+                //         child: Row(
+                //           mainAxisSize: MainAxisSize.max,
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: [
+                //             Text(
+                //               'Update Record',
+                //               style: FlutterFlowTheme.of(context).title1.override(
+                //                     fontFamily: 'Poppins',
+                //                     color: Colors.white,
+                //                   ),
+                //             ),
+                //             Padding(
+                //               padding:
+                //                   EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                //               child: Image.asset(
+                //                 'assets/images/Layer_2.png',
+                //                 width: 35,
+                //                 height: 35,
+                //                 fit: BoxFit.cover,
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                if (widget.newRecord)
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 42, 0, 0),
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.78,
                       height: 55,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color(0xFF00A8A3),
                         borderRadius: BorderRadius.circular(24),
-                        border: Border.all(
-                          color: Color(0xFF00A8A3),
-                          width: 2,
-                        ),
                       ),
                       child: InkWell(
-                        onTap: deleteRecord,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Delete Record',
-                              style:
-                                  FlutterFlowTheme.of(context).title1.override(
-                                        fontFamily: 'Poppins',
-                                        color: Color(0xFF00A8A3),
-                                      ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                              child: Container(
-                                width: 35,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFEEEEEE),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Color(0xFF00A8A3),
-                                    width: 2,
+                        onTap: () async {
+                          setState(() {
+                            _validateFile = true;
+                          });
+
+                          // if (_formKey.currentState.validate() &&
+                          //     _selectedFile != null) {
+                          //   updateRecord();
+
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //       SnackBar(content: Text("Record Saved")));
+                          //   Navigator.pop(context);
+                          //   if (widget.onDone != null) widget.onDone();
+                          // }
+
+                          if (_selectedFile != null) {
+                            setState(() {
+                              _isFileUploading = true;
+                              _validateFile = false;
+                            });
+                            await uploadFile(_selectedFile);
+                            setState(() {
+                              _isFileUploading = false;
+                            });
+
+                            if (_formKey.currentState.validate() &&
+                                _selectedFile != null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Record Saved")));
+                              Navigator.pop(context);
+                              if (widget.onDone != null) widget.onDone();
+                            }
+                          }
+                        },
+                        child: !_isFileUploading
+                            ? Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Save Record',
+                                    style: FlutterFlowTheme.of(context)
+                                        .title1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
                                   ),
-                                ),
-                                child: Icon(
-                                  Icons.close,
-                                  color: Color(0xFF00A8A3),
-                                  size: 24,
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        12, 0, 0, 0),
+                                    child: Image.asset(
+                                      'assets/images/Layer_2.png',
+                                      width: 35,
+                                      height: 35,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
                                 ),
                               ),
-                            ),
-                          ],
+                      ),
+                    ),
+                  ),
+                if (!widget.newRecord)
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 18, 0, 0),
+                    child: InkWell(
+                      onTap: () async {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.78,
+                        height: 55,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(
+                            color: Color(0xFF00A8A3),
+                            width: 2,
+                          ),
+                        ),
+                        child: InkWell(
+                          onTap: deleteRecord,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Delete Record',
+                                style: FlutterFlowTheme.of(context)
+                                    .title1
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Color(0xFF00A8A3),
+                                    ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
+                                child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFEEEEEE),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Color(0xFF00A8A3),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Color(0xFF00A8A3),
+                                    size: 24,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

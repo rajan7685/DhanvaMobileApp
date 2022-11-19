@@ -151,10 +151,10 @@ class _MncStartAppointmentWidgetState extends State<MncStartAppointmentWidget> {
         options: Options(headers: {
           'Authorization': SharedPreferenceService.loadString(key: AuthTokenKey)
         }));
-    print("load payment service info${res.data}");
 
     data["amount"] = res.data["amount"];
     data["name"] = res.data["name"];
+    print("load payment service info${res.data}");
   }
 
   @override
@@ -202,16 +202,16 @@ class _MncStartAppointmentWidgetState extends State<MncStartAppointmentWidget> {
                       size: 34,
                     ),
                   ),
-                  Expanded(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        //
-                        NotificationIconButton()
-                      ],
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: Row(
+                  //     mainAxisSize: MainAxisSize.max,
+                  //     mainAxisAlignment: MainAxisAlignment.end,
+                  //     // children: [
+                  //     //   //
+                  //     //   NotificationIconButton()
+                  //     // ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
