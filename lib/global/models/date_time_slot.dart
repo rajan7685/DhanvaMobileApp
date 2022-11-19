@@ -36,7 +36,7 @@ class UniversalDateTimeSlot {
 
   factory UniversalDateTimeSlot.fromAllTimeSlotData(
       MapEntry<String, dynamic> json) {
-    print("yayyyy ${json.value}");
+    //print("yayyyy ${json.value}");
     List<GlobalAvailableTimeSlot> slots = [];
     (json.value as Map<String, dynamic>).entries.forEach((json) {
       slots.add(GlobalAvailableTimeSlot.fromJson(json));
