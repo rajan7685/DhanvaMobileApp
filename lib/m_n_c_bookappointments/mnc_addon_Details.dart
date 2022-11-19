@@ -11,7 +11,7 @@ import 'package:dhanva_mobile_app/global/services/mock_json_data_service.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_file_safe/open_file_safe.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../app_guide_screen2/app_guide_screen2_widget.dart';
