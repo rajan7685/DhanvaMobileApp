@@ -48,10 +48,10 @@
 @import google_sign_in_ios;
 #endif
 
-#if __has_include(<open_file/OpenFilePlugin.h>)
-#import <open_file/OpenFilePlugin.h>
+#if __has_include(<open_file_safe/OpenFilePlugin.h>)
+#import <open_file_safe/OpenFilePlugin.h>
 #else
-@import open_file;
+@import open_file_safe;
 #endif
 
 #if __has_include(<package_info_plus/FLTPackageInfoPlusPlugin.h>)
