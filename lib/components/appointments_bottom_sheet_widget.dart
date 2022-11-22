@@ -187,7 +187,7 @@ class _AppointmentsBottomSheetWidgetState
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                             child: Text(
-                              widget.appointmentJson['doctor']['name'],
+                              ("Dr.${widget.appointmentJson['doctor']['name']}"),
                               style: FlutterFlowTheme.of(context)
                                   .subtitle1
                                   .override(
