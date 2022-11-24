@@ -5,7 +5,7 @@ import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
 import 'package:html/parser.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_file_safe/open_file_safe.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -172,9 +172,10 @@ class _AppointmentsBottomSheetWidgetState
                             ],
                           ),
                           Text(
-                            DateFormat('MMM d, yyyy hh:mma').format(
-                                DateTime.parse(
-                                    widget.appointmentJson['appointmentDate'])),
+                            // DateFormat('MMM d, yyyy hh:mma').format(
+                            //     DateTime.parse(
+                            //         widget.appointmentJson['appointmentDate'])),
+                            "${DateFormat('MMM d, yyyy').format(DateTime.parse(widget.appointmentJson['appointmentDate']))} ${widget.appointmentJson['time_slot']}",
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       // fontSize: 17,
@@ -186,7 +187,7 @@ class _AppointmentsBottomSheetWidgetState
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                             child: Text(
-                              widget.appointmentJson['doctor']['name'],
+                              ("Dr.${widget.appointmentJson['doctor']['name']}"),
                               style: FlutterFlowTheme.of(context)
                                   .subtitle1
                                   .override(

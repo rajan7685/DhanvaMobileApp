@@ -10,8 +10,7 @@ import 'package:dhanva_mobile_app/global/services/mock_json_data_service.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:open_file/open_file.dart';
-
+import 'package:open_file_safe/open_file_safe.dart';
 import '../components/appointments_bottom_sheet_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -41,14 +40,12 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
     resDatas =
         await MedicalAppointmentsService.fetchMedicalAppointments(patient.id);
     resData = resDatas != null ? resDatas : [];
-
-    //resData = [];
-    resData.sort((a, b) => DateTime.parse(b['appointmentDate'])
-        .compareTo(DateTime.parse(a['appointmentDate'])));
+   
+    // resData.sort((a, b) => DateTime.parse(b['appointmentDate'])
+    //     .compareTo(DateTime.parse(a['appointmentDate'])));
     setState(() {
       isDataLoading = false;
     });
-    // print("get response $resData.sort((a, b)");
   }
 
   @override

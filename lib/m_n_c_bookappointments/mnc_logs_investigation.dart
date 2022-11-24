@@ -20,7 +20,7 @@ import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import '../global/models/patient.dart';
 import '../global/services/api_services/api_service_base.dart';
 import '../global/services/shared_preference_service.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_file_safe/open_file_safe.dart';
 import 'package:path_provider/path_provider.dart';
 
 class mncLogsInvestigationWidget extends StatefulWidget {
