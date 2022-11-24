@@ -40,14 +40,12 @@ class _AppointmentsScreenWidgetState extends State<AppointmentsScreenWidget> {
     resDatas =
         await MedicalAppointmentsService.fetchMedicalAppointments(patient.id);
     resData = resDatas != null ? resDatas : [];
-
-    //resData = [];
-    resData.sort((a, b) => DateTime.parse(b['appointmentDate'])
-        .compareTo(DateTime.parse(a['appointmentDate'])));
+   
+    // resData.sort((a, b) => DateTime.parse(b['appointmentDate'])
+    //     .compareTo(DateTime.parse(a['appointmentDate'])));
     setState(() {
       isDataLoading = false;
     });
-    // print("get response $resData.sort((a, b)");
   }
 
   @override

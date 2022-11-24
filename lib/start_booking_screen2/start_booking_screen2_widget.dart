@@ -487,7 +487,6 @@ class _StartBookingScreen2WidgetState
                                                   isUniversalTimeSlot:
                                                       radioButtonValue != 'Yes',
                                                   doctor: _selectedDoctor,
-                                                  
                                                 )));
                                   }
                                 },
