@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dhanva_mobile_app/components/bottom_navigation_bar.dart';
 import 'package:dhanva_mobile_app/global/providers/authentication_provider.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
@@ -13,6 +15,15 @@ import 'home_screen/home_screen_widget.dart';
 import 'hospital_screen/hospital_screen_widget.dart';
 import 'profile_screen/profile_screen_widget.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 //flutter local notification
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
