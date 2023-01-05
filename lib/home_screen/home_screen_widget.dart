@@ -1,32 +1,25 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dhanva_mobile_app/components/contact_us.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/api_services/api_service_base.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/home_screen/models/quick_service_ui_model.dart';
-import 'package:dhanva_mobile_app/home_screen/providers/home_services_provider.dart';
 import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
 import 'package:dhanva_mobile_app/psychometrics_assesent_step1/psychometrics_assesent_step1_widget.dart';
-import 'package:dhanva_mobile_app/psychometrics_assesment_screen/models/psychometrics_assesment_question.dart';
-import 'package:dhanva_mobile_app/psychometrics_assesment_screen/psychometrics_assesment_screen.dart';
-import 'package:dhanva_mobile_app/start_booking_screen/start_booking_screen_widget.dart';
 import 'package:dhanva_mobile_app/start_booking_screen2/start_booking_screen2_widget.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:overlay_support/overlay_support.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../app_guide_screen1/app_guide_screen1_widget.dart';
-import '../components/custom_toast.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
-import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:overlay_support/overlay_support.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 // ChangeNotifierProvider<HomeServicesProvider> _servicesProvider =
 // ChangeNotifierProvider((ref) => HomeServicesProvider());
@@ -507,6 +500,7 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreenWidget> {
           ),
         ),
       ),
+      floatingActionButton: new ContactUs().contactUsButton(),
     );
   }
 }

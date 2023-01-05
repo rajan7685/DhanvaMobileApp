@@ -69,7 +69,7 @@ dependencies:
   connectivity_plus: ^2.3.6+1
   webview_flutter: ^3.0.4
   firebase_core: ^1.24.0
- 
+  flutter_phone_direct_caller: ^2.1.1
 
 dev_dependencies:
 
