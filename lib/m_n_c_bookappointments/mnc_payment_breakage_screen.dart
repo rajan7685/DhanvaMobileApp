@@ -71,7 +71,7 @@ class _mncAmountBreakupWidgetState extends State<mncAmountBreakupWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Doctor Fee',
+                  'Medical Professional Fee',
                   style: FlutterFlowTheme.of(context).bodyText2.override(
                         // fontFamily: 'Outfit',
                         fontFamily: 'Open Sans',
