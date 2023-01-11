@@ -284,7 +284,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                             padding:
                                 EdgeInsetsDirectional.fromSTEB(8, 20, 0, 0),
                             child: Text(
-                              'Do you want to select your doctor?',
+                              'Do you want to select your medical professional?',
                               textAlign: TextAlign.start,
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
@@ -306,7 +306,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                             FlutterFlowRadioButton(
                               options: [
                                 'Yes',
-                                'Help me with available doctor',
+                                'Help me with available medical professional',
                               ].toList(),
                               onChanged: (value) {
                                 setState(() => radioButtonValue = value);
