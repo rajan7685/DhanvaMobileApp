@@ -1,29 +1,21 @@
 import 'dart:convert';
 
-import 'package:dhanva_mobile_app/about_screen/about_screen.dart';
 import 'package:dhanva_mobile_app/components/notification_icon_button.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/services/shared_preference_service.dart';
 import 'package:dhanva_mobile_app/help_screen/help_page.dart';
-import 'package:dhanva_mobile_app/help_screen/help_screen.dart';
 import 'package:dhanva_mobile_app/login_screen/login_screen_widget.dart';
+import 'package:dhanva_mobile_app/m_n_c_bookappointments/mnc_appointments_screen.dart';
 import 'package:dhanva_mobile_app/profile_screen/edit_profile_screen.dart';
-import 'package:dhanva_mobile_app/splash_screen/splash_screen_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../about_screen/about_page.dart';
 import '../appointments_screen/appointments_screen_widget.dart';
 import '../family_members_screen/family_members_screen_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
 import '../medical_record_screen/medical_record_screen_widget.dart';
 import '../newses_screen/newses_screen_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class ProfileScreenWidget extends StatefulWidget {
   const ProfileScreenWidget({Key key}) : super(key: key);
@@ -258,7 +250,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    AppointmentsScreenWidget(),
+                                    MncAppointmentsScreenWidget(),
                               ),
                             );
                           },
@@ -267,7 +259,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Image.asset(
-                                'assets/images/6637774_calendar_calender_date_event_icon.png',
+                                'assets/images/mnc.png',
                                 width: 18,
                                 height: 18,
                                 fit: BoxFit.cover,
@@ -276,7 +268,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
                                 child: Text(
-                                  'Appointments',
+                                  'MNC',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
@@ -299,6 +291,56 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                             ],
                           ),
                         ),
+                        Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        AppointmentsScreenWidget(),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/6637774_calendar_calender_date_event_icon.png',
+                                    width: 18,
+                                    height: 18,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        12, 0, 0, 0),
+                                    child: Text(
+                                      'Appointments',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Color(0xFF434343),
+                                            fontSize: 20,
+                                          ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Align(
+                                      alignment: AlignmentDirectional(1, 0),
+                                      child: Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: Color(0xFF5A5A5A),
+                                        size: 34,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                           child: InkWell(

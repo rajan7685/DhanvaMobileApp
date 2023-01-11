@@ -139,10 +139,7 @@ class _MncAppointmentsScreenWidgetState
                           // if (widget.shouldPopNormally)
                           //   Navigator.pop(context);
                           // else
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => NavBarPage())));
+                          Navigator.pop(context);
                         },
                         child: Icon(
                           Icons.arrow_back_rounded,
