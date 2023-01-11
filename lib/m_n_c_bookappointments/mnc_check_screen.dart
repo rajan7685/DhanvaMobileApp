@@ -395,7 +395,7 @@ class _mncCheckScreenWidgetState extends State<mncCheckScreenWidget> {
                                                   children: [
                                                     Flexible(
                                                       child: Text(
-                                                          " ${resData["consultation_notes"] ?? "Not mentioned by the doctor"}",
+                                                          " ${resData["consultation_notes"] ?? "Not mentioned by the Medical Professional"}",
                                                           maxLines: 5,
                                                           style: FlutterFlowTheme
                                                                   .of(context)

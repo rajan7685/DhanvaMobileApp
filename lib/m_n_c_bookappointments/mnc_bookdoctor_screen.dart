@@ -147,7 +147,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'MNC Doctors',
+                    'MNC Medical Professionals',
                     textAlign: TextAlign.start,
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
@@ -157,7 +157,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                         ),
                   ),
                   Text(
-                    'Find your Doctors',
+                    'Find your Medical Professionals',
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
                           color: Color(0xFFF3F4F4),
@@ -439,7 +439,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                               content: Text(
-                                                  'Please select a doctor')));
+                                                  'Please select a Medical Professional')));
                                       // } else if (radioButtonValue == 'Yes' &&
                                       //     _selectedDoctor == null) {
                                       //   ScaffoldMessenger.of(context).showSnackBar(
