@@ -152,7 +152,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
                           color: Color(0xFFF3F4F4),
-                          fontSize: 32,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
