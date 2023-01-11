@@ -25,7 +25,7 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isDataLoading = true;
   List<dynamic> _hospitalJsonList;
-  String _hospitalListApi = 'https://api2.dhanva.icu/hospital/get_all';
+  String _hospitalListApi = 'https://api2.dhanva.icu/hospital/get_all_enabled';
 
   // Future<void> _checkNetworkConnectivity() async {
   //   ConnectivityResult connectivityResult =
