@@ -85,7 +85,7 @@ class _TimeSlotScreenWidgetState extends ConsumerState<mncTimeSlot> {
   @override
   void initState() {
     print("time slot universal? ${widget.isUniversalTimeSlot}");
-    print("doctor? ${widget.doctor}");
+    print("Medical Professional? ${widget.doctor}");
     if (widget.isUniversalTimeSlot) {
       _loadAllTimeSlots();
     } else {

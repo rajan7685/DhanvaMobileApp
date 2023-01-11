@@ -236,7 +236,7 @@ class _mncCheckScreenWidgetState extends State<mncCheckScreenWidget> {
                                                       MainAxisSize.max,
                                                   children: [
                                                     Text(
-                                                      'Doctor Name: Dr.${widget.appointmentJson["doctor"]["name"]}',
+                                                      'Medical Professional Name: Dr.${widget.appointmentJson["doctor"]["name"]}',
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .bodyText1

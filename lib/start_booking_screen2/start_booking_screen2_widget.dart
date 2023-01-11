@@ -23,7 +23,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 Doctor _selectedDoctor;
 
-
 ChangeNotifierProvider<DoctorRecordProvider> _doctorsProvider =
     ChangeNotifierProvider((ref) => DoctorRecordProvider());
 
@@ -354,7 +353,7 @@ class _StartBookingScreen2WidgetState
                           child: Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                             child: Text(
-                              'Do you want to select your doctor?',
+                              'Do you want to select your medical professional?',
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -374,7 +373,7 @@ class _StartBookingScreen2WidgetState
                                 child: FlutterFlowRadioButton(
                                   options: [
                                     'Yes',
-                                    'Help me with available doctor'
+                                    'Help me with available medical professional'
                                   ],
                                   onChanged: (value) {
                                     setState(() => radioButtonValue = value);
@@ -448,7 +447,8 @@ class _StartBookingScreen2WidgetState
                             ),
                             child: InkWell(
                                 onTap: () {
-                                  print("selected doctor ${_selectedDoctor}");
+                                  print(
+                                      "selected medical professional ${_selectedDoctor}");
                                   if (textController2.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
@@ -458,7 +458,7 @@ class _StartBookingScreen2WidgetState
                                     ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(
                                             content: Text(
-                                                'Please select a doctor option')));
+                                                'Please select a medical professional option')));
                                   } else if (radioButtonValue == 'Yes' &&
                                       _selectedDoctor == null) {
                                     ScaffoldMessenger.of(context).showSnackBar(
