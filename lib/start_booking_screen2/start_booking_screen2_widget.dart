@@ -461,15 +461,14 @@ class _StartBookingScreen2WidgetState
                                                 'Please select a medical professional option')));
                                   } else if (radioButtonValue == 'Yes' &&
                                       _selectedDoctor == null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                            content: Text(ref
-                                                        .read(_doctorsProvider)
-                                                        .doctors
-                                                        .length !=
-                                                    0
-                                                ? 'Please select a doctor'
-                                                : 'Go with available doctors')));
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        content: Text(ref
+                                                    .read(_doctorsProvider)
+                                                    .doctors
+                                                    .length !=
+                                                0
+                                            ? 'Please select a Medical Professional'
+                                            : 'Go with available Medical Professionals')));
                                   } else {
                                     Navigator.push(
                                         context,
