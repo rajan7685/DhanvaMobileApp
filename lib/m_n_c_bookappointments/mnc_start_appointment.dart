@@ -416,7 +416,7 @@ class _MncStartAppointmentWidgetState extends State<MncStartAppointmentWidget> {
                           // ),
                           Padding(
                             padding:
-                                EdgeInsetsDirectional.fromSTEB(60, 8, 5, 0),
+                                EdgeInsetsDirectional.fromSTEB(50, 8, 5, 0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
@@ -451,7 +451,7 @@ class _MncStartAppointmentWidgetState extends State<MncStartAppointmentWidget> {
                                 ),
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 5, 0),
+                                      5, 0, 5, 0),
                                   child: InkWell(
                                     onTap: () {
                                       data["shapes"] = "Triangle";
@@ -470,7 +470,7 @@ class _MncStartAppointmentWidgetState extends State<MncStartAppointmentWidget> {
                                 ),
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
-                                      10, 0, 5, 0),
+                                      5, 0, 5, 0),
                                   child: GestureDetector(
                                     child: Container(
                                       width: 60,
@@ -495,6 +495,25 @@ class _MncStartAppointmentWidgetState extends State<MncStartAppointmentWidget> {
                                         shapes = "Rectangle";
                                       });
                                     },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      5, 0, 5, 0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      data["shapes"] = "Z";
+                                      setState(() {
+                                        shapes = "Z";
+                                      });
+                                    },
+                                    child: SvgPicture.asset(
+                                      shapes == "Z"
+                                          ? "assets/images/z-checked.svg"
+                                          : "assets/images/z.svg",
+                                      width: 70,
+                                      height: 60,
+                                    ),
                                   ),
                                 ),
                               ],
