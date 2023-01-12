@@ -16,7 +16,8 @@ class DoctorDetailsService {
     await SharedPreferenceService.init();
     Patient p = Patient.fromJson(
         jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
-    print('doctor list api- $_allDoctorsUri/$hospitalId/$serviceId');
+    print(
+        'Medical Professional list api- $_allDoctorsUri/$hospitalId/$serviceId');
     Response res = await ApiService.dio.get(
         '$_allDoctorsUri$hospitalId/$serviceId',
         options: Options(headers: {

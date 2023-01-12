@@ -147,7 +147,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'MNC Doctors',
+                    'MNC Medical Professionals',
                     textAlign: TextAlign.start,
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
@@ -157,7 +157,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                         ),
                   ),
                   Text(
-                    'Find your Doctors',
+                    'Find your Medical Professionals',
                     style: FlutterFlowTheme.of(context).bodyText1.override(
                           fontFamily: 'Open Sans',
                           color: Color(0xFFF3F4F4),
@@ -185,8 +185,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                 ),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
+                  child: ListView(
                     children: [
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(5, 30, 5, 0),
@@ -229,7 +228,8 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                                   autofocus: true,
                                   obscureText: false,
                                   decoration: InputDecoration(
-                                    hintText: 'Type your Goal....',
+                                    hintText:
+                                        'Tell us the reason you are here....',
                                     hintStyle:
                                         FlutterFlowTheme.of(context).bodyText2,
                                     enabledBorder: UnderlineInputBorder(
@@ -277,26 +277,21 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                           ],
                         ),
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(8, 20, 0, 0),
-                            child: Text(
-                              'Do you want to select your medical professional?',
-                              textAlign: TextAlign.start,
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 0),
+                        child: Text(
+                          'Do you want to select your medical professional?',
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.fade,
+                          softWrap: true,
+                          style:
+                              FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Open Sans',
                                     color: Color(0xFF606E87),
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(10, 15, 0, 0),
@@ -444,7 +439,7 @@ class _mnc_bookdoctor_screenState extends State<mnc_bookdoctor_screen> {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                               content: Text(
-                                                  'Please select a doctor')));
+                                                  'Please select a Medical Professional')));
                                       // } else if (radioButtonValue == 'Yes' &&
                                       //     _selectedDoctor == null) {
                                       //   ScaffoldMessenger.of(context).showSnackBar(

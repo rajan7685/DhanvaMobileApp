@@ -70,7 +70,7 @@ class _DoctorsByHospitalScreenWidgetState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Hospitals',
+                      'Medical Centers',
                       textAlign: TextAlign.start,
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
@@ -80,7 +80,7 @@ class _DoctorsByHospitalScreenWidgetState
                           ),
                     ),
                     Text(
-                      'Find Hospitals Near You',
+                      'Find Medical Centers Near You',
                       style: FlutterFlowTheme.of(context).bodyText1.override(
                             fontFamily: 'Open Sans',
                             color: Color(0xFFF3F4F4),
