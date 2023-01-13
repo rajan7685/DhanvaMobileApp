@@ -25,6 +25,7 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool isDataLoading = true;
   List<dynamic> _hospitalJsonList;
+  TextEditingController searchController;
   String _hospitalListApi = 'https://api2.dhanva.icu/hospital/get_all_enabled';
 
   // Future<void> _checkNetworkConnectivity() async {
@@ -47,7 +48,9 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   // }
 
   // ignore: unused_field
+
   Map<String, dynamic> _hospitalListData;
+  Map<String, dynamic> _searchResults;
 
   void _loadHospitalData() async {
     await Future.delayed(Duration(milliseconds: 850));
@@ -69,6 +72,7 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   void initState() {
     super.initState();
     _loadHospitalData();
+    searchController = TextEditingController();
     // _checkNetworkConnectivity();
   }
 
@@ -170,19 +174,84 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
                     padding: EdgeInsetsDirectional.fromSTEB(14, 12, 14, 0),
                     child: isDataLoading
                         ? Center(child: CircularProgressIndicator())
-                        : RefreshIndicator(
-                            onRefresh: () async {
-                              setState(() {
-                                isDataLoading = true;
-                              });
-                              _loadHospitalData();
-                            },
-                            child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.vertical,
-                                itemCount: _hospitalJsonList.length,
-                                itemBuilder: (context, index) =>
-                                    _buildHospitalListItem(context, index)),
+                        : Column(
+                            children: [
+                              TextFormField(
+                                textInputAction: TextInputAction.search,
+                                keyboardType: TextInputType.text,
+                                textAlign: TextAlign.start,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Open Sans',
+                                      color: Color(0xFF606E87),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                obscureText: false,
+                                onChanged: (val) => {
+                                  setState(() => {searchController.text = val})
+                                },
+                                decoration: InputDecoration(
+                                  labelText: 'Search Medical Center',
+                                  labelStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Color(0xFF9A9A9A),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Open Sans',
+                                        color: Color(0xFF606E87),
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFFC1C1C1),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color(0xFFC1C1C1),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: double.maxFinite,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                    child: RefreshIndicator(
+                                      onRefresh: () async {
+                                        setState(() {
+                                          isDataLoading = true;
+                                        });
+                                        _loadHospitalData();
+                                      },
+                                      child: ListView.builder(
+                                          padding: EdgeInsets.zero,
+                                          scrollDirection: Axis.vertical,
+                                          itemCount: _hospitalJsonList.length,
+                                          itemBuilder: (context, index) =>
+                                              _buildHospitalListItem(
+                                                  context, index)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                   ),
                 ),
@@ -195,6 +264,14 @@ class _OfflineConsultationScreenState extends State<OfflineConsultationScreen> {
   }
 
   Widget _buildHospitalListItem(BuildContext context, int index) {
+    String hospitalName =
+        _hospitalJsonList[index]['hospital_name'].toString().toLowerCase();
+    String searchText = searchController.text.toLowerCase();
+    print("building box");
+    if (searchText.length > 0 && !hospitalName.contains(searchText)) {
+      return SizedBox();
+    }
+
     return Container(
       padding: EdgeInsets.only(bottom: 12),
       width: double.infinity,
