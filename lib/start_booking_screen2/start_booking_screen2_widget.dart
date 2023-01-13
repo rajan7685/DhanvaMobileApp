@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dhanva_mobile_app/family_members_screen/add_family_members_screen.dart';
 import 'package:dhanva_mobile_app/global/models/doctor.dart';
 import 'package:dhanva_mobile_app/global/models/patient.dart';
 import 'package:dhanva_mobile_app/global/models/patient_relation.dart';
@@ -81,6 +82,19 @@ class _StartBookingScreen2WidgetState
     setState(() {
       // updateUI
     });
+  }
+
+  void _getPatientAndRelation() async {
+    patientNames = [];
+    patient = Patient.fromJson(
+        jsonDecode(SharedPreferenceService.loadString(key: PatientKey)));
+    textController1 = TextEditingController(text: patient.name);
+    patientNames.add(DropdownMenuItem(
+      child: Text(patient.name),
+      value: patient.id,
+    ));
+    _loadRelations();
+    _selectedPatientId = patient.id;
   }
 
   @override
@@ -287,30 +301,56 @@ class _StartBookingScreen2WidgetState
                         //             fontSize: 18,
                         //           ),
                         // ),
-                        DropdownButtonHideUnderline(
-                          child: DropdownButtonFormField(
-                            items: patientNames,
-                            value: _selectedPatientId,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedPatientId = value;
-                              });
-                              Map<String, dynamic> _patientJson = jsonDecode(
-                                  SharedPreferenceService.loadString(
-                                      key: PatientKey));
-                              int idx = _relations.indexWhere((element) =>
-                                  _selectedPatientId == element.patientId);
-                              patientRelationType =
-                                  idx == -1 ? "Self" : _relations[idx].type;
-                              print(patientRelationType);
-                            },
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Color(0x00000000),
-                              labelText: 'Patient Name',
-                              // border:
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                width: double.maxFinite,
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButtonFormField(
+                                    items: patientNames,
+                                    value: _selectedPatientId,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedPatientId = value;
+                                      });
+                                      Map<String, dynamic> _patientJson =
+                                          jsonDecode(SharedPreferenceService
+                                              .loadString(key: PatientKey));
+                                      int idx = _relations.indexWhere(
+                                          (element) =>
+                                              _selectedPatientId ==
+                                              element.patientId);
+                                      patientRelationType = idx == -1
+                                          ? "Self"
+                                          : _relations[idx].type;
+                                      print(patientRelationType);
+                                    },
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Color(0x00000000),
+                                      labelText: 'Patient Name',
+                                      // border:
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            IconButton(
+                              onPressed: () => {
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AddFamilyMembersScreenWidget()))
+                                    .then((value) => {_getPatientAndRelation()})
+                              },
+                              icon: Icon(Icons.person_add_alt),
+                              iconSize: 30,
+                              color: Color(0xFF00A8A3),
+                            )
+                          ],
                         ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
